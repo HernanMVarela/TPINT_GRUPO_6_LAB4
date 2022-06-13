@@ -1,0 +1,113 @@
+@charset "ISO-8859-1";
+
+:root{
+  --color-fondo: black;
+  --color-boton: rgb(85, 125, 230);
+}
+
+body{
+    background-attachment: fixed;
+    height: 300%;
+    z-index: -2;
+    background-position: bottom;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-color: white;
+}
+
+
+.title{
+    color: rgb(250, 250, 250);
+    text-align: center;
+    font-size: 40px;
+    position: relative;
+    background: rgba(5%, 5%, 5%, 0.6);
+}
+
+.subtitle{
+    color: rgb(250, 250, 250);
+    text-align: center;
+    font-size: 20px;
+    position: relative;
+    background: rgba(5%, 5%, 5%, 0.6);
+}
+
+.backg {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.boxIzq{
+    color:darkgrey;
+    display: block;
+    position: absolute;
+    top: 100px;
+    left: 0.5%;
+    width: 20%;
+    height: 100%;
+    background: rgba(68, 68, 68, 0.74);
+    font-size: 2rem;
+    text-justify:distribute;
+    border-radius: 0.25em;
+}
+
+.boxDer{
+    color:darkgrey;
+    display: block;
+    position: absolute;
+    top: 100px;
+    right: 0.5%;
+    width: 20%;
+    height: 100%;
+    background: rgba(68, 68, 68, 0.74);
+    font-size: 2rem;
+    text-justify:distribute-all-lines;
+    border-radius: 0.25em;
+}
+
+
+.boton{
+    font-size: 1.5rem;
+    background: rgba(200, 200, 200, 0.212);
+    display: inline-block;
+    cursor: pointer;
+    position: relative;
+    margin-top: 1%;
+    margin-left: 1%;
+    margin-right: 1%;
+    text-align: center;    
+    text-decoration: none;
+    color: var(--color-boton);
+    border: currentColor 0.125em solid;
+    padding: 0.25em 1em;
+    border-radius: 0.25em;
+    z-index: 1;
+
+    text-shadow: 0 0 0.125em var(--color-boton), 0 0 0.45em currentColor;
+    box-shadow: inset 0 0 0.5em var(--color-boton), 0 0 0.5em var(--color-boton);
+}
+
+.boton::after{
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    box-shadow: 0 0 2em 0.5em var(--color-boton);
+    opacity: 0;
+    z-index: -1;
+    background: var(--color-boton);
+    transition: opacity 200ms linear;
+}
+
+.boton:hover,.boton:focus{
+    background: var(--color-boton);
+    color: black;
+    text-shadow: none;
+}
+
+.boton:hover::after{
+    opacity: 1;
+}
