@@ -16,9 +16,9 @@
     <div class="d-flex flex-wrap align-items-left justify-content-left justify-content-md-between py-3 mb-4 border-bottom">
 
       	<ul class="nav col-md-4 mb-2 justify-content-left mb-md-0">
-        	<li><a href="#" class="nav-link px-2 link-secondary">Home</a></li>
+        	<li><a href="Home.jsp" class="nav-link px-2 link-secondary">Home</a></li>
         	<li><a href="#" class="nav-link px-2 link-dark">Pacientes</a></li>
-        	<li><a href="#" class="nav-link px-2 link-dark">Médicos</a></li>
+        	<li><a href="Medicos.jsp" class="nav-link px-2 link-dark">Médicos</a></li>
         	<li><a href="#" class="nav-link px-2 link-dark">Turnos</a></li>
         	<li><a href="#" class="nav-link px-2 link-dark">About</a></li>
      	</ul>
