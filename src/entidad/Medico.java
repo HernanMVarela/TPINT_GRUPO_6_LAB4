@@ -6,9 +6,9 @@ public class Medico extends Persona {
 
 	private int idMedico;
 	private int DNI;
-	private int idEspecialidad;
-	private int idUsuario;
 	private int Estado;
+	private Usuario User;
+	private Especialidad Esp;
 	
 	public int getIdMedico() {
 		return idMedico;
@@ -22,17 +22,18 @@ public class Medico extends Persona {
 	public void setDNI(int dNI) {
 		DNI = dNI;
 	}
-	public int getIdEspecialidad() {
-		return idEspecialidad;
+	
+	public Usuario getUser() {
+		return User;
 	}
-	public void setIdEspecialidad(int idEspecialidad) {
-		this.idEspecialidad = idEspecialidad;
+	public void setUser(Usuario user) {
+		User = user;
 	}
-	public int getIdUsuario() {
-		return idUsuario;
+	public Especialidad getEsp() {
+		return Esp;
 	}
-	public void setIdUsuario(int idUsuario) {
-		this.idUsuario = idUsuario;
+	public void setEsp(Especialidad esp) {
+		Esp = esp;
 	}
 	public int getEstado() {
 		return Estado;
@@ -41,20 +42,21 @@ public class Medico extends Persona {
 		Estado = estado;
 	}
 	
+	
 	@Override
 	public String toString() {
-		return "Medico [idMedico=" + idMedico + ", DNI=" + DNI + ", idEspecialidad=" + idEspecialidad + ", idUsuario="
-				+ idUsuario + ", Estado=" + Estado + "]";
+		return "Medico [idMedico=" + idMedico + ", DNI=" + DNI + ", Estado=" + Estado + ", User=" + User + ", Esp="
+				+ Esp + "]";
 	}
 	
 	public Medico(String nombre, String apellido, String nacionalidad, String email, String telefono, LocalDate fNac,
-			Sexo sex, Direccion direcc, int idMedico, int dNI, int idEspecialidad, int idUsuario, int estado) {
+			Sexo sex, Direccion direcc, int idMedico, int dNI, int estado, Usuario user, Especialidad esp) {
 		super(nombre, apellido, nacionalidad, email, telefono, fNac, sex, direcc);
 		this.idMedico = idMedico;
 		DNI = dNI;
-		this.idEspecialidad = idEspecialidad;
-		this.idUsuario = idUsuario;
 		Estado = estado;
+		User = user;
+		Esp = esp;
 	}
 	
 	public Medico() {}
