@@ -7,32 +7,21 @@
 	<jsp:include page="bootstrap/StyleSheet.css"></jsp:include>
 	<jsp:include page="bootstrap/css/bootstrap.min.css"></jsp:include>
 </style>
+
+<link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+	<script type="text/javascript" charset="utf8" src="//cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
+<script type="text/javascript">
+$(document).ready( function () {
+    $('#tabla_pacientes').DataTable();
+} );
+</script>
+
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Panel de pacientes</title>
 </head>
 <body>
-  <div class="container-fluid mh-2">
-    <div class="d-flex flex-wrap align-items-left justify-content-left justify-content-md-between py-3 mb-4 border-bottom">
-
-      	<ul class="nav col-md-4 mb-2 justify-content-left mb-md-0">
-           	<li><a href="Home.jsp" class="nav-link px-2 link-secondary">Home</a></li>
-        	<li><a href="Pacientes.jsp" class="nav-link px-2 link-dark">Pacientes</a></li>
-        	<li><a href="Medicos.jsp" class="nav-link px-2 link-dark">Médicos</a></li>
-        	<li><a href="#" class="nav-link px-2 link-dark">Turnos</a></li>
-        	<li><a href="#" class="nav-link px-2 link-dark">About</a></li>
-     	</ul>
-     	<a href="Login.jsp" class="d-flex align-items-center col-md-2 mb-2 mb-md-0 text-dark text-decoration-none"></a>
-
-			<div class="col-md-auto text-end pr-2">
-				<label class="p-1">Emanuel Barreto</label> 
-	  		</div>
-		<div class="row align-items-right justify-content-end">
-      		<div class="col-md-auto text-end pr-2">
-       			<input type="submit" class="btn btn-outline-primary me-2" name="btnCerrarSesion" value="Cerrar sesión"> 	
-      		</div>
-     	 </div>
-    </div>
-  </div>
+<jsp:include page="Menu.html"></jsp:include>
   
   <div class="container-fluid">
   <div class="row d-flex flex-wrap align-middle justify-content-evenly">
@@ -47,14 +36,17 @@
 	  		</div>
 	  	</div>
 	  	<div class="col-md-auto table-responsive w-75">
-	  		<table border=2 class="table align-middle table-info table-hover th-lg">
+	  		<table id="tabla_pacientes" border=2 class="table align-middle table-info table-hover th-lg">
+	  		<thead>
 				<tr class="table-secondary"><th> ID Paciente </th><th> DNI </th><th> Nombre y apellido </th><th> Fecha de nacimiento </th><th> Dirección </th>
 				<th> Localidad </th><th> Nacionalidad </th><th> Email </th><th> Teléfono </th></tr>
-				<tr>
-				<td> 11000 </td><td> 111111111 </td><td> Julio Rodas </td><td> 01/01/2001 </td><td> Arturo Ilia 5532 </td><td> Ricardo Rojas </td><td> Argentino/a </td><td> algo@dominio.com </td><td> 46234634646 </td></tr>
+			</thead>
+			<tbody>
+				<tr><td> 11000 </td><td> 111111111 </td><td> Julio Rodas </td><td> 01/01/2001 </td><td> Arturo Ilia 5532 </td><td> Ricardo Rojas </td><td> Argentino/a </td><td> algo@dominio.com </td><td> 46234634646 </td></tr>
 				<tr><td> 11001 </td><td> 22222222 </td> <td> Teresa Pérez </td><td> 24/11/1999 </td><td> Roca 5532 </td><td> El Talar </td><td> Argentino/a </td><td> algo@dominio.com </td><td> 46765344646 </td></tr>
 				<tr><td> 11002 </td><td> 33333333 </td> <td> Armando Sandrini </td><td> 07/10/1975  </td><td> Juan M. Rosas 4663 </td><td> Tortuguitas </td><td> Argentino/a </td><td> algo@dominio.com </td><td> 46233525346 </td></tr>
 				<tr><td> 11003 </td><td> 44444444 </td> <td> Laura Ezpeleta </td><td> 18/06/1983 </td><td> Juana Azurduy 5532 </td><td> Grand Bourg </td><td> Argentino/a </td><td> algo@dominio.com </td><td> 4623253546 </td></tr>
+			</tbody>
 			</table>
 	  	</div> 
   	</div>

@@ -7,35 +7,21 @@
 	<jsp:include page="bootstrap/StyleSheet.css"></jsp:include>
 	<jsp:include page="bootstrap/css/bootstrap.min.css"></jsp:include>
 </style>
+
+<link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+	<script type="text/javascript" charset="utf8" src="//cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
+<script type="text/javascript">
+$(document).ready( function () {
+    $('#tabla_medicos').DataTable();
+} );
+</script>
+
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Panel de médicos</title>
 </head>
 <body>
-  <div class="container-fluid mh-2">
-    <div class="d-flex flex-wrap align-items-left justify-content-left justify-content-md-between py-3 mb-4 border-bottom">
-
-      	<ul class="nav col-md-4 mb-2 justify-content-left mb-md-0">
-        	<li><a href="Home.jsp" class="nav-link px-2 link-secondary">Home</a></li>
-        	<li><a href="Pacientes.jsp" class="nav-link px-2 link-dark">Pacientes</a></li>
-        	<li><a href="Medicos.jsp" class="nav-link px-2 link-dark">Médicos</a></li>
-        	<li><a href="#" class="nav-link px-2 link-dark">Turnos</a></li>
-        	<li><a href="#" class="nav-link px-2 link-dark">About</a></li>
-     	</ul>
-     	<a href="Login.jsp" class="d-flex align-items-center col-md-2 mb-2 mb-md-0 text-dark text-decoration-none"></a>
-
-		<div class="row align-items-right justify-content-end">
-      		<div class="col-md-auto text-end pr-2">
-       			<input type="submit" class="btn btn-outline-primary me-2" name="btnLogin" value="Login"> 	
-      		</div>
-      		<div class="col-md-auto text-end pr-2">
-				<input type="text" name="txfUsername" placeholder="Usuario" class="form-control" required>
-	  		</div>
-	  		<div class="col-md-auto text-end pr-2">
-				<input type="Password" name="txfPassword" placeholder="Contraseña" class="form-control" required>
-     		</div>
-     	 </div>
-    </div>
-  </div>
+<jsp:include page="Menu.html"></jsp:include>
   
   <div class="container-fluid">
   <div class="row d-flex flex-wrap align-middle justify-content-evenly">
@@ -59,12 +45,16 @@
 	  		</div>
 	  	</div>
 	  	<div class="col-md-auto table-responsive w-75">
-	  		<table border=2 class="table align-middle table-info table-hover th-lg">
+	  		<table id="tabla_medicos" border=2 class="table align-middle table-info table-hover th-lg">
+	  		<thead>
 				<tr class="table-secondary"><th> ID Medico </th><th> Nombre y apellido</th><th> DNI </th> <th> Especialidad </th><th> Estado </th></tr>
+			</thead>
+			<tbody>
 				<tr class="table-danger"><td> 1000 </td><td> Christian Sepulveda </td><td> 111111111 </td><td> Cirugía Plástica </td><td> Ocupado </td></tr>
 				<tr><td> 1001 </td><td> Emanuel Barreto </td> <td> 22222222 </td><td> Cardiología Clínica </td><td> Disponible </td></tr>
 				<tr><td> 1002 </td><td> Hernán Varela </td> <td> 33333333 </td><td> Neurología  </td><td> Disponible </td></tr>
 				<tr><td> 1003 </td><td> Bruno Molteni </td> <td> 44444444 </td><td> Otorrinolaringología </td><td> Disponible </td></tr>
+			</tbody>
 			</table>
 	  	</div> 
   	</div>
