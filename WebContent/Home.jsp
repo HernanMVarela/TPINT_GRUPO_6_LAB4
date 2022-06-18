@@ -4,9 +4,11 @@
 <html>
 <head>
 <style type="text/css">
-	<jsp:include page="bootstrap/StyleSheet.css"></jsp:include>
-	<jsp:include page="bootstrap/css/bootstrap.min.css"></jsp:include>
+	<jsp:include page="cssStyles/StyleSheet.css"></jsp:include>
 </style>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Home</title>
 </head>
