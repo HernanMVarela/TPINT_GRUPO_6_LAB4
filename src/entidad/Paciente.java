@@ -1,45 +1,46 @@
 package entidad;
 
-import java.time.LocalDate;
-
-public class Paciente extends Persona {
+public class Paciente {
 
 	private int idPaciente;
-	private int DNI;
-	private int Estado;
+	private DatoPersonal datoPersonal;
+	private boolean estado;
 	
+	public Paciente() {}
+
+	public Paciente(int idPaciente, DatoPersonal datoPersonal, boolean estado) {
+		this.idPaciente = idPaciente;
+		this.datoPersonal = datoPersonal;
+		this.estado = estado;
+	}
+
 	public int getIdPaciente() {
 		return idPaciente;
 	}
+
 	public void setIdPaciente(int idPaciente) {
 		this.idPaciente = idPaciente;
 	}
-	public int getDNI() {
-		return DNI;
+
+	public DatoPersonal getDatoPersonal() {
+		return datoPersonal;
 	}
-	public void setDNI(int dNI) {
-		DNI = dNI;
+
+	public void setDatoPersonal(DatoPersonal datoPersonal) {
+		this.datoPersonal = datoPersonal;
 	}
-	public int getEstado() {
-		return Estado;
+
+	public boolean isEstado() {
+		return estado;
 	}
-	public void setEstado(int estado) {
-		Estado = estado;
+
+	public void setEstado(boolean estado) {
+		this.estado = estado;
 	}
-	
+
 	@Override
 	public String toString() {
-		return "Paciente [idPaciente=" + idPaciente + ", DNI=" + DNI + ", Estado=" + Estado + "]";
+		return "Paciente [idPaciente=" + idPaciente + ", datoPersonal=" + datoPersonal + ", estado=" + estado + "]";
 	}
-	
-	public Paciente(String nombre, String apellido, String nacionalidad, String email, String telefono, LocalDate fNac,
-			Sexo sex, Direccion direcc, int idPaciente, int dNI, int estado) {
-		super(nombre, apellido, nacionalidad, email, telefono, fNac, sex, direcc);
-		this.idPaciente = idPaciente;
-		DNI = dNI;
-		Estado = estado;
-	}
-		
-	public Paciente() {}
 	
 }

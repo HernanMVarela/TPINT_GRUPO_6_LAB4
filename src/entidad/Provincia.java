@@ -2,14 +2,14 @@ package entidad;
 
 public class Provincia {
 	
-	private String Nombre;
 	private int idProv;
+	private String nombre;
 	
-	public String getNombre() {
-		return Nombre;
-	}
-	public void setNombre(String nombre) {
-		Nombre = nombre;
+	public Provincia() {}
+	
+	public Provincia(int idProv, String nombre) {
+		this.idProv = idProv;
+		this.nombre = nombre;
 	}
 	public int getIdProv() {
 		return idProv;
@@ -17,18 +17,16 @@ public class Provincia {
 	public void setIdProv(int idProv) {
 		this.idProv = idProv;
 	}
-	
+	public String getNombre() {
+		return nombre;
+	}
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
+	}
+
 	@Override
 	public String toString() {
-		return "Provincia [Nombre=" + Nombre + ", idProv=" + idProv + "]";
+		return "Provincia [idProv=" + idProv + ", nombre=" + nombre + "]";
 	}
-	
-	public Provincia(String nombre, int idProv) {
-		super();
-		Nombre = nombre;
-		this.idProv = idProv;
-	}
-	
-	public Provincia() {}
 	
 }

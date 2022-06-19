@@ -1,33 +1,36 @@
 package entidad;
 
 public class Especialidad {
-	private int idEspecialidad;
-	private String Descripcion;
 	
+	private int idEspecialidad;
+	private String nombre;
+		
+	public Especialidad() {}
+
+	public Especialidad(int idEspecialidad, String nombre) {
+		this.idEspecialidad = idEspecialidad;
+		this.nombre = nombre;
+	}
+
 	public int getIdEspecialidad() {
 		return idEspecialidad;
 	}
+
 	public void setIdEspecialidad(int idEspecialidad) {
 		this.idEspecialidad = idEspecialidad;
 	}
-	public String getDescripcion() {
-		return Descripcion;
+
+	public String getNombre() {
+		return nombre;
 	}
-	public void setDescripcion(String descripcion) {
-		Descripcion = descripcion;
+
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
 	}
-	
+
 	@Override
 	public String toString() {
-		return "Especialidad [idEspecialidad=" + idEspecialidad + ", Descripcion=" + Descripcion + "]";
+		return "Especialidad [idEspecialidad=" + idEspecialidad + ", nombre=" + nombre + "]";
 	}
-		
-	public Especialidad(int idEspecialidad, String descripcion) {
-		super();
-		this.idEspecialidad = idEspecialidad;
-		Descripcion = descripcion;
-	}
-	
-	public Especialidad() {}
 	
 }
