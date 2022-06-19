@@ -2,32 +2,35 @@ package entidad;
 
 public class Sexo {
 	
-	private int idSex;
-	private String Descripcion;
-	
-	public int getIdSex() {
-		return idSex;
-	}
-	public void setIdSex(int idSex) {
-		this.idSex = idSex;
-	}
-	public String getDescripcion() {
-		return Descripcion;
-	}
-	public void setDescripcion(String descripcion) {
-		Descripcion = descripcion;
-	}
-	
-	@Override
-	public String toString() {
-		return "Sexo [idSex=" + idSex + ", Descripcion=" + Descripcion + "]";
-	}
-	
-	public Sexo(int idSex, String descripcion) {
-		this.idSex = idSex;
-		Descripcion = descripcion;
-	}	
-	
+	private int idSexo;
+	private String nombre;
+		
 	public Sexo() {}
 
+	public Sexo(int idSexo, String nombre) {
+		this.idSexo = idSexo;
+		this.nombre = nombre;
+	}
+
+	public int getIdSexo() {
+		return idSexo;
+	}
+
+	public void setIdSexo(int idSexo) {
+		this.idSexo = idSexo;
+	}
+
+	public String getNombre() {
+		return nombre;
+	}
+
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
+	}
+
+	@Override
+	public String toString() {
+		return "Sexo [idSexo=" + idSexo + ", nombre=" + nombre + "]";
+	}
+	
 }
