@@ -8,7 +8,6 @@ public interface MedicoDao {
 	
 	public ArrayList<Medico> ListarTodo();
 	
-	public void Agregar();
 	
 	public void Modificar();
 	
@@ -17,5 +16,7 @@ public interface MedicoDao {
 	public void Buscar();
 	
 	public void UltimoID();
+
+	public boolean Agregar(Medico medico);
 	
 }
