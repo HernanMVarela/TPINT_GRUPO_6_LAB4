@@ -8,15 +8,14 @@ public interface MedicoDao {
 	
 	public ArrayList<Medico> ListarTodo();
 	
-	
-	public void Modificar();
-	
-	public void Eliminar();
-	
-	public void Buscar();
-	
-	public void UltimoID();
-
 	public boolean Agregar(Medico medico);
+
+	public boolean Modificar(Medico medico);
+
+	public boolean Eliminar(int idMedico);
+
+	public int UltimoID();
+
+	public Medico Buscar(int idMedico);
 	
 }
