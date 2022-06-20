@@ -2,49 +2,71 @@ package daoImpl;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+
+import dao.LocalidadDao;
 import dao.PaisDao;
+import dao.ProvinciaDao;
+import dao.SexoDao;
+import entidad.Localidad;
 import entidad.Pais;
+import entidad.Provincia;
+import entidad.Sexo;
 
 public class PruebaConexionSQL {
 
 	public static void main(String[] args) {
-		Pais pais = new Pais();
-		pais.setIso("PRU");
-		pais.setNombre("Prueba");
-		PaisDao dao = new PaisDaoImpl();
+		Localidad localidad = new Localidad();
+		LocalidadDao daoLocalidad = new LocalidadDaoImpl();
+		Sexo sexo = new Sexo();
+		SexoDao daoSexo = new SexoDaoImpl();
+		ProvinciaDao daoProvincia = new ProvinciaDaoImpl();
+		Provincia provincia = new Provincia();
+		provincia = daoProvincia.ObtenerObjeto(1);
+		localidad.setNombre("Prueba");
+		sexo.setNombre("Prueba");
 		
+		localidad.setProvincia(provincia);
 		
 		//AGREGAR
-		if(dao.Agregar(pais)) {
-			System.out.println("El pais ha sigo agregado. Pais: "+pais.getNombre());
+		if(daoSexo.Agregar(sexo)) {
+			System.out.println("El sexo ha sigo agregado. Sexo: "+sexo.getNombre());
+	} else {
+			System.out.println("NO PUDO SER AGREGADO");
+			}
+		
+		if(daoLocalidad.Agregar(localidad)) {
+			System.out.println("La localidad ha sigo agregada. Localidad: "+localidad.getNombre());
 	} else {
 			System.out.println("NO PUDO SER AGREGADO");
 			}
 		
 		//MODIFICAR
-		pais.setNombre("Prueba Modificación");
-		pais.setIdNacionalidad(15);
-		if(dao.Modificar(pais)) {
-			System.out.println("El pais ha sigo modificado. Pais: "+pais.getNombre());
-	} else {
-			System.out.println("NO PUDO SER MODIFICADO");
-			}
-		
+				
 		//LISTAR
-		ArrayList<Pais> paises = dao.ListarTodo();
-		System.out.println("Listado de todos los paises OK. ");
-		
-		Iterator<Pais> it = paises.iterator();
+		ArrayList<Sexo> sexos = daoSexo.ListarTodo();
+		Iterator<Sexo> it = sexos.iterator();
 		
 		while(it.hasNext())
 		{
-			Pais p = (Pais) it.next();
+			Sexo p = (Sexo) it.next();
 			System.out.println(p.toString());
 		}
 		
+		ArrayList<Localidad> localidades = daoLocalidad.ListarTodo();
+		Iterator<Localidad> it2 = localidades.iterator();
+		
+		while(it2.hasNext())
+		{
+			Localidad p = (Localidad) it2.next();
+			System.out.println(p.getNombre());
+		}
+		
 		//OBTENER
-		pais = dao.ObtenerObjeto(2);
-		System.out.println("Pais con ID 2: "+pais.getNombre());		
+		sexo = daoSexo.ObtenerObjeto(2);
+		System.out.println("Pais con ID 2: "+sexo.getNombre());
+		
+		localidad = daoLocalidad.ObtenerObjeto(2);
+		System.out.println("Pais con ID 2: "+localidad.getNombre());	
 		
 	}
 }
