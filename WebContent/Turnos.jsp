@@ -18,6 +18,8 @@ $(document).ready( function () {
 </style>
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.5/dist/umd/popper.min.js" integrity="sha384-Xe+8cL9oJa6tN/veChSP7q+mnSPaj5Bcu9mPX5F5xIGE0DVittaqT5lorf0EI7Vk" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.min.js" integrity="sha384-kjU+l4N0Yf4ZOJErLsIcvOU2qSb74wXpOhqTvwVx3OElZRweTnQ6d31fXEoRD1Jy" crossorigin="anonymous"></script>
 
 
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
@@ -74,8 +76,10 @@ $(document).ready( function () {
  	</div> 
 </div>
 <div class="row mh-2 mb-2 justify-content-center p-2">
-	<div class="col-md-3 d-flex justify-content-center">	
+	<div class="col-md-3 d-flex justify-content-center">
+		<form method="post" action="VerTurno.jsp">	
 		<input type="submit" name="btnVerDetalle" class="btn btn-info p-3 w-75" value="Ver detalle del turno">
+		</form>
 	</div>
 	<div class="col-md-3 d-flex justify-content-center">
 		<form method="post" action="NuevoTurno.jsp" class="w-75">
@@ -83,13 +87,35 @@ $(document).ready( function () {
 		</form>
 	</div>
 	<div class="col-md-3 d-flex justify-content-center">
-		<input type="submit" name="btnModificarTurno" class="btn btn-info p-3 w-75 value="Modificar turno">
+		<form method="post" action="NuevoTurno.jsp" class="w-75">
+			<input type="submit" name="btnModificarTurno" class="btn btn-info p-3 w-75" value="Modificar turno">
+		</form>
 	</div>
 	
 	<div class="col-md-3 d-flex justify-content-center">
-		<input type="submit" name="btnEliminarTurno" class="btn btn-danger p-3 w-75" value="Eliminar turno">
+		<button type="button" class="btn btn-danger w-75" data-bs-toggle="modal" data-bs-target="#modalEliminarTurno">Eliminar turno</button>
 	</div>
 </div>
+ 
+	<div class="modal fade" id="modalEliminarTurno" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="exampleModalLabel">Eliminar Turno</h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+					<p>¿Desea eliminar este turno?</p>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+	     				<form method="post" action="">
+	     					<input type="submit" name="btnEliminarTurno" class="btn btn-outline-danger w-100" value="Eliminar">
+	     				</form>
+				</div>
+			</div>
+		</div>
+	</div>
  
 </div> <!-- Fin del container -->
 </body>
