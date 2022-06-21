@@ -1,18 +1,18 @@
 package entidad;
 
+import java.sql.Date;
+
 public class Administrador extends Persona {
 	
 	private int idAdmin;
-	private Persona persona;
 	private Usuario usuario;
 	private boolean estado;
 	
 	public Administrador() {}
 
 	public Administrador(int idAdmin, Persona persona, Usuario usuario, boolean estado) {
-		super();
+		super(persona.getDni(),persona.getNombre(),persona.getApellido(),persona.getNacionalidad(),persona.getDirecc(),persona.getSexo(),persona.getEmail(),persona.getTelefono(),persona.getFecha_nacimiento());
 		this.idAdmin = idAdmin;
-		this.persona = persona;
 		this.usuario = usuario;
 		this.estado = estado;
 	}
@@ -23,14 +23,6 @@ public class Administrador extends Persona {
 
 	public void setIdAdmin(int idAdmin) {
 		this.idAdmin = idAdmin;
-	}
-
-	public Persona getPersona() {
-		return persona;
-	}
-
-	public void setPersona(Persona persona) {
-		this.persona = persona;
 	}
 
 	public Usuario getUsuario() {
@@ -51,7 +43,7 @@ public class Administrador extends Persona {
 
 	@Override
 	public String toString() {
-		return "Administrador [idAdmin=" + idAdmin + ", persona=" + persona + ", usuario=" + usuario + ", estado="
+		return "Administrador [idAdmin=" + idAdmin + ", usuario=" + usuario + ", estado="
 				+ estado + "]";
 	}
 		

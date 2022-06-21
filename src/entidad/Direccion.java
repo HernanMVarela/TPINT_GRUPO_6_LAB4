@@ -24,7 +24,6 @@ public class Direccion {
 	}
 	
 	public Direccion(Localidad loc, String calleYNum) {
-		super();
 		Loc = loc;
 		CalleYNum = calleYNum;
 	}

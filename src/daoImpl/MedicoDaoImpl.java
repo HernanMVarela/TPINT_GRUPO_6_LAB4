@@ -71,17 +71,17 @@ public class MedicoDaoImpl implements MedicoDao{
 		
 		try {
 			Stat = conex.prepareStatement(alinsertar);
-			Stat.setInt(1,medico.getDatoPersonal().getDni());
-			Stat.setString(2,medico.getDatoPersonal().getNombre());
-			Stat.setString(3,medico.getDatoPersonal().getApellido());
-			//Aca se guarda el ID
-			Stat.setInt(4,medico.getDatoPersonal().getNacionalidad().getIdNacionalidad());
-			Stat.setString(5,medico.getDatoPersonal().getDireccion());
-			Stat.setInt(6,medico.getDatoPersonal().getSexo().getIdSexo());
-			Stat.setInt(7,medico.getDatoPersonal().getLocalidad().getIdLocalidad());
-			Stat.setString(8,medico.getDatoPersonal().getEmail());
-			Stat.setString(9,medico.getDatoPersonal().getTelefono());
-			Stat.setDate(10,medico.getDatoPersonal().getFecha_nacimiento());
+//			Stat.setInt(1,medico.getDatoPersonal().getDni());
+//			Stat.setString(2,medico.getDatoPersonal().getNombre());
+//			Stat.setString(3,medico.getDatoPersonal().getApellido());
+//			//Aca se guarda el ID
+//			Stat.setInt(4,medico.getDatoPersonal().getNacionalidad().getIdNacionalidad());
+//			Stat.setString(5,medico.getDatoPersonal().getDireccion());
+//			Stat.setInt(6,medico.getDatoPersonal().getSexo().getIdSexo());
+//			Stat.setInt(7,medico.getDatoPersonal().getLocalidad().getIdLocalidad());
+//			Stat.setString(8,medico.getDatoPersonal().getEmail());
+//			Stat.setString(9,medico.getDatoPersonal().getTelefono());
+//			Stat.setDate(10,medico.getDatoPersonal().getFecha_nacimiento());
 			Stat.setInt(11,medico.getEspecialidad().getIdEspecialidad());
 			Stat.setInt(12,medico.getUsuario().getIdUsuario());
 			Stat.setBoolean(13,medico.isEstado());
@@ -120,17 +120,17 @@ public class MedicoDaoImpl implements MedicoDao{
 		try {
 			statement = conexion.getSQLConexion().prepareStatement(modificar);
 			
-			statement.setInt(1,medico.getDatoPersonal().getDni());
-			statement.setString(2,medico.getDatoPersonal().getNombre());
-			statement.setString(3,medico.getDatoPersonal().getApellido());
-			//Aca se guarda el ID
-			statement.setInt(4,medico.getDatoPersonal().getNacionalidad().getIdNacionalidad());
-			statement.setString(5,medico.getDatoPersonal().getDireccion());
-			statement.setInt(6,medico.getDatoPersonal().getSexo().getIdSexo());
-			statement.setInt(7,medico.getDatoPersonal().getLocalidad().getIdLocalidad());
-			statement.setString(8,medico.getDatoPersonal().getEmail());
-			statement.setString(9,medico.getDatoPersonal().getTelefono());
-			statement.setDate(10,medico.getDatoPersonal().getFecha_nacimiento());
+//			statement.setInt(1,medico.getDatoPersonal().getDni());
+//			statement.setString(2,medico.getDatoPersonal().getNombre());
+//			statement.setString(3,medico.getDatoPersonal().getApellido());
+//			//Aca se guarda el ID
+//			statement.setInt(4,medico.getDatoPersonal().getNacionalidad().getIdNacionalidad());
+//			statement.setString(5,medico.getDatoPersonal().getDireccion());
+//			statement.setInt(6,medico.getDatoPersonal().getSexo().getIdSexo());
+//			statement.setInt(7,medico.getDatoPersonal().getLocalidad().getIdLocalidad());
+//			statement.setString(8,medico.getDatoPersonal().getEmail());
+//			statement.setString(9,medico.getDatoPersonal().getTelefono());
+//			statement.setDate(10,medico.getDatoPersonal().getFecha_nacimiento());
 			statement.setInt(11,medico.getEspecialidad().getIdEspecialidad());
 			statement.setInt(12,medico.getUsuario().getIdUsuario());
 			statement.setBoolean(13,medico.isEstado());
@@ -208,22 +208,22 @@ public class MedicoDaoImpl implements MedicoDao{
 			resultSet = statement.executeQuery();
 			
 			while(resultSet.next()){				
-				result = new Medico(			
-						resultSet.getInt("Medico.getDatoPersonal().getDni()"),
-						resultSet.getString("Medico.getDatoPersonal().getNombre()"),
-						resultSet.getInt("Medico.getDatoPersonal().getApellido()"),
-						resultSet.getInt("Medico.getDatoPersonal().getNacionalidad().getIdNacionalidad()"),
-						resultSet.getInt("Medico.getDatoPersonal().getDireccion()"),
-						resultSet.getInt("Medico.getDatoPersonal().getSexo().getIdSexo()"),
-						resultSet.getInt("Medico.getDatoPersonal().getLocalidad().getIdLocalidad()"),
-						resultSet.getInt("Medico.getDatoPersonal().getEmail()"),
-						resultSet.getInt("Medico.getDatoPersonal().getTelefono()"),
-						resultSet.getInt("Medico.getDatoPersonal().getFecha_nacimiento()"),
-						resultSet.getInt("Medico.getEspecialidad().getIdEspecialidad()"),
-						resultSet.getInt("Medico.getUsuario().getIdUsuario()"),
-						resultSet.getInt("Medico.getDatoPersonal().getSexo().getIdSexo()"),
-						resultSet.getInt("Medico.isEstado()")
-						);
+//						result = new Medico(			
+//						resultSet.getInt("Medico.getDatoPersonal().getDni()"),
+//						resultSet.getString("Medico.getDatoPersonal().getNombre()"),
+//						resultSet.getInt("Medico.getDatoPersonal().getApellido()"),
+//						resultSet.getInt("Medico.getDatoPersonal().getNacionalidad().getIdNacionalidad()"),
+//						resultSet.getInt("Medico.getDatoPersonal().getDireccion()"),
+//						resultSet.getInt("Medico.getDatoPersonal().getSexo().getIdSexo()"),
+//						resultSet.getInt("Medico.getDatoPersonal().getLocalidad().getIdLocalidad()"),
+//						resultSet.getInt("Medico.getDatoPersonal().getEmail()"),
+//						resultSet.getInt("Medico.getDatoPersonal().getTelefono()"),
+//						resultSet.getInt("Medico.getDatoPersonal().getFecha_nacimiento()"),
+//						resultSet.getInt("Medico.getEspecialidad().getIdEspecialidad()"),
+//						resultSet.getInt("Medico.getUsuario().getIdUsuario()"),
+//						resultSet.getInt("Medico.getDatoPersonal().getSexo().getIdSexo()"),
+//						resultSet.getInt("Medico.isEstado()")
+//						);
 				return result;
 			}
 		}catch(Exception e){

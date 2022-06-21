@@ -4,6 +4,7 @@ import java.sql.Date;
 
 public class Turno {
 	
+	private int idTurno;
 	private Paciente paciente;
 	private Medico medico;
 	private Date dia;
@@ -25,6 +26,18 @@ public class Turno {
 		this.estadoTurno = estadoTurno;
 		ObservacionConsulta = observacionConsulta;
 		this.estado = estado;
+	}
+
+	public int getIdTurno() {
+		return idTurno;
+	}
+
+	public void setIdTurno(int idTurno) {
+		this.idTurno = idTurno;
+	}
+
+	public void setHora(int hora) {
+		this.hora = hora;
 	}
 
 	public Paciente getPaciente() {

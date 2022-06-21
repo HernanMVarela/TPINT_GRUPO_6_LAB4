@@ -4,7 +4,16 @@ public class Provincia {
 	
 	private int idProv;
 	private String nombre;
-	
+	private Pais pais;
+		
+	public Pais getPais() {
+		return pais;
+	}
+
+	public void setPais(Pais pais) {
+		this.pais = pais;
+	}
+
 	public Provincia() {}
 	
 	public Provincia(int idProv, String nombre) {

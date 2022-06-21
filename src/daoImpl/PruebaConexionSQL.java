@@ -57,8 +57,7 @@ public class PruebaConexionSQL {
 		
 		Date nacimiento = new java.sql.Date(Calendar.getInstance().getTime().getTime());
 		
-		persona = new Persona(1111, "Prueba Nombre", "Prueba Apellido", pais, "132 rodo", sexo,
-				localidad, "123@456.com", "123 321", nacimiento);
+		persona = new Persona();
 		
 		if(personaDao.Agregar(persona)) {
 			System.out.println("El persona ha sigo agregado. Persona: "+persona.getNombre());

@@ -1,5 +1,6 @@
 package daoImpl;
 
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
@@ -8,6 +9,7 @@ import dao.LocalidadDao;
 import dao.PaisDao;
 import dao.PersonaDao;
 import dao.SexoDao;
+import entidad.Direccion;
 import entidad.Localidad;
 import entidad.Pais;
 import entidad.Sexo;
@@ -42,9 +44,9 @@ public class PersonaDaoImpl implements PersonaDao {
 			statement.setString(2, persona.getNombre());
 			statement.setString(3, persona.getApellido());
 			statement.setInt(4, persona.getNacionalidad().getIdNacionalidad());
-			statement.setString(5, persona.getDireccion());
+			statement.setString(5, persona.getDirecc().getCalleYNum());
 			statement.setInt(6, persona.getSexo().getIdSexo());
-			statement.setInt(7, persona.getLocalidad().getIdLocalidad());
+			statement.setInt(7, persona.getDirecc().getLoc().getIdLocalidad());
 			statement.setString(8, persona.getEmail());
 			statement.setString(9, persona.getTelefono());
 			statement.setDate(10, persona.getFecha_nacimiento());
@@ -94,19 +96,22 @@ public class PersonaDaoImpl implements PersonaDao {
 				SexoDao daoSexo = new SexoDaoImpl();
 				Sexo sexo = new Sexo();
 				sexo = daoSexo.ObtenerObjeto(resultSet.getInt("IDSexo"));
+								
+				Direccion direc = new Direccion();
+				direc.setCalleYNum(resultSet.getString("Direccion"));
 				
 				LocalidadDao daoLocalidad = new LocalidadDaoImpl();
 				Localidad localidad = new Localidad();
 				localidad = daoLocalidad.ObtenerObjeto(resultSet.getInt("IDLocalidad"));
-								
+				direc.setLoc(localidad);
+				
 				Persona temporal = new Persona(
 						resultSet.getInt("DNI"), 
 						resultSet.getString("Nombre"),
 						resultSet.getString("Apellido"),
 						pais,
-						resultSet.getString("Direccion"),
+						direc,
 						sexo,
-						localidad,
 						resultSet.getString("Email"),
 						resultSet.getString("Telefono"),
 						resultSet.getDate("Fecha_nacimiento")						
@@ -151,18 +156,21 @@ public class PersonaDaoImpl implements PersonaDao {
 				Sexo sexo = new Sexo();
 				sexo = daoSexo.ObtenerObjeto(resultSet.getInt("IDSexo"));
 				
+				Direccion direc = new Direccion();
+				direc.setCalleYNum(resultSet.getString("Direccion"));
+				
 				LocalidadDao daoLocalidad = new LocalidadDaoImpl();
 				Localidad localidad = new Localidad();
 				localidad = daoLocalidad.ObtenerObjeto(resultSet.getInt("IDLocalidad"));
+				direc.setLoc(localidad);
 								
 				result = new Persona(
 						resultSet.getInt("DNI"), 
 						resultSet.getString("Nombre"),
 						resultSet.getString("Apellido"),
 						pais,
-						resultSet.getString("Direccion"),
+						direc,
 						sexo,
-						localidad,
 						resultSet.getString("Email"),
 						resultSet.getString("Telefono"),
 						resultSet.getDate("Fecha_nacimiento")						
@@ -232,9 +240,9 @@ public class PersonaDaoImpl implements PersonaDao {
 			statement.setString(1, persona.getNombre());
 			statement.setString(2, persona.getApellido());
 			statement.setInt(3, persona.getNacionalidad().getIdNacionalidad());
-			statement.setString(4, persona.getDireccion());
+			statement.setString(4, persona.getDirecc().getCalleYNum());
 			statement.setInt(5, persona.getSexo().getIdSexo());
-			statement.setInt(6, persona.getLocalidad().getIdLocalidad());
+			statement.setInt(6, persona.getDirecc().getLoc().getIdLocalidad());
 			statement.setString(7, persona.getEmail());
 			statement.setString(8, persona.getTelefono());
 			statement.setDate(9, persona.getFecha_nacimiento());

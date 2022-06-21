@@ -8,27 +8,22 @@ public class Persona {
 	private String nombre;
 	private String apellido;
 	private Pais nacionalidad;
-	private String direccion;
 	private Sexo sexo;
-	private Localidad localidad;
 	private String email;
 	private String telefono;
 	private Date fecha_nacimiento;
-	
 	private Direccion Direcc;
 	
 	public Persona() {}
 
-	public Persona(int dni, String nombre, String apellido, Pais nacionalidad, String direccion, Sexo sexo,
-			Localidad localidad, String email, String telefono, Date fecha_nacimiento) {
-		super();
+	public Persona(int dni, String nombre, String apellido, Pais nacionalidad, Direccion direccion, Sexo sexo,
+			String email, String telefono, Date fecha_nacimiento) {
 		this.dni = dni;
 		this.nombre = nombre;
 		this.apellido = apellido;
 		this.nacionalidad = nacionalidad;
-		this.direccion = direccion;
+		this.Direcc = direccion;
 		this.sexo = sexo;
-		this.localidad = localidad;
 		this.email = email;
 		this.telefono = telefono;
 		this.fecha_nacimiento = fecha_nacimiento;
@@ -58,28 +53,12 @@ public class Persona {
 		this.nacionalidad = nacionalidad;
 	}
 
-	public String getDireccion() {
-		return direccion;
-	}
-
-	public void setDireccion(String direccion) {
-		this.direccion = direccion;
-	}
-
 	public Sexo getSexo() {
 		return sexo;
 	}
 
 	public void setSexo(Sexo sexo) {
 		this.sexo = sexo;
-	}
-
-	public Localidad getLocalidad() {
-		return localidad;
-	}
-
-	public void setLocalidad(Localidad localidad) {
-		this.localidad = localidad;
 	}
 
 	public String getEmail() {
