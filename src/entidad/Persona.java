@@ -1,93 +1,127 @@
 package entidad;
 
-import java.time.LocalDate;
+import java.sql.Date;
 
 public class Persona {
 
-//Atributos
-
-	//Simples
-	private String Nombre;
-	private String Apellido;
-	private String Nacionalidad;
-	private String Email;
-	private String Telefono;
-	private LocalDate FNac;
-
-	//Objetos
-	private Sexo Sex;
+	private int dni;
+	private String nombre;
+	private String apellido;
+	private Pais nacionalidad;
+	private String direccion;
+	private Sexo sexo;
+	private Localidad localidad;
+	private String email;
+	private String telefono;
+	private Date fecha_nacimiento;
+	
 	private Direccion Direcc;
 	
-	
-	//Métodos
+	public Persona() {}
+
+	public Persona(int dni, String nombre, String apellido, Pais nacionalidad, String direccion, Sexo sexo,
+			Localidad localidad, String email, String telefono, Date fecha_nacimiento) {
+		super();
+		this.dni = dni;
+		this.nombre = nombre;
+		this.apellido = apellido;
+		this.nacionalidad = nacionalidad;
+		this.direccion = direccion;
+		this.sexo = sexo;
+		this.localidad = localidad;
+		this.email = email;
+		this.telefono = telefono;
+		this.fecha_nacimiento = fecha_nacimiento;
+	}
+
 	public String getNombre() {
-		return Nombre;
+		return nombre;
 	}
+
 	public void setNombre(String nombre) {
-		Nombre = nombre;
+		this.nombre = nombre;
 	}
+
 	public String getApellido() {
-		return Apellido;
+		return apellido;
 	}
+
 	public void setApellido(String apellido) {
-		Apellido = apellido;
+		this.apellido = apellido;
 	}
-	public String getNacionalidad() {
-		return Nacionalidad;
+
+	public Pais getNacionalidad() {
+		return nacionalidad;
 	}
-	public void setNacionalidad(String nacionalidad) {
-		Nacionalidad = nacionalidad;
+
+	public void setNacionalidad(Pais nacionalidad) {
+		this.nacionalidad = nacionalidad;
 	}
+
+	public String getDireccion() {
+		return direccion;
+	}
+
+	public void setDireccion(String direccion) {
+		this.direccion = direccion;
+	}
+
+	public Sexo getSexo() {
+		return sexo;
+	}
+
+	public void setSexo(Sexo sexo) {
+		this.sexo = sexo;
+	}
+
+	public Localidad getLocalidad() {
+		return localidad;
+	}
+
+	public void setLocalidad(Localidad localidad) {
+		this.localidad = localidad;
+	}
+
 	public String getEmail() {
-		return Email;
+		return email;
 	}
+
 	public void setEmail(String email) {
-		Email = email;
+		this.email = email;
 	}
+
 	public String getTelefono() {
-		return Telefono;
+		return telefono;
 	}
+
 	public void setTelefono(String telefono) {
-		Telefono = telefono;
+		this.telefono = telefono;
 	}
-	public LocalDate getFNac() {
-		return FNac;
+
+	public Date getFecha_nacimiento() {
+		return fecha_nacimiento;
 	}
-	public void setFNac(LocalDate fNac) {
-		FNac = fNac;
+
+	public void setFecha_nacimiento(Date fecha_nacimiento) {
+		this.fecha_nacimiento = fecha_nacimiento;
 	}
-	public Sexo getSex() {
-		return Sex;
+
+	public int getDni() {
+		return dni;
 	}
-	public void setSex(Sexo sex) {
-		Sex = sex;
+
+	public void setDni(int dni) {
+		this.dni = dni;
 	}
+	
 	public Direccion getDirecc() {
 		return Direcc;
 	}
+
 	public void setDirecc(Direccion direcc) {
 		Direcc = direcc;
 	}
-	
-	@Override
-	public String toString() {
-		return "Persona [Nombre=" + Nombre + ", Apellido=" + Apellido + ", Nacionalidad=" + Nacionalidad + ", Email="
-				+ Email + ", Telefono=" + Telefono + ", FNac=" + FNac + ", Sex=" + Sex + ", Direcc=" + Direcc + "]";
-	}
 
-	//Constructores
-	public Persona(String nombre, String apellido, String nacionalidad, String email, String telefono, LocalDate fNac,
-			Sexo sex, Direccion direcc) {
-		super();
-		Nombre = nombre;
-		Apellido = apellido;
-		Nacionalidad = nacionalidad;
-		Email = email;
-		Telefono = telefono;
-		FNac = fNac;
-		Sex = sex;
-		Direcc = direcc;
-	}
 	
-	public Persona() {}
+	
 }

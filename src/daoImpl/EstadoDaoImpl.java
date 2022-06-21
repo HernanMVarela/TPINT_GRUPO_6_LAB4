@@ -4,24 +4,19 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 
-import dao.UsuarioDao;
-import dao.ProvinciaDao;
-import dao.TipoDao;
-import entidad.Usuario;
-import entidad.Provincia;
-import entidad.Tipo;
+import dao.EstadoDao;
+import entidad.Estado;
 
-public class UsuarioDaoImpl implements UsuarioDao {
-
-	private String listarTodo = "SELECT * FROM bdtp_integrador.Usuarios";
-	private String obtenerObjeto = "SELECT * FROM bdtp_integrador.Usuarios WHERE IDUsuario = ?";
-	private String eliminar = "DELETE FROM bdtp_integrador.Usuarios WHERE IDUsuario = ?";
-	private String modificar = "UPDATE bdtp_integrador.Usuarios SET User = ?, Password = ?, IDTipo = ? WHERE IDUsuario = ?";
-	private String agregar = "INSERT INTO bdtp_integrador.Usuarios (User, Password, IDTipo) VALUES (?,?,?)";
-	private Tipo tipo;
-	private TipoDao tipoDao;
+public class EstadoDaoImpl implements EstadoDao {
 	
-	public boolean Agregar(Usuario usuario) {
+	private String listarTodo = "SELECT * FROM bdtp_integrador.Estados";
+	private String obtenerObjeto = "SELECT * FROM bdtp_integrador.Estados WHERE IDEstado = ?";
+	private String eliminar = "DELETE FROM bdtp_integrador.Estados WHERE IDEstado = ?";
+	private String modificar = "UPDATE bdtp_integrador.Estados SET Nombre = ? WHERE IDEstado = ?";
+	private String agregar = "INSERT INTO bdtp_integrador.Estados (Nombre) VALUES (?)";
+
+	@Override
+	public boolean Agregar(Estado estado) {
 		
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");
@@ -37,10 +32,7 @@ public class UsuarioDaoImpl implements UsuarioDao {
 		
 		try {
 			statement = conexion.getSQLConexion().prepareStatement(agregar);
-			
-			statement.setString(1, usuario.getUser());
-			statement.setString(2, usuario.getPassword());
-			statement.setInt(3, usuario.getTipo().getIdTipo());
+			statement.setString(1, estado.getNombre());
 			
 			if(statement.executeUpdate() > 0) {
 				conexion.getSQLConexion().commit();
@@ -55,11 +47,10 @@ public class UsuarioDaoImpl implements UsuarioDao {
 			}
 		}
 		return result;
-		
 	}
 
 	@Override
-	public ArrayList<Usuario> ListarTodo() {
+	public ArrayList<Estado> ListarTodo() {
 		
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");
@@ -68,7 +59,7 @@ public class UsuarioDaoImpl implements UsuarioDao {
 			e.printStackTrace();
 			}
 		
-		ArrayList<Usuario> result = new ArrayList<Usuario>();
+		ArrayList<Estado> result = new ArrayList<Estado>();
 		Conexion conexion = Conexion.getConexion();
 		PreparedStatement statement;
 		ResultSet resultSet;
@@ -78,17 +69,10 @@ public class UsuarioDaoImpl implements UsuarioDao {
 			statement = conexion.getSQLConexion().prepareStatement(listarTodo);
 			resultSet = statement.executeQuery();
 			
-			while(resultSet.next()){
-				
-				tipoDao = new TipoDaoImpl();
-				tipo = new Tipo();
-				tipo = tipoDao.ObtenerObjeto(resultSet.getInt("IDTipo"));
-				
-				Usuario temporal = new Usuario(
-						resultSet.getInt("IDUsuario"), 
-						resultSet.getString("User"),
-						resultSet.getString("Password"),
-						tipo
+			while(resultSet.next()){				
+				Estado temporal = new Estado(
+						resultSet.getInt("IDEstado"),
+						resultSet.getString("Nombre")
 						);
 				result.add(temporal);
 			}
@@ -97,11 +81,10 @@ public class UsuarioDaoImpl implements UsuarioDao {
 		}finally{ }		
 		
 		return result;
-		
 	}
 
 	@Override
-	public Usuario ObtenerObjeto(int idUsuario) {
+	public Estado ObtenerObjeto(int idEstado) {
 		
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");
@@ -110,7 +93,7 @@ public class UsuarioDaoImpl implements UsuarioDao {
 			e.printStackTrace();
 			}
 		
-		Usuario result = new Usuario();
+		Estado result = new Estado();
 		Conexion conexion = Conexion.getConexion();
 		PreparedStatement statement;
 		ResultSet resultSet;
@@ -118,19 +101,13 @@ public class UsuarioDaoImpl implements UsuarioDao {
 		try{
 			
 			statement = conexion.getSQLConexion().prepareStatement(obtenerObjeto);
-			statement.setInt(1, idUsuario);
+			statement.setInt(1, idEstado);
 			resultSet = statement.executeQuery();
 			
 			while(resultSet.next()){				
-				tipoDao = new TipoDaoImpl();
-				tipo = new Tipo();
-				tipo = tipoDao.ObtenerObjeto(resultSet.getInt("IDTipo"));
-				
-				result = new Usuario(
-						resultSet.getInt("IDUsuario"), 
-						resultSet.getString("User"),
-						resultSet.getString("Password"),
-						tipo
+				result = new Estado(
+						resultSet.getInt("IDEstado"),
+						resultSet.getString("Nombre")
 						);
 				return result;
 			}
@@ -143,7 +120,7 @@ public class UsuarioDaoImpl implements UsuarioDao {
 	}
 
 	@Override
-	public boolean Eliminar(int idUsuario) {
+	public boolean Eliminar(int idEstado) {
 		
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");
@@ -158,7 +135,7 @@ public class UsuarioDaoImpl implements UsuarioDao {
 		
 		try {
 			statement = conexion.getSQLConexion().prepareStatement(eliminar);
-			statement.setInt(1, idUsuario);
+			statement.setInt(1, idEstado);
 			
 			if(statement.executeUpdate() > 0) {
 				conexion.getSQLConexion().commit();
@@ -177,7 +154,7 @@ public class UsuarioDaoImpl implements UsuarioDao {
 	}
 
 	@Override
-	public boolean Modificar(Usuario usuario) {
+	public boolean Modificar(Estado estado) {
 		
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");
@@ -193,10 +170,8 @@ public class UsuarioDaoImpl implements UsuarioDao {
 		try {
 			statement = conexion.getSQLConexion().prepareStatement(modificar);
 			
-			statement.setString(1, usuario.getUser());
-			statement.setString(2, usuario.getPassword());
-			statement.setInt(3, usuario.getTipo().getIdTipo());
-			statement.setInt(4, usuario.getIdUsuario());
+			statement.setString(1, estado.getNombre());
+			statement.setInt(2, estado.getIdEstado());
 			
 			if(statement.executeUpdate() > 0) {
 				conexion.getSQLConexion().commit();
@@ -212,7 +187,6 @@ public class UsuarioDaoImpl implements UsuarioDao {
 		}
 		
 		return result;
-		
 	}
 
 }

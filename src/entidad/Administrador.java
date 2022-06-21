@@ -1,17 +1,18 @@
 package entidad;
 
-public class Administrador {
+public class Administrador extends Persona {
 	
 	private int idAdmin;
-	private DatoPersonal datoPersonal;
+	private Persona persona;
 	private Usuario usuario;
 	private boolean estado;
 	
 	public Administrador() {}
-	
-	public Administrador(int idAdmin, DatoPersonal datoPersonal, Usuario usuario, boolean estado) {
+
+	public Administrador(int idAdmin, Persona persona, Usuario usuario, boolean estado) {
+		super();
 		this.idAdmin = idAdmin;
-		this.datoPersonal = datoPersonal;
+		this.persona = persona;
 		this.usuario = usuario;
 		this.estado = estado;
 	}
@@ -24,12 +25,12 @@ public class Administrador {
 		this.idAdmin = idAdmin;
 	}
 
-	public DatoPersonal getDatoPersonal() {
-		return datoPersonal;
+	public Persona getPersona() {
+		return persona;
 	}
 
-	public void setDatoPersonal(DatoPersonal datoPersonal) {
-		this.datoPersonal = datoPersonal;
+	public void setPersona(Persona persona) {
+		this.persona = persona;
 	}
 
 	public Usuario getUsuario() {
@@ -50,8 +51,8 @@ public class Administrador {
 
 	@Override
 	public String toString() {
-		return "Administrador [idAdmin=" + idAdmin + ", datoPersonal=" + datoPersonal + ", usuario=" + usuario
-				+ ", estado=" + estado + "]";
+		return "Administrador [idAdmin=" + idAdmin + ", persona=" + persona + ", usuario=" + usuario + ", estado="
+				+ estado + "]";
 	}
-	
+		
 }

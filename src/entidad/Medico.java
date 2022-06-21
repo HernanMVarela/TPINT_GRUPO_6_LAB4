@@ -1,18 +1,19 @@
 package entidad;
 
-public class Medico {
+public class Medico extends Persona {
 
 	private int idMedico;
-	private DatoPersonal datoPersonal;
+	private Persona persona;
 	private Especialidad especialidad;
 	private Usuario usuario;
 	private boolean estado;
 	
 	public Medico() {}
-	
-	public Medico(int idMedico, DatoPersonal datoPersonal, Especialidad especialidad, Usuario usuario, boolean estado) {
+
+	public Medico(int idMedico, Persona persona, Especialidad especialidad, Usuario usuario, boolean estado) {
+		super();
 		this.idMedico = idMedico;
-		this.datoPersonal = datoPersonal;
+		this.persona = persona;
 		this.especialidad = especialidad;
 		this.usuario = usuario;
 		this.estado = estado;
@@ -26,12 +27,12 @@ public class Medico {
 		this.idMedico = idMedico;
 	}
 
-	public DatoPersonal getDatoPersonal() {
-		return datoPersonal;
+	public Persona getPersona() {
+		return persona;
 	}
 
-	public void setDatoPersonal(DatoPersonal datoPersonal) {
-		this.datoPersonal = datoPersonal;
+	public void setPersona(Persona persona) {
+		this.persona = persona;
 	}
 
 	public Especialidad getEspecialidad() {
@@ -60,8 +61,8 @@ public class Medico {
 
 	@Override
 	public String toString() {
-		return "Medico [idMedico=" + idMedico + ", datoPersonal=" + datoPersonal + ", especialidad=" + especialidad
-				+ ", usuario=" + usuario + ", estado=" + estado + "]";
+		return "Medico [idMedico=" + idMedico + ", persona=" + persona + ", especialidad=" + especialidad + ", usuario="
+				+ usuario + ", estado=" + estado + "]";
 	}
 	
 }

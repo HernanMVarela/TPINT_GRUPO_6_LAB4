@@ -1,72 +1,98 @@
 package daoImpl;
 
+import java.sql.Date;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Iterator;
 
+import dao.EspecialidadDao;
+import dao.EstadoDao;
 import dao.LocalidadDao;
 import dao.PaisDao;
+import dao.PersonaDao;
 import dao.ProvinciaDao;
 import dao.SexoDao;
+import dao.TipoDao;
+import dao.UsuarioDao;
+import entidad.Especialidad;
+import entidad.Estado;
 import entidad.Localidad;
 import entidad.Pais;
+import entidad.Persona;
 import entidad.Provincia;
 import entidad.Sexo;
+import entidad.Tipo;
+import entidad.Usuario;
 
 public class PruebaConexionSQL {
 
 	public static void main(String[] args) {
-		Localidad localidad = new Localidad();
-		LocalidadDao daoLocalidad = new LocalidadDaoImpl();
-		Sexo sexo = new Sexo();
-		SexoDao daoSexo = new SexoDaoImpl();
-		ProvinciaDao daoProvincia = new ProvinciaDaoImpl();
-		Provincia provincia = new Provincia();
-		provincia = daoProvincia.ObtenerObjeto(1);
-		localidad.setNombre("Prueba");
-		sexo.setNombre("Prueba");
-		
-		localidad.setProvincia(provincia);
+		Persona persona;
+		PersonaDao personaDao = new PersonaDaoImpl();
+		Especialidad especialidad;
+		EspecialidadDao especialidadDao;
+		Estado estado;
+		EstadoDao estadoDao;
+		Tipo tipo;
+		TipoDao tipoDao;
+		Usuario usuario;
+		UsuarioDao usuarioDao;
 		
 		//AGREGAR
-		if(daoSexo.Agregar(sexo)) {
-			System.out.println("El sexo ha sigo agregado. Sexo: "+sexo.getNombre());
+		
+		//Persona(int dni, String nombre, String apellido, Pais nacionalidad, String direccion, Sexo sexo,
+		//Localidad localidad, String email, String telefono, Date fecha_nacimiento)
+		
+		Pais pais = new Pais();
+		PaisDao paisDao = new PaisDaoImpl();
+		pais = paisDao.ObtenerObjeto(1);
+		
+		Sexo sexo = new Sexo();
+		SexoDao sexoDao = new SexoDaoImpl();
+		sexo = sexoDao.ObtenerObjeto(1);
+		
+		Localidad localidad = new Localidad();
+		LocalidadDao localidadDao = new LocalidadDaoImpl();
+		localidad = localidadDao.ObtenerObjeto(1);
+		
+		Date nacimiento = new java.sql.Date(Calendar.getInstance().getTime().getTime());
+		
+		persona = new Persona(1111, "Prueba Nombre", "Prueba Apellido", pais, "132 rodo", sexo,
+				localidad, "123@456.com", "123 321", nacimiento);
+		
+		if(personaDao.Agregar(persona)) {
+			System.out.println("El persona ha sigo agregado. Persona: "+persona.getNombre());
 	} else {
 			System.out.println("NO PUDO SER AGREGADO");
 			}
 		
-		if(daoLocalidad.Agregar(localidad)) {
-			System.out.println("La localidad ha sigo agregada. Localidad: "+localidad.getNombre());
-	} else {
-			System.out.println("NO PUDO SER AGREGADO");
-			}
+		
 		
 		//MODIFICAR
-				
+		persona = personaDao.ObtenerObjeto(71176348);
+		persona.setNombre("Rosa");
+		if(personaDao.Modificar(persona)) {
+			System.out.println("El persona ha sigo modificado. Persona: "+persona.getNombre());
+	} else {
+			System.out.println("NO PUDO SER AGREGADO");
+			}
+		
+		
 		//LISTAR
-		ArrayList<Sexo> sexos = daoSexo.ListarTodo();
-		Iterator<Sexo> it = sexos.iterator();
+		ArrayList<Persona> personas = personaDao.ListarTodo();
+		Iterator<Persona> it = personas.iterator();
 		
 		while(it.hasNext())
 		{
-			Sexo p = (Sexo) it.next();
-			System.out.println(p.toString());
-		}
-		
-		ArrayList<Localidad> localidades = daoLocalidad.ListarTodo();
-		Iterator<Localidad> it2 = localidades.iterator();
-		
-		while(it2.hasNext())
-		{
-			Localidad p = (Localidad) it2.next();
+			Persona p = (Persona) it.next();
 			System.out.println(p.getNombre());
 		}
-		
+				
 		//OBTENER
-		sexo = daoSexo.ObtenerObjeto(2);
-		System.out.println("Pais con ID 2: "+sexo.getNombre());
+		persona = personaDao.ObtenerObjeto(71176348);
+		System.out.println("Persona con DNI 71176348: "+persona.getNombre());
 		
-		localidad = daoLocalidad.ObtenerObjeto(2);
-		System.out.println("Pais con ID 2: "+localidad.getNombre());	
+			
 		
 	}
 }

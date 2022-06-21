@@ -1,16 +1,17 @@
 package entidad;
 
-public class Paciente {
+public class Paciente extends Persona{
 
 	private int idPaciente;
-	private DatoPersonal datoPersonal;
+	private Persona persona;
 	private boolean estado;
 	
 	public Paciente() {}
 
-	public Paciente(int idPaciente, DatoPersonal datoPersonal, boolean estado) {
+	public Paciente(int idPaciente, Persona persona, boolean estado) {
+		super();
 		this.idPaciente = idPaciente;
-		this.datoPersonal = datoPersonal;
+		this.persona = persona;
 		this.estado = estado;
 	}
 
@@ -22,12 +23,12 @@ public class Paciente {
 		this.idPaciente = idPaciente;
 	}
 
-	public DatoPersonal getDatoPersonal() {
-		return datoPersonal;
+	public Persona getPersona() {
+		return persona;
 	}
 
-	public void setDatoPersonal(DatoPersonal datoPersonal) {
-		this.datoPersonal = datoPersonal;
+	public void setPersona(Persona persona) {
+		this.persona = persona;
 	}
 
 	public boolean isEstado() {
@@ -40,7 +41,7 @@ public class Paciente {
 
 	@Override
 	public String toString() {
-		return "Paciente [idPaciente=" + idPaciente + ", datoPersonal=" + datoPersonal + ", estado=" + estado + "]";
+		return "Paciente [idPaciente=" + idPaciente + ", persona=" + persona + ", estado=" + estado + "]";
 	}
 	
 }
