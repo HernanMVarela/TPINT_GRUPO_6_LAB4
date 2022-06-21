@@ -29,10 +29,10 @@ $(document).ready( function () {
 <jsp:include page="Menu.html"></jsp:include>
 
 <div class="container-fluid">
-<div class="row mh-2 mb-2 justify-content-center p-2">
+<div class="row mx-2 mb-2 justify-content-center p-2">
   	<label class="subtitle w-100">Turnos</label>
 </div>	
-<div class="row mh-2 mb-2 justify-content-center p-2">
+ <div class="row mx-2 d-flex flex-wrap align-middle justify-content-evenly">
  	<div class="col-md-auto table-responsive w-100">
  		<table id="tabla_admins" border=2 class="display table align-middle table-info table-hover th-lg">
  			<thead>
@@ -75,10 +75,10 @@ $(document).ready( function () {
 		</table>
  	</div> 
 </div>
-<div class="row mh-2 mb-2 justify-content-center p-2">
+<div class="row mx-2 mb-2 justify-content-center p-2">
 	<div class="col-md-3 d-flex justify-content-center">
-		<form method="post" action="VerTurno.jsp">	
-		<input type="submit" name="btnVerDetalle" class="btn btn-info p-3 w-75" value="Ver detalle del turno">
+		<form method="post" action="VerTurno.jsp" class="w-75">	
+		<input type="submit" name="btnVerDetalle" class="btn btn-info p-3 w-100" value="Ver detalle del turno">
 		</form>
 	</div>
 	<div class="col-md-3 d-flex justify-content-center">
@@ -88,7 +88,7 @@ $(document).ready( function () {
 	</div>
 	<div class="col-md-3 d-flex justify-content-center">
 		<form method="post" action="NuevoTurno.jsp" class="w-75">
-			<input type="submit" name="btnModificarTurno" class="btn btn-info p-3 w-75" value="Modificar turno">
+			<input type="submit" name="btnModificarTurno" class="btn btn-info p-3 w-100" value="Modificar turno">
 		</form>
 	</div>
 	

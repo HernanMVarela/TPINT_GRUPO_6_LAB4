@@ -66,6 +66,13 @@ body{
     border-radius: 0.25em;
 }
 
+.cuadro_uno {
+    border-radius: 15px;
+    border: 5px solid #000000;
+    background-color: #aaaaaa;
+    height:stretch;
+    min-height: 40px;
+}
 
 .boton{
     font-size: 1.5rem;

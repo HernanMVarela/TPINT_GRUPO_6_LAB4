@@ -24,91 +24,71 @@ $(document).ready( function () {
 </head>
 <body>
 <jsp:include page="Menu.html"></jsp:include>
-  
-  <div class="container-fluid">
-  <div class="row d-flex flex-wrap align-middle justify-content-evenly">
-	  	<div class="col-md-2">
-	  		
+
+<div class="row mx-2 mb-2 justify-content-center w-auto p-2">
+  	<label class="subtitle w-100">Pacientes</label>
+</div>	
+<div class="container-fluid w-auto">
+	
+   <div class="row mx-2 d-flex flex-wrap align-middle justify-content-evenly">
+	  	<div class="col-md-2 border-right">
 	  		<div class="row text-start p-2">
 	  			<label class="p-1">Buscar por nombre</label>
-	  			<input type="text" name="txfBuscar">
+	  			<input type="text" name="txfBuscar" class="w-100">
 	  		</div>
 	  		<div class="row text-start p-2">
-	  			<input type="submit" class="btn btn-info" name="btnAceptar" value="Aceptar">
+	  			<input type="submit" class="btn btn-info w-100" name="btnAceptar" value="Aceptar">
 	  		</div>
 	  	</div>
-	  	<div class="col-md-auto table-responsive w-75">
+	  	<div class="col-md-10 table-responsive w-75">
 	  		<table id="tabla_pacientes" border=2 class="table align-middle table-info table-hover th-lg">
 	  		<thead>
 				<tr class="table-secondary"><th> ID Paciente </th><th> DNI </th><th> Nombre y apellido </th><th> Fecha de nacimiento </th><th> Dirección </th>
-				<th> Localidad </th><th> Nacionalidad </th><th> Email </th><th> Teléfono </th></tr>
+				<th> Localidad </th><th> Nacionalidad </th><th width="5%"> Seleccionar </th></tr>
 			</thead>
 			<tbody>
-				<tr><td> 11000 </td><td> 111111111 </td><td> Julio Rodas </td><td> 01/01/2001 </td><td> Arturo Ilia 5532 </td><td> Ricardo Rojas </td><td> Argentino/a </td><td> algo@dominio.com </td><td> 46234634646 </td></tr>
-				<tr><td> 11001 </td><td> 22222222 </td> <td> Teresa Pérez </td><td> 24/11/1999 </td><td> Roca 5532 </td><td> El Talar </td><td> Argentino/a </td><td> algo@dominio.com </td><td> 46765344646 </td></tr>
-				<tr><td> 11002 </td><td> 33333333 </td> <td> Armando Sandrini </td><td> 07/10/1975  </td><td> Juan M. Rosas 4663 </td><td> Tortuguitas </td><td> Argentino/a </td><td> algo@dominio.com </td><td> 46233525346 </td></tr>
-				<tr><td> 11003 </td><td> 44444444 </td> <td> Laura Ezpeleta </td><td> 18/06/1983 </td><td> Juana Azurduy 5532 </td><td> Grand Bourg </td><td> Argentino/a </td><td> algo@dominio.com </td><td> 4623253546 </td></tr>
+				<tr><td> 11000 </td><td> 111111111 </td><td> Julio Rodas </td><td> 01/01/2001 </td><td> Arturo Ilia 5532 </td><td> Ricardo Rojas </td><td> Argentino/a </td><td align="center"> <input type="radio" name="radSelect" value=""> </td></tr>
+				<tr><td> 11001 </td><td> 22222222 </td> <td> Teresa Pérez </td><td> 24/11/1999 </td><td> Roca 5532 </td><td> El Talar </td><td> Argentino/a </td><td align="center"> <input type="radio" name="radSelect" value=""> </td></tr>
+				<tr><td> 11002 </td><td> 33333333 </td> <td> Armando Sandrini </td><td> 07/10/1975  </td><td> Juan M. Rosas 4663 </td><td> Tortuguitas </td><td> Argentino/a </td><td align="center"> <input type="radio" name="radSelect" value=""> </td></tr>
+				<tr><td> 11003 </td><td> 44444444 </td> <td> Laura Ezpeleta </td><td> 18/06/1983 </td><td> Juana Azurduy 5532 </td><td> Grand Bourg </td><td> Argentino/a </td><td align="center"> <input type="radio" name="radSelect" value=""> </td></tr>
 			</tbody>
 			</table>
 	  	</div> 
   	</div>
-  	
-  	<!-- La parte que sigue abajo es para asignarle un turno a un paciente -->
-  	<div class="row d-flex flex-wrap align-middle justify-content-center py-3 mb-4 border-bottom">
-  		
-  	</div>
-  	
-  	
-  	<div class="row justify-content-center">
-  		<div class="col col-md-3 mh-2">
-  			<div class="row justify-content-center p-2">
-  				<label class="p-1">ID Turno: </label> 
-	  			<label class="p-1">45335</label>
-  			</div>
-  			<div class="row justify-content-center p-2">
-  				<label class="p-1">Paciente</label> 
-	  			<select name="slcSexo">
-	  				<option value="1">Julio Rodas</option>
-	  				<option value="2">Teresa Pérez</option>
-	  				<option value="3">Armando Sandrini</option>
-	  				<option value="4">Laura Ezpeleta</option>
-	  			</select>
-  			</div>
+ 
+  	 <div class="row mx-2 mb-2 justify-content-center p-2 border-bottom">
+  		<div class="col-md-3 d-flex justify-content-center">
+  			<form method="post" action="" class="w-75">
+  			<input type="submit" class="btn btn-info w-100" name="btnAgregar" value="Agregar Paciente">
+  			</form>
   		</div>
-  		
-  		<div class="col col-md-3 mh-2">
-  		  	<div class="row justify-content-center p-2">
-  				<label class="p-1">Fecha</label> 
-	  			<select name="slcEsp">
-	  				<option value="1">Seleccione opción</option>
-	  				<option value="2"> Datetime1</option>
-	  				<option value="3">2</option>
-	  				<option value="4">3</option>
-	  				<option value="5"> 4</option>
-	  			</select>
-  			</div>
-  			<div class="row justify-content-center p-2">
-  				<label class="p-1">Horario de atención</label>
-	  			<p><input type="time" name=inpHoraInc> a <input type="time" name=inpHoraInc></p>
-  			</div>
+  		<div class="col-md-3 d-flex justify-content-center">
+  			<input type="submit" class="btn btn-info w-75" name="btnModificarPaciente" value="Modificar Seleccionado">
   		</div>
-  		
-  		<div class="col col-md-3 mh-2">
-  			<div class="row justify-content-center p-2">
-  				<label class="p-1">Estado</label> 
-	  			<select name="slcEsp">
-	  				<option value="1">Libre</option>
-	  				<option value="2"> Ocupado</option>
-	  				<option value="3">Ausente</option>
-	  				<option value="4">Presente</option>
-	  			</select>
-  			</div>
-  		</div>
-  		
-  		<div class="col-md-4 d-flex justify-content-center">
-  			<input type="submit" class="btn btn-info" name="btnAsignarTurno" value="Asignar a un turno">
+  		<div class="col-md-3 d-flex justify-content-center">
+  			<button type="button" class="btn btn-danger w-75" data-bs-toggle="modal" data-bs-target="#modalEliminarPaciente">Eliminar Seleccionado</button>
   		</div>
   	</div>
-  </div>
+  </div><!-- FIN DE CONTAINER -->
+  
+	<div class="modal fade" id="modalEliminarPaciente" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="exampleModalLabel">Eliminar Paciente</h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+					<p>¿Desea eliminar este paciente?</p>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      				<form method="post" action="">
+      					<input type="submit" name="btnEliminarPaciente" class="btn btn-outline-danger w-100" value="Eliminar">
+      				</form>
+				</div>
+			</div>
+		</div>
+	</div>
 </body>
 </html>

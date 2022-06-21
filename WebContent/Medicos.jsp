@@ -26,15 +26,15 @@ $(document).ready( function () {
 </head>
 <body>
 <jsp:include page="Menu.html"></jsp:include>
-  <div class="row mh-2 mb-2 justify-content-center p-2">
+  <div class="row mx-2 mb-2 justify-content-center p-2">
   		<label class="subtitle w-100">Médico</label>
 	</div>
   <div class="container-fluid">
-  <div class="row mh-2 mb-2 justify-content-center p-2">
-	  	<div class="col-md-2">
+  <div class="row mx-2 d-flex flex-wrap align-middle justify-content-evenly">
+	  	<div class="col-md-2 border-right">
 	  		<div class="row text-start p-2">
 	  			<label class="p-1">Filtra por especialidad</label> 
-	  			<select name="slcFiltoEsp">
+	  			<select name="slcFiltoEsp" class="w-100">
 	  				<option value="1">Seleccione opción</option>
 	  				<option value="2">Especialidad 1</option>
 	  				<option value="3">Especialidad 2</option>
@@ -44,13 +44,13 @@ $(document).ready( function () {
 	  		</div>
 	  		<div class="row text-start p-2">
 	  			<label class="p-1">Buscar por nombre</label>
-	  			<input type="text" name="txfBuscar">
+	  			<input type="text" name="txfBuscar" class="w-100">
 	  		</div>
 	  		<div class="row text-start p-2">
-	  			<input type="submit" class="btn btn-info" name="btnAceptar" value="Aceptar">
+	  			<input type="submit" class="btn btn-info w-100" name="btnAceptar" value="Aceptar">
 	  		</div>
 	  	</div>
-	  	<div class="col-md-auto table-responsive w-75">
+	  	<div class="col-md-10 table-responsive w-75">
 	  		<table id="tabla_medicos" border=2 class="table align-middle table-info table-hover th-lg">
 	  		<thead>
 				<tr class="table-secondary"><th> ID Medico </th><th> Nombre y apellido</th><th> DNI </th> <th> Especialidad </th><th> Estado </th><th width="5%"> Seleccionar </th></tr>
@@ -64,7 +64,7 @@ $(document).ready( function () {
 			</table>
 	  	</div> 
   	</div>
-  	<div class="row mh-2 mb-2 justify-content-center p-2 border-bottom">
+  	<div class="row mx-2 mb-2 justify-content-center p-2 border-bottom">
   		<div class="col-md-3 d-flex justify-content-center">
   			<form method="post" action="NuevoMedico.jsp" class="w-75">
 				<input type="submit" class="btn btn-info w-100" name="btnAgregar" value="Agregar">
