@@ -1,5 +1,6 @@
 <%@page import="servlets.servletNuevoUsuario"%>
 <%@page import="servlets.servletPanelAdministrador"%>
+<%@page import="servlets.servletMedicos"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -52,7 +53,7 @@
 				<div class="card-body">
 					<h4 class="card-title">Medicos</h4>
 					<p class="card-text">Listado de médicos</p>
-					<form method="post" action="Medicos.jsp" class="p-2 w-100">
+					<form action="servletMedicos" method="get" class="p-2 w-100">
 						<input type="submit" class="btn btn-primary w-100" value="Listado">
 					</form>
 					<form method="post" action="NuevoMedico.jsp" class="p-2 w-100">
