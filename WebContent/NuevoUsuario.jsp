@@ -1,3 +1,8 @@
+<%@page import="java.util.List"%>
+<%@page import="java.util.ArrayList"%>
+<%@page import="entidad.Provincia"%>
+<%@page import="servlets.servletNuevoUsuario"%>
+
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -79,10 +84,20 @@
 	  		<label class="p-1">Provincia</label> 
 			<select name="slcEsp" class="w-100">
 				<option value="1">Seleccione opción</option>
-				<option value="2">Provincia 1</option>
-				<option value="3">Provincia 2</option>
-				<option value="4">Provincia 3</option>
-				<option value="5">Provincia 4</option>
+				<%
+				ArrayList<Provincia> listaProvincias = null;
+				if(request.getAttribute("listaProvincias")!=null){
+					listaProvincias = (ArrayList<Provincia>)request.getAttribute("listaProvincias");
+					if(!listaProvincias.isEmpty()){
+						for(Provincia prov : listaProvincias){
+						%>
+						<option value="<%=prov.getIdProv() %>"><%=prov.getNombre() %></option>
+							
+						<%
+						}
+					}
+				}
+				%>
 			</select>
 	  	</div>
 	  	<div class="col col-md-2 mh-2 justify-content-center p-2">

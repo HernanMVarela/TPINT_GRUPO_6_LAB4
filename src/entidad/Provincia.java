@@ -16,8 +16,9 @@ public class Provincia {
 
 	public Provincia() {}
 	
-	public Provincia(int idProv, String nombre) {
+	public Provincia(int idProv, Pais pais, String nombre) {
 		this.idProv = idProv;
+		this.pais = pais;
 		this.nombre = nombre;
 	}
 	public int getIdProv() {

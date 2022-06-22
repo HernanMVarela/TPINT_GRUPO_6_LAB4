@@ -4,7 +4,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 
+import dao.PaisDao;
 import dao.ProvinciaDao;
+import entidad.Pais;
 import entidad.Provincia;
 
 public class ProvinciaDaoImpl implements ProvinciaDao {
@@ -69,9 +71,15 @@ public class ProvinciaDaoImpl implements ProvinciaDao {
 			statement = conexion.getSQLConexion().prepareStatement(listarTodo);
 			resultSet = statement.executeQuery();
 			
-			while(resultSet.next()){				
+			while(resultSet.next()){
+				
+				PaisDao daoPais = new PaisDaoImpl();
+				Pais pais = new Pais();
+				pais = daoPais.ObtenerObjeto(resultSet.getInt("IDPais"));
+				
 				Provincia temporal = new Provincia(
 						resultSet.getInt("IDProvincia"),
+						pais,
 						resultSet.getString("Nombre")
 						);
 				result.add(temporal);
@@ -104,9 +112,15 @@ public class ProvinciaDaoImpl implements ProvinciaDao {
 			statement.setInt(1, idProvincia);
 			resultSet = statement.executeQuery();
 			
-			while(resultSet.next()){				
+			while(resultSet.next()){	
+				
+				PaisDao daoPais = new PaisDaoImpl();
+				Pais pais = new Pais();
+				pais = daoPais.ObtenerObjeto(resultSet.getInt("IDPais"));
+				
 				result = new Provincia(
 						resultSet.getInt("IDProvincia"),
+						pais,
 						resultSet.getString("Nombre")
 						);
 				return result;

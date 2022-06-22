@@ -10,9 +10,9 @@ import entidad.Pais;
 public class PaisDaoImpl implements PaisDao {
 
 	private String listarTodo = "SELECT * FROM bdtp_integrador.paises";
-	private String obtenerObjeto = "SELECT * FROM bdtp_integrador.paises WHERE IDNacionalidad = ?";
-	private String eliminar = "DELETE FROM bdtp_integrador.paises WHERE IDNacionalidad = ?";
-	private String modificar = "UPDATE bdtp_integrador.paises SET ISO = ?, Nombre = ? WHERE IDNacionalidad = ?";
+	private String obtenerObjeto = "SELECT * FROM bdtp_integrador.paises WHERE IDPais = ?";
+	private String eliminar = "DELETE FROM bdtp_integrador.paises WHERE IDPais = ?";
+	private String modificar = "UPDATE bdtp_integrador.paises SET ISO = ?, Nombre = ? WHERE IDPais = ?";
 	private String agregar = "INSERT INTO bdtp_integrador.paises (ISO, Nombre) VALUES (?,?)";
 	
 	@Override
@@ -73,7 +73,7 @@ public class PaisDaoImpl implements PaisDao {
 			
 			while(resultSet.next()){				
 				Pais temporal = new Pais(
-						resultSet.getInt("IDNacionalidad"), 
+						resultSet.getInt("IDPais"), 
 						resultSet.getString("ISO"), 
 						resultSet.getString("Nombre")
 						);
@@ -110,7 +110,7 @@ public class PaisDaoImpl implements PaisDao {
 			
 			while(resultSet.next()){				
 				result = new Pais(
-						resultSet.getInt("IDNacionalidad"), 
+						resultSet.getInt("IDPais"), 
 						resultSet.getString("ISO"), 
 						resultSet.getString("Nombre")
 						);

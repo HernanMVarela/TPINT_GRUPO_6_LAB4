@@ -1,3 +1,5 @@
+<%@page import="servlets.servletNuevoUsuario"%>
+
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -81,8 +83,8 @@ $(document).ready( function () {
   <!-- TERMINA CUADRO -->
    	<div class="row mx-2 mb-2 justify-content-center p-2 border-bottom">
   		<div class="col-md-4 d-flex justify-content-center">
-  			<form method="post" action="NuevoUsuario.jsp" class="w-75">
-  			<input type="submit" class="btn btn-info w-100" name="btnAgregar" value="Agregar">
+  			<form action="servletNuevoUsuario" method="get" class="w-75">
+  				<input type="submit" class="btn btn-info w-100" name="btnAgregar" value="Agregar">
   			</form>
   		</div>
   		<div class="col-md-4 d-flex justify-content-center">
