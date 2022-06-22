@@ -5,9 +5,12 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 
 import dao.AdministradorDao;
+import dao.PaisDao;
 import dao.ProvinciaDao;
 import dao.TipoDao;
+import dao.UsuarioDao;
 import entidad.Administrador;
+import entidad.Pais;
 import entidad.Provincia;
 import entidad.Tipo;
 import entidad.Usuario;
@@ -17,11 +20,11 @@ public class AdministradorDaoImpl implements AdministradorDao {
 	private String modificar = "UPDATE bdtp_integrador.Administradores SET DNI = ?, IDUsuario = ?, Estado = ? WHERE idAdmin = ?";
 	private String eliminar = "DELETE FROM bdtp_integrador.Administradores WHERE idAdmin = ?";
 	private String obtenerObjeto = "select a.idAdmin, a.dni, a.estado, a.idUsuario, u.user, u.password, u.idTipo, t.nombre tipoNombre from administradores a left join usuarios u on a.idUsuario = u.idUsuario left join tipos t on u.idTipo = t.idTipo where a.idAdmin = ?";
-	private String listarTodo = "select a.idAdmin, a.dni, a.estado, a.idUsuario, u.user, u.password, u.idTipo, t.nombre tipoNombre from administradores a left join usuarios u on a.idUsuario = u.idUsuario left join tipos t on u.idTipo = t.idTipo"
+	private String listarTodo = "select a.idAdmin, a.dni, a.estado, a.idUsuario, u.user, u.password, u.idTipo, t.nombre tipoNombre, p.nombre, p.apellido from administradores a left join usuarios u on a.idUsuario = u.idUsuario left join tipos t on u.idTipo = t.idTipo inner join personas p on p.dni = a.dni";
 
-	private Tipo tipo;
 	private Usuario usuario;
-
+	private Administrador admin;
+	
 	public boolean Agregar(Administrador administrador) {
 
 		try {
@@ -39,8 +42,8 @@ public class AdministradorDaoImpl implements AdministradorDao {
 		try {
 			statement = conexion.getSQLConexion().prepareStatement(agregar);
 
-			statement.setString(1, administrador.getDni());
-			statement.setString(2, administrador.getUsuario.getIdUsuario());
+			statement.setInt(1, administrador.getDni());
+			statement.setInt(2, administrador.getUsuario().getIdUsuario());
 			statement.setInt(3, administrador.isEstado() ? 1 : 0);
 
 			if(statement.executeUpdate() > 0) {
@@ -76,8 +79,8 @@ public class AdministradorDaoImpl implements AdministradorDao {
 		try {
 			statement = conexion.getSQLConexion().prepareStatement(modificar);
 
-			statement.setString(1, administrador.getDni());
-			statement.setString(2, administrador.getUsuario().getIdUsuario());
+			statement.setInt(1, administrador.getDni());
+			statement.setInt(2, administrador.getUsuario().getIdUsuario());
 			statement.setInt(3, administrador.isEstado() ? 1 : 0);
 			statement.setInt(4, administrador.getIdAdmin());
 
@@ -154,21 +157,16 @@ public class AdministradorDaoImpl implements AdministradorDao {
 			resultSet = statement.executeQuery();
 
 			while(resultSet.next()){
-				tipo = new Tipo();
-
-                tipo.setIdTipo(resultSet.getInt("idTipo"));
-                tipo.setNombre(resultSet.getString("tipoNombre"));
-
-                usuario = new Usuario();
                 
-                usuario.setIdUsuario("idUsuario");
-                usuario.setUser("user");
-                usuario.setPassword("password");
-                usuario.setTipo(tipo);
+				UsuarioDao daoUser = new UsuarioDaoImpl();
+				usuario = new Usuario();
+				usuario = daoUser.ObtenerObjeto(resultSet.getInt("idUsuario"));
+                
+            	result = new Administrador();
 
-				result = new Administrador();
-
-                result.setIdAdmin(resultSet.getId("idAdmin"));
+                result.setIdAdmin(resultSet.getInt("idAdmin"));
+                result.setNombre(resultSet.getString("Nombre"));
+                result.setApellido(resultSet.getString("Apellido"));
                 result.setUsuario(usuario);
                 result.setEstado(resultSet.getInt("estado") == 1 ? true : false);
 
@@ -203,25 +201,20 @@ public class AdministradorDaoImpl implements AdministradorDao {
 			resultSet = statement.executeQuery();
 
 			while(resultSet.next()){
-				tipo = new Tipo();
+				
+                UsuarioDao daoUser = new UsuarioDaoImpl();
+				usuario = new Usuario();
+				usuario = daoUser.ObtenerObjeto(resultSet.getInt("idUsuario"));
 
-                tipo.setIdTipo(temporalSet.getInt("idTipo"));
-                tipo.setNombre(temporalSet.getString("tipoNombre"));
+				admin = new Administrador();
 
-                usuario = new Usuario();
-                
-                usuario.setIdUsuario("idUsuario");
-                usuario.setUser("user");
-                usuario.setPassword("password");
-                usuario.setTipo(tipo);
+				admin.setIdAdmin(resultSet.getInt("idAdmin"));
+				admin.setNombre(resultSet.getString("Nombre"));
+				admin.setApellido(resultSet.getString("Apellido"));
+				admin.setUsuario(usuario);
+				admin.setEstado(resultSet.getInt("Estado") == 1 ? true : false);
 
-				temporal = new Administrador();
-
-                temporal.setIdAdmin(temporalSet.getId("idAdmin"));
-                temporal.setUsuario(usuario);
-                temporal.setEstado(temporalSet.getInt("estado") == 1 ? true : false);
-
-				result.add(temporal);
+				result.add(admin);
 			}
 		}catch(Exception e){
 			e.printStackTrace();

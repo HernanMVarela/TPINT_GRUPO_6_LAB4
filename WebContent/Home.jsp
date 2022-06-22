@@ -1,5 +1,6 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1"%>
+<%@page import="servlets.servletNuevoUsuario"%>
+<%@page import="servlets.servletPanelAdministrador"%>
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -65,10 +66,10 @@
 				<div class="card-body">
 					<h4 class="card-title">Administración</h4>
 					<p class="card-text">Panel de administración del sitio.</p>
-					<form method="post" action="PanelAdministrador.jsp" class="p-2 w-100">
+					<form  action="servletPanelAdministrador" method="get" class="p-2 w-100">
 						<input type="submit" class="btn btn-primary w-100" value="Administración">
 					</form>
-					<form method="post" action="NuevoUsuario.jsp" class="p-2 w-100">
+					<form action="servletNuevoUsuario" method="get" class="p-2 w-100">
 						<input type="submit" class="btn btn-primary w-100" value="Nuevo usuario">
 					</form>
 				</div>

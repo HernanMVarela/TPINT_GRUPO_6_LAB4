@@ -1,6 +1,9 @@
 <%@page import="java.util.List"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="entidad.Provincia"%>
+<%@page import="entidad.Localidad"%>
+<%@page import="entidad.Sexo"%>
+<%@page import="entidad.Tipo"%>
 <%@page import="servlets.servletNuevoUsuario"%>
 
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
@@ -19,6 +22,11 @@
 <title>Nuevo usuario</title>
 </head>
 <body>
+<%!ArrayList<Provincia> listaProvincias = null;%>
+<%!ArrayList<Localidad> listaLocalidades = null;%>
+<%!ArrayList<Sexo> listasexos = null;%>
+<%!ArrayList<Tipo> listaTipos = null;%>
+
 <jsp:include page="Menu.html"></jsp:include>
 
 <div class="row mh-2 mb-2 justify-content-center p-2">
@@ -65,9 +73,20 @@
 	  	<div class="col col-md-3 mh-2 justify-content-center p-2">
 		  	<label class="p-1">Sexo</label> 
 			<select name="slcSexo" class="w-100">
-				<option value="1">Seleccione opción</option>
-				<option value="2">Masculino</option>
-				<option value="3">Femenino</option>
+				<option value="0">Seleccione opción</option>
+				<%
+				if(request.getAttribute("listasexos")!=null){
+					listasexos = (ArrayList<Sexo>)request.getAttribute("listasexos");
+					if(!listasexos.isEmpty()){
+						for(Sexo sex : listasexos){
+						%>
+						<option value="<%=sex.getIdSexo() %>"><%=sex.getNombre() %></option>
+							
+						<%
+						}
+					}
+				}
+				%>
 			</select>
 	    </div>
 	     <div class="col col-md-3 mh-2 justify-content-center p-2">
@@ -82,10 +101,9 @@
 	  <div class="row justify-content-center">
 	  	<div class="col col-md-2 mh-2 justify-content-center p-2">
 	  		<label class="p-1">Provincia</label> 
-			<select name="slcEsp" class="w-100">
-				<option value="1">Seleccione opción</option>
+			<select name="slcProv" id="slcProv" class="w-100">
+				<option value="0">Seleccione opción</option>
 				<%
-				ArrayList<Provincia> listaProvincias = null;
 				if(request.getAttribute("listaProvincias")!=null){
 					listaProvincias = (ArrayList<Provincia>)request.getAttribute("listaProvincias");
 					if(!listaProvincias.isEmpty()){
@@ -102,12 +120,20 @@
 	  	</div>
 	  	<div class="col col-md-2 mh-2 justify-content-center p-2">
 	  		<label class="p-1">Localidad</label> 
-			<select name="slcEsp" class="w-100">
-				<option value="1">Seleccione opción</option>
-				<option value="2">Localidad 1</option>
-				<option value="3">Localidad 2</option>
-				<option value="4">Localidad 3</option>
-				<option value="5">Localidad 4</option>
+			<select name="slcLoc" id="slcLoc" class="w-100">
+				<option value="0">Seleccione opción</option>
+				<%
+				if(request.getAttribute("listaLocalidades")!=null){
+					listaLocalidades = (ArrayList<Localidad>)request.getAttribute("listaLocalidades");
+					if(!listaLocalidades.isEmpty()){
+						for(Localidad loc : listaLocalidades){
+							%>
+							<option value="<%=loc.getIdLocalidad() %>"><%=loc.getNombre() %></option>	
+							<%
+						}
+					}
+				}
+				%>
 			</select>
 	  	</div>
 	  	<div class="col col-md-2 mh-2 justify-content-center p-2">
@@ -117,9 +143,19 @@
 	  	<div class="col col-md-3 mh-2 justify-content-center p-2">
 	  		<label class="p-1">Tipo de usuario</label> 
 			<select name="slcEsp" class="w-100">
-				<option value="1">Seleccione opción</option>
-				<option value="2">Médico</option>
-				<option value="3">Administrador</option>
+				<option value="0">Seleccione opción</option>
+				<%
+				if(request.getAttribute("listaTipos")!=null){
+					listaTipos = (ArrayList<Tipo>)request.getAttribute("listaTipos");
+					if(!listaTipos.isEmpty()){
+						for(Tipo tip : listaTipos){
+							%>
+							<option value="<%=tip.getIdTipo() %>"><%=tip.getNombre() %></option>	
+							<%
+						}
+					}
+				}
+				%>
 			</select>
 	  	</div>
 	  </div>
@@ -133,9 +169,9 @@
 	  	<div class="col col-md-3 mh-2 justify-content-center p-2">
 	  	  	<label class="p-1">Estado de cuenta</label> 
 			<select name="slcEsp" class="w-100">
-				<option value="1">Seleccione opción</option>
-				<option value="2">Activo</option>
-				<option value="3">Inactivo</option>
+				<option value="0">Seleccione opción</option>
+				<option value="1">Activo</option>
+				<option value="2">Inactivo</option>
 			</select>
 	  	</div>
 	  </div>
@@ -146,5 +182,10 @@
 	 	</div>
   </div><!-- FIN DE CONTAINER -->
   
+  
+ 
 </body>
+
+
 </html>
+

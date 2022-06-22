@@ -1,4 +1,11 @@
 <%@page import="servlets.servletNuevoUsuario"%>
+<%@page import="servlets.servletPanelAdministrador"%>
+<%@page import="java.util.List"%>
+<%@page import="java.util.ArrayList"%>
+<%@page import="entidad.Administrador"%>
+<%@page import="entidad.Usuario"%>
+<%@page import="entidad.Medico"%>
+<%@page import="entidad.Tipo"%>
 
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
@@ -29,6 +36,9 @@ $(document).ready( function () {
 </head>
 
 <body>
+<%!ArrayList<Administrador> listaadmin = null;%>
+<%!ArrayList<Medico> listamedic = null;%>
+
 <jsp:include page="Menu.html"></jsp:include>
 
 <div class="row mx-2 mb-2 justify-content-center p-2">
@@ -57,25 +67,33 @@ $(document).ready( function () {
 	  	<div class="col-md-10 table-responsive w-75">
 	  		<table id="tabla_admins" border=2 class="display table align-middle table-info table-hover th-lg">
 	  			<thead>
-				<tr class="table-secondary"><th> ID Usuario </th><th> Nombre y apellido</th><th> DNI </th> <th> Tipo Usuario </th><th> Estado </th><th width="5%"> Seleccionar </th></tr>
+				<tr class="table-secondary"><th> ID Usuario </th><th> Nombre y apellido</th><th> Usuario </th> <th> Tipo Usuario </th><th> Estado </th><th width="5%"> Seleccionar </th></tr>
 				</thead>
 				<tbody>
-				<tr><td> 1000 </td><td> Christian Sepulveda </td><td> 111111111 </td><td> Administrador </td><td> Activo </td><td align="center"> <input type="radio" name="radSelect" value=""> </td></tr>
-				<tr><td> 1001 </td><td> Emanuel Barreto </td> <td> 22222222 </td><td> Médico </td><td class="table-danger"> Inactivo </td><td align="center"> <input type="radio" name="radSelect" value=""> </td></tr>
-				<tr><td> 1002 </td><td> Hernán Varela </td> <td> 33333333 </td><td> Médico </td><td> Activo </td><td align="center"> <input type="radio" name="radSelect" value=""> </td></tr>
-				<tr><td> 1003 </td><td> Bruno Molteni </td> <td> 44444444 </td><td> Administrador </td><td> Activo </td><td align="center"> <input type="radio" name="radSelect" value=""> </td></tr>
-				<tr><td> 1004 </td><td> Crescencia Bello </td><td> 55555555 </td><td> Administrador </td><td> Activo </td><td align="center"> <input type="radio" name="radSelect" value=""> </td></tr>
-				<tr><td> 1005 </td><td> Celeste Sosa </td> <td> 66666666 </td><td> Médico </td><td class="table-danger"> Inactivo </td><td align="center"> <input type="radio" name="radSelect" value=""> </td></tr>
-				<tr><td> 1006 </td><td> Gloria Gaspar </td> <td> 77777777 </td><td> Médico </td><td> Activo </td><td align="center"> <input type="radio" name="radSelect" value=""> </td></tr>
-				<tr><td> 1007 </td><td> María Velásquez </td> <td> 88888888 </td><td> Administrador </td><td> Activo </td><td align="center"> <input type="radio" name="radSelect" value=""> </td></tr>
-				<tr><td> 1008 </td><td> Tulio Jiménez </td><td> 99999999 </td><td> Administrador </td><td> Activo </td><td align="center"> <input type="radio" name="radSelect" value=""> </td></tr>
-				<tr><td> 1009 </td><td> Fidel Valencia </td> <td> 10101010 </td><td> Médico </td><td class="table-danger"> Inactivo </td><td align="center"> <input type="radio" name="radSelect" value=""> </td></tr>
-				<tr><td> 1010 </td><td> Ada Antonio </td> <td> 11000000 </td><td> Médico </td><td> Activo </td><td align="center"> <input type="radio" name="radSelect" value=""> </td></tr>
-				<tr><td> 1011 </td><td> Isaura Varela </td> <td> 12000000 </td><td> Administrador </td><td> Activo </td><td align="center"> <input type="radio" name="radSelect" value=""> </td></tr>
-				<tr><td> 1012 </td><td> Covadonga Zambrano </td><td> 13000000 </td><td> Administrador </td><td> Activo </td><td align="center"> <input type="radio" name="radSelect" value=""> </td></tr>
-				<tr><td> 1013 </td><td> Marisol Valencia </td> <td> 14000000 </td><td> Médico </td><td class="table-danger"> Inactivo </td><td align="center"> <input type="radio" name="radSelect" value=""> </td></tr>
-				<tr><td> 1014 </td><td> Patrocinio Quijada </td> <td> 15000000 </td><td> Médico </td><td> Activo </td><td align="center"> <input type="radio" name="radSelect" value=""> </td></tr>
-				<tr><td> 1015 </td><td> Gloria Rey </td> <td> 16000000 </td><td> Administrador </td><td> Activo </td><td align="center"> <input type="radio" name="radSelect" value=""> </td></tr>
+				<%
+				if(request.getAttribute("listaadmin")!=null){
+					listaadmin = (ArrayList<Administrador>)request.getAttribute("listaadmin");
+					if(!listaadmin.isEmpty()){
+						for(Administrador admin : listaadmin){
+						%>
+						<tr><td> <%=admin.getUsuario().getIdUsuario() %> </td><td> <%=admin.getNombre() +" "+ admin.getApellido()%> </td>
+						<td> <%=admin.getUsuario().getUser() %> </td><td> <%=admin.getUsuario().getTipo().getNombre() %> </td><td> <%=admin.isEstado() %> </td><td align="center"> <input type="radio" name="radSelect" value=""> </td></tr>
+						<%
+						}
+					}
+				}
+				if(request.getAttribute("listamedic")!=null){
+					listamedic = (ArrayList<Medico>)request.getAttribute("listamedic");
+					if(!listamedic.isEmpty()){
+						for(Medico medic : listamedic){
+						%>
+						<tr><td> <%=medic.getUsuario().getIdUsuario() %> </td><td> <%=medic.getNombre() +" "+ medic.getApellido()%> </td>
+						<td> <%=medic.getUsuario().getUser() %> </td><td> <%=medic.getUsuario().getTipo().getNombre() %> </td><td> <%=medic.isEstado() %> </td><td align="center"> <input type="radio" name="radSelect" value=""> </td></tr>
+						<%
+						}
+					}
+				}
+				%>
 				</tbody>
 			</table>
 	  	</div> 
