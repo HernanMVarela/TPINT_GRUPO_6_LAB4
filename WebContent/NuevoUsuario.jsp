@@ -2,6 +2,7 @@
 <%@page import="java.util.ArrayList"%>
 <%@page import="entidad.Provincia"%>
 <%@page import="entidad.Localidad"%>
+<%@page import="entidad.Pais"%>
 <%@page import="entidad.Sexo"%>
 <%@page import="entidad.Tipo"%>
 <%@page import="servlets.servletNuevoUsuario"%>
@@ -26,6 +27,7 @@
 <%!ArrayList<Localidad> listaLocalidades = null;%>
 <%!ArrayList<Sexo> listasexos = null;%>
 <%!ArrayList<Tipo> listaTipos = null;%>
+<%!ArrayList<Pais> listapaises = null;%>
 
 <jsp:include page="Menu.html"></jsp:include>
 
@@ -33,6 +35,7 @@
   		<label class="subtitle w-100">Nuevo Usuario</label>
 </div>
 <div class="container-fluid">
+	<form action="servletNuevoUsuario" method="get" ><!-- REEMPLAZAR POR INPUT CON RUTA A SERVLET -->
 	<div class="row justify-content-center">
 	  	<div class="col col-md-6 mh-2 justify-content-center p-2">
 	  		<label class="subtitle w-100">Datos personales</label>
@@ -44,35 +47,49 @@
 	  <div class="row justify-content-center">
 	  	<div class="col col-md-3 mh-2 justify-content-center p-2">
 	  		<label class="p-1">Nombre</label>
-		  	<input type="text" name="txfNombre" class="w-100">
+		  	<input type="text" name="txfNombrePersona" class="w-100" required>
 	  	</div>
 	  	<div class="col col-md-3 mh-2 justify-content-center p-2">
 	  		<label class="p-1">Apellido</label>
-		  	<input type="text" name="txfApellido" class="w-100">
+		  	<input type="text" name="txfApellidoPersona" class="w-100" required>
 	  	</div>
 	  	<div class="col col-md-3 mh-2 justify-content-center p-2">
 	  		<label class="p-1">Nombre de usuario</label>
-		  	<input type="text" name="txfUsername" class="w-100">
+		  	<input type="text" name="txfUsername" class="w-100" required>
 	  	</div>
 	  </div>
 	  <div class="row justify-content-center">
 	  	<div class="col col-md-3 mh-2 justify-content-center p-2">
 	  		<label class="p-1">Documento</label>
-		  	<input type="number" name="txfDocumento" class="w-100">
+		  	<input type="number" name="txfDocumentoPersona" class="w-100" required>
 	  	</div>
 	  	<div class="col col-md-3 mh-2 justify-content-center p-2">
 	  		<label class="p-1">Nacionalidad</label>
-		  	<input type="text" name="txfNacionalidad" class="w-100">
+		  	<select name="slcPaisPersona" class="w-100" required>
+				<option value="0">Seleccione opción</option>
+				<%
+				if(request.getAttribute("listaPaises")!=null){
+					listapaises = (ArrayList<Pais>)request.getAttribute("listaPaises");
+					if(!listapaises.isEmpty()){
+						for(Pais pa : listapaises){
+						%>
+						<option value="<%=pa.getIdNacionalidad()%>"><%=pa.getNombre() %></option>
+						<%
+						}
+					}
+				}
+				%>
+			</select>
 	  	</div>
 	  	<div class="col col-md-3 mh-2 justify-content-center p-2">
 	  		<label class="p-1">Contraseña</label>
-		  	<input type="password" name="txfPassword" class="w-100">
+		  	<input type="password" name="txfPassword1" class="w-100" required>
 	  	</div>
 	  </div>
 	  <div class="row justify-content-center">
 	  	<div class="col col-md-3 mh-2 justify-content-center p-2">
 		  	<label class="p-1">Sexo</label> 
-			<select name="slcSexo" class="w-100">
+			<select name="slcSexoPersona" id="slcSexoPersona" class="w-100" required>
 				<option value="0">Seleccione opción</option>
 				<%
 				if(request.getAttribute("listasexos")!=null){
@@ -80,7 +97,7 @@
 					if(!listasexos.isEmpty()){
 						for(Sexo sex : listasexos){
 						%>
-						<option value="<%=sex.getIdSexo() %>"><%=sex.getNombre() %></option>
+						<option value="<%=sex.getIdSexo()%>"><%=sex.getNombre()%></option>
 							
 						<%
 						}
@@ -91,17 +108,17 @@
 	    </div>
 	     <div class="col col-md-3 mh-2 justify-content-center p-2">
 	  		<label class="p-1">Fecha de nacimiento</label>
-		  	<input type="date" name="txfFechaNac" class="w-100">
+		  	<input type="date" name="txfFechaNacPersona" class="w-100" required>
 	    </div>
 	     <div class="col col-md-3 mh-2 justify-content-center p-2">
 	  		<label class="p-1">Verifique su contraseña</label>
-		  	<input type="password" name="txfPassword" class="w-100">
+		  	<input type="password" name="txfPassword2" class="w-100" required>
 	    </div>
 	  </div>
 	  <div class="row justify-content-center">
 	  	<div class="col col-md-2 mh-2 justify-content-center p-2">
 	  		<label class="p-1">Provincia</label> 
-			<select name="slcProv" id="slcProv" class="w-100">
+			<select name="slcProvPersona" id="slcProvPersona" class="w-100" required>
 				<option value="0">Seleccione opción</option>
 				<%
 				if(request.getAttribute("listaProvincias")!=null){
@@ -120,7 +137,7 @@
 	  	</div>
 	  	<div class="col col-md-2 mh-2 justify-content-center p-2">
 	  		<label class="p-1">Localidad</label> 
-			<select name="slcLoc" id="slcLoc" class="w-100">
+			<select name="slcLocPersona" id="slcLocPersona" class="w-100" required>
 				<option value="0">Seleccione opción</option>
 				<%
 				if(request.getAttribute("listaLocalidades")!=null){
@@ -128,7 +145,7 @@
 					if(!listaLocalidades.isEmpty()){
 						for(Localidad loc : listaLocalidades){
 							%>
-							<option value="<%=loc.getIdLocalidad() %>"><%=loc.getNombre() %></option>	
+							<option value="<%=loc.getIdLocalidad()%>"><%=loc.getNombre() %></option>	
 							<%
 						}
 					}
@@ -138,11 +155,11 @@
 	  	</div>
 	  	<div class="col col-md-2 mh-2 justify-content-center p-2">
 	 		<label class="p-1">Dirección</label>
-		  	<input type="text" name="txfDireccion" class="w-100">
+		  	<input type="text" name="txfDireccionPersona" class="w-100" required>
 	  	</div>
 	  	<div class="col col-md-3 mh-2 justify-content-center p-2">
 	  		<label class="p-1">Tipo de usuario</label> 
-			<select name="slcEsp" class="w-100">
+			<select name="slcTipoUsuario" class="w-100" required>
 				<option value="0">Seleccione opción</option>
 				<%
 				if(request.getAttribute("listaTipos")!=null){
@@ -161,14 +178,16 @@
 	  </div>
 	  <div class="row justify-content-center">
 	  	<div class="col col-md-3 mh-2 justify-content-center p-2">
-	  	
+	  		<label class="p-1">Email</label>
+		  	<input type="email" name="txfEmailPersona" class="w-100" required>
 	  	</div>
 	  	<div class="col col-md-3 mh-2 justify-content-center p-2">
-	  	
+	  		<label class="p-1">Telefono</label>
+		  	<input type="text" name="txfTelefonoPersona" class="w-100" required>
 	  	</div>
 	  	<div class="col col-md-3 mh-2 justify-content-center p-2">
 	  	  	<label class="p-1">Estado de cuenta</label> 
-			<select name="slcEsp" class="w-100">
+			<select name="slcEstadoCuenta" class="w-100" required>
 				<option value="0">Seleccione opción</option>
 				<option value="1">Activo</option>
 				<option value="2">Inactivo</option>
@@ -177,11 +196,12 @@
 	  </div>
 		<div class="row justify-content-center m-3">
 			<div class="col col-md-3">
-				<form method="post" action=""><!-- REEMPLAZAR POR INPUT CON RUTA A SERVLET -->
-				<input type="submit" class="btn btn-info w-100" name="btnAgregar" value="Agregar">
-				</form>
+				
+				<input type="submit" class="btn btn-info w-100" name="btnAgregarUsuario" value="Agregar">
+				
 			</div>
 	 	</div>
+	</form>
   </div><!-- FIN DE CONTAINER -->
   
   

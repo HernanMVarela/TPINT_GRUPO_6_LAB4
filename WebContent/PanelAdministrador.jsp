@@ -101,7 +101,7 @@ $(document).ready( function () {
   <!-- TERMINA CUADRO -->
    	<div class="row mx-2 mb-2 justify-content-center p-2 border-bottom">
   		<div class="col-md-4 d-flex justify-content-center">
-  			<a href="NuevoUsuario.jsp" class="btn btn-info w-75">Agregar</a><!-- REEMPLAZAR RUTA POR SERVLET -->
+  			<a href="servletNuevoUsuario" class="btn btn-info w-75">Agregar</a>
   		</div>
   		<div class="col-md-4 d-flex justify-content-center">
   			<form action="" method="get" class="w-75"><!-- REEMPLAZAR POR INPUT CON RUTA A SERVLET -->

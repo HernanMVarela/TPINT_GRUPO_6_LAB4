@@ -103,7 +103,6 @@ $(document).ready( function () {
   	</div>
   	
   </div><!-- FIN DE CONTAINER -->
-  
   	<div class="modal fade" id="modalEliminar" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
 		<div class="modal-dialog">
 			<div class="modal-content">
