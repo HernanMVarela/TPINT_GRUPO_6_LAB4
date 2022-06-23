@@ -177,7 +177,9 @@
 	  </div>
 		<div class="row justify-content-center m-3">
 			<div class="col col-md-3">
+				<form method="post" action=""><!-- REEMPLAZAR POR INPUT CON RUTA A SERVLET -->
 				<input type="submit" class="btn btn-info w-100" name="btnAgregar" value="Agregar">
+				</form>
 			</div>
 	 	</div>
   </div><!-- FIN DE CONTAINER -->

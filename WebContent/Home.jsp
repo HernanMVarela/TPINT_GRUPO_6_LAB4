@@ -25,12 +25,8 @@
 				<div class="card-body">
 					<h4 class="card-title">Turnos</h4>
 					<p class="card-text">Vista de turnos</p>
-					<form method="post" action="Turnos.jsp" class="p-2 w-100">
-						<input type="submit" class="btn btn-primary w-100" value="Listado">
-					</form>
-					<form method="post" action="NuevoTurno.jsp" class="p-2 w-100">
-						<input type="submit" class="btn btn-success w-100" value="Sacar turno">
-					</form>
+					<a href="Turnos.jsp" class="btn btn-primary w-100 my-2">Listado</a><!-- REEMPLAZAR RUTA POR SERVLET -->
+					<a href="NuevoTurno.jsp" class="btn btn-success w-100 my-2">Sacar turno</a><!-- REEMPLAZAR RUTA POR SERVLET -->
 				</div>
 			</div>
 		
@@ -39,12 +35,8 @@
 				<div class="card-body">
 					<h4 class="card-title">Pacientes</h4>
 					<p class="card-text">Listado de pacientes</p>
-					<form method="post" action="Pacientes.jsp" class="p-2 w-100">
-						<input type="submit" class="btn btn-primary w-100" value="Listado">
-					</form>
-					<form method="post" action="NuevoPaciente.jsp" class="p-2 w-100">
-						<input type="submit" class="btn btn-primary w-100" value="Agregar">
-					</form>
+					<a href="Pacientes.jsp" class="btn btn-primary w-100 my-2">Listado</a><!-- REEMPLAZAR RUTA POR SERVLET -->
+					<a href="NuevoPaciente.jsp" class="btn btn-primary w-100 my-2">Agregar</a><!-- REEMPLAZAR RUTA POR SERVLET -->
 				</div>
 			</div>
 		
@@ -53,12 +45,8 @@
 				<div class="card-body">
 					<h4 class="card-title">Medicos</h4>
 					<p class="card-text">Listado de médicos</p>
-					<form action="servletMedicos" method="get" class="p-2 w-100">
-						<input type="submit" class="btn btn-primary w-100" value="Listado">
-					</form>
-					<form method="post" action="NuevoMedico.jsp" class="p-2 w-100">
-						<input type="submit" class="btn btn-primary w-100" value="Agregar">
-					</form>
+					<a href="servletMedicos" class="btn btn-primary w-100 my-2">Listado</a>
+					<a href="NuevoMedico.jsp" class="btn btn-primary w-100 my-2">Agregar</a><!-- REEMPLAZAR RUTA POR SERVLET -->
 				</div>
 			</div>
 		
@@ -67,12 +55,8 @@
 				<div class="card-body">
 					<h4 class="card-title">Administración</h4>
 					<p class="card-text">Panel de administración del sitio.</p>
-					<form  action="servletPanelAdministrador" method="get" class="p-2 w-100">
-						<input type="submit" class="btn btn-primary w-100" value="Administración">
-					</form>
-					<form action="servletNuevoUsuario" method="get" class="p-2 w-100">
-						<input type="submit" class="btn btn-primary w-100" value="Nuevo usuario">
-					</form>
+					<a href="servletPanelAdministrador" class="btn btn-primary w-100 my-2">Administración</a>
+					<a href="servletNuevoUsuarip" class="btn btn-primary w-100 my-2">Nuevo usuario</a>
 				</div>
 			</div>
 	</div>

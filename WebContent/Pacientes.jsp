@@ -9,6 +9,8 @@
 </style>
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.5/dist/umd/popper.min.js" integrity="sha384-Xe+8cL9oJa6tN/veChSP7q+mnSPaj5Bcu9mPX5F5xIGE0DVittaqT5lorf0EI7Vk" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.min.js" integrity="sha384-kjU+l4N0Yf4ZOJErLsIcvOU2qSb74wXpOhqTvwVx3OElZRweTnQ6d31fXEoRD1Jy" crossorigin="anonymous"></script>
 
 <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
@@ -58,12 +60,10 @@ $(document).ready( function () {
  
   	 <div class="row mx-2 mb-2 justify-content-center p-2 border-bottom">
   		<div class="col-md-3 d-flex justify-content-center">
-  			<form method="post" action="" class="w-75">
-  			<input type="submit" class="btn btn-info w-100" name="btnAgregar" value="Agregar Paciente">
-  			</form>
+  			<a href="NuevoPaciente.jsp" class="btn btn-info w-75 ">Agregar Paciente</a>
   		</div>
   		<div class="col-md-3 d-flex justify-content-center">
-  			<input type="submit" class="btn btn-info w-75" name="btnModificarPaciente" value="Modificar Seleccionado">
+  			<a href="NuevoPaciente.jsp" class="btn btn-info w-75 ">Modificar Seleccionado</a><!-- REEMPLAZAR POR INPUT CON RUTA A SERVLET -->
   		</div>
   		<div class="col-md-3 d-flex justify-content-center">
   			<button type="button" class="btn btn-danger w-75" data-bs-toggle="modal" data-bs-target="#modalEliminarPaciente">Eliminar Seleccionado</button>
@@ -83,7 +83,7 @@ $(document).ready( function () {
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-      				<form method="post" action="">
+      				<form method="post" action=""><!-- REEMPLAZAR POR INPUT CON RUTA A SERVLET -->
       					<input type="submit" name="btnEliminarPaciente" class="btn btn-outline-danger w-100" value="Eliminar">
       				</form>
 				</div>

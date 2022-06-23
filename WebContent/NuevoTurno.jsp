@@ -112,7 +112,7 @@
 </div>
 <div class="row mh-2 mb-2 justify-content-center p-2">
 	<div class="col col-md-3 justify-content-center mh-2 p-2">
-  		<input type="submit" name="btnConfirmar" class="btn btn-success p-3 w-100" value="Confirmar turno">
+		<a href="NuevoTurno.jsp" class="btn btn-success w-100 p-3 w-100">Confirmar turno</a><!-- REEMPLAZAR POR INPUT CON RUTA A SERVLET -->
   	</div>	
 </div>	
 </body>

@@ -4,8 +4,8 @@
 <html>
 <head>
 <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css">
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
-	<script type="text/javascript" charset="utf8" src="//cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+<script type="text/javascript" charset="utf8" src="//cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
 <script type="text/javascript">
 $(document).ready( function () {
     $('#tabla_admins').DataTable();
@@ -14,7 +14,6 @@ $(document).ready( function () {
 
 <style type="text/css">
 	<jsp:include page="cssStyles/StyleSheet.css"></jsp:include>
-
 </style>
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
@@ -77,21 +76,14 @@ $(document).ready( function () {
 </div>
 <div class="row mx-2 mb-2 justify-content-center p-2">
 	<div class="col-md-3 d-flex justify-content-center">
-		<form method="post" action="VerTurno.jsp" class="w-75">	
-		<input type="submit" name="btnVerDetalle" class="btn btn-info p-3 w-100" value="Ver detalle del turno">
-		</form>
+		<a href="VerTurno.jsp" class="btn btn-info w-75">Ver detalle del turno</a><!-- REEMPLAZAR POR INPUT CON RUTA A SERVLET -->
 	</div>
 	<div class="col-md-3 d-flex justify-content-center">
-		<form method="post" action="NuevoTurno.jsp" class="w-75">
-		<input type="submit" name="btnAgregarTurno" class="btn btn-info p-3 w-100" value="Agregar nuevo turno">
-		</form>
+		<a href="NuevoTurno.jsp" class="btn btn-info w-75">Agregar nuevo turno</a><!-- REEMPLAZAR RUTA POR SERVLET -->
 	</div>
 	<div class="col-md-3 d-flex justify-content-center">
-		<form method="post" action="NuevoTurno.jsp" class="w-75">
-			<input type="submit" name="btnModificarTurno" class="btn btn-info p-3 w-100" value="Modificar turno">
-		</form>
+		<a href="NuevoTurno.jsp" class="btn btn-info w-75">Modificar turno</a><!-- REEMPLAZAR POR INPUT CON RUTA A SERVLET -->
 	</div>
-	
 	<div class="col-md-3 d-flex justify-content-center">
 		<button type="button" class="btn btn-danger w-75" data-bs-toggle="modal" data-bs-target="#modalEliminarTurno">Eliminar turno</button>
 	</div>
@@ -109,9 +101,7 @@ $(document).ready( function () {
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-	     				<form method="post" action="">
-	     					<input type="submit" name="btnEliminarTurno" class="btn btn-outline-danger w-100" value="Eliminar">
-	     				</form>
+	     			<a href="" class="btn btn-outline-danger w-25">Eliminar</a><!-- REEMPLAZAR POR INPUT CON RUTA A SERVLET -->
 				</div>
 			</div>
 		</div>

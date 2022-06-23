@@ -224,7 +224,9 @@
   	
 	<div class="row mh-2 mb-2 justify-content-center p-2">
 		<div class="col col-md-3 justify-content-center mh-2 p-2">
+		<form method="post" action=""><!-- REEMPLAZAR POR INPUT CON RUTA A SERVLET -->
 	  		<input type="submit" name="btnAceptar" class="btn btn-success p-3 w-100" value="Aceptar">
+	  	</form>
 	  	</div>	
 	</div>	
 </div>	

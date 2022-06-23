@@ -4,7 +4,7 @@
 <html>
 <head>
 <style type="text/css">
-	<jsp:include page="bootstrap/StyleSheet.css"></jsp:include>
+	<jsp:include page="cssStyles/StyleSheet.css"></jsp:include>
 </style>
 
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">

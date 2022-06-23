@@ -101,12 +101,12 @@ $(document).ready( function () {
   <!-- TERMINA CUADRO -->
    	<div class="row mx-2 mb-2 justify-content-center p-2 border-bottom">
   		<div class="col-md-4 d-flex justify-content-center">
-  			<form action="servletNuevoUsuario" method="get" class="w-75">
-  				<input type="submit" class="btn btn-info w-100" name="btnAgregar" value="Agregar">
-  			</form>
+  			<a href="NuevoUsuario.jsp" class="btn btn-info w-75">Agregar</a><!-- REEMPLAZAR RUTA POR SERVLET -->
   		</div>
   		<div class="col-md-4 d-flex justify-content-center">
-  			<input type="submit" class="btn btn-info w-75" name="btnModificar" value="Modificar">
+  			<form action="" method="get" class="w-75"><!-- REEMPLAZAR POR INPUT CON RUTA A SERVLET -->
+  				<input type="submit" class="btn btn-info w-100" name="btnModificar" value="Modificar">
+  			</form>
   		</div>
   		<div class="col-md-4 d-flex justify-content-center">
   			<button type="button" class="btn btn-danger w-75" data-bs-toggle="modal" data-bs-target="#modalEliminarUsuario">Eliminar</button>
@@ -127,7 +127,7 @@ $(document).ready( function () {
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-	     				<form method="post" action="">
+	     				<form method="post" action=""><!-- REEMPLAZAR POR INPUT CON RUTA A SERVLET -->
 	     					<input type="submit" name="btnEliminarUsuario" class="btn btn-outline-danger w-100" value="Eliminar">
 	     				</form>
 				</div>

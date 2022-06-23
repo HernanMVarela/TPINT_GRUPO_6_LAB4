@@ -46,7 +46,6 @@ $(document).ready( function () {
 	  			<label class="p-1">Filtra por especialidad</label> 
 	  			<select name="slcFiltoEsp" class="w-100">
 	  				<option value="0">Seleccione opción</option>
-	  				
 	  				<% if(request.getAttribute("listaDeEsp")!=null){
 	  					listaEsp = (ArrayList<Especialidad>)request.getAttribute("listaDeEsp");
 	  					if(!listaEsp.isEmpty()) {
@@ -55,7 +54,6 @@ $(document).ready( function () {
 	  						} 
 	  					}
 	  				}%>
-	  				
 	  				</select>
 	  		</div>
 	  		<div class="row text-start p-2">
@@ -88,19 +86,16 @@ $(document).ready( function () {
   					}
   				}
 	  		%>
-				
 			</tbody>
 			</table>
 	  	</div> 
   	</div>
   	<div class="row mx-2 mb-2 justify-content-center p-2 border-bottom">
   		<div class="col-md-3 d-flex justify-content-center">
-  			<form method="post" action="NuevoMedico.jsp" class="w-75">
-				<input type="submit" class="btn btn-info w-100" name="btnAgregar" value="Agregar">
-			</form>
+  		<a href="NuevoMedico.jsp" class="btn btn-info w-75">Agregar</a><!-- REEMPLAZAR RUTA POR SERVLET -->
 		</div>
   		<div class="col-md-3 d-flex justify-content-center">
-  			<input type="submit" class="btn btn-info w-75" name="btnModificar" value="Modificar">
+  			<a href="NuevoMedico.jsp" class="btn btn-info w-75">Modificar</a><!-- REEMPLAZAR POR INPUT CON RUTA A SERVLET -->
   		</div>
   		<div class="col-md-3 d-flex justify-content-center">
   			<button type="button" class="btn btn-danger w-75" data-bs-toggle="modal" data-bs-target="#modalEliminar">Eliminar Seleccionado</button>
@@ -121,9 +116,7 @@ $(document).ready( function () {
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-      				<form method="post" action="">
-      					<input type="submit" name="btnEliminarMedico" class="btn btn-outline-danger w-100" value="Eliminar">
-      				</form>
+      				<a href="Medicos.jsp" class="btn btn-outline-danger w-25">Eliminar</a><!-- REEMPLAZAR POR INPUT CON RUTA A SERVLET -->
 				</div>
 			</div>
 		</div>
