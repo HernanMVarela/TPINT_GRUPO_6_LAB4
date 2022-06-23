@@ -6,14 +6,20 @@ import java.util.ArrayList;
 
 import dao.AdministradorDao;
 import dao.PaisDao;
+import dao.PersonaDao;
 import dao.ProvinciaDao;
 import dao.TipoDao;
 import dao.UsuarioDao;
 import entidad.Administrador;
 import entidad.Pais;
+import entidad.Persona;
 import entidad.Provincia;
 import entidad.Tipo;
 import entidad.Usuario;
+import negocio.PersonaNegocio;
+import negocio.UsuarioNegocio;
+import negocioImpl.PersonaNegocioImpl;
+import negocioImpl.UsuarioNegocioImpl;
 
 public class AdministradorDaoImpl implements AdministradorDao {
 	private String agregar = "INSERT INTO bdtp_integrador.Administradores (DNI, IDUsuario, Estado) VALUES (?,?,?)";
@@ -39,6 +45,33 @@ public class AdministradorDaoImpl implements AdministradorDao {
 		Conexion conexion = Conexion.getConexion();
 		PreparedStatement statement;
 
+		Persona perso = new Persona();
+		
+		perso.setNombre(administrador.getNombre());
+		perso.setApellido(administrador.getApellido());
+		perso.setDirecc(administrador.getDirecc());
+		perso.setDni(administrador.getDni());
+		perso.setEmail(administrador.getEmail());
+		perso.setFecha_nacimiento(administrador.getFecha_nacimiento());
+		perso.setNacionalidad(administrador.getNacionalidad());
+		perso.setSexo(administrador.getSexo());
+		perso.setTelefono(administrador.getTelefono());
+		
+		PersonaNegocio perneg = new PersonaNegocioImpl();
+		
+		Usuario user = new Usuario();
+		user.setIdUsuario(administrador.getUsuario().getIdUsuario());
+		user.setUser(administrador.getUsuario().getUser());
+		user.setPassword(administrador.getUsuario().getPassword());
+		user.setTipo(administrador.getUsuario().getTipo());
+		
+		UsuarioNegocio userneg = new UsuarioNegocioImpl();
+		
+		if(!perneg.agregarPersona(perso)) {return false;}
+		
+		administrador.getUsuario().setIdUsuario(userneg.agregarUsuario(user));
+		if(administrador.getUsuario().getIdUsuario()==-1){return false;}
+		
 		try {
 			statement = conexion.getSQLConexion().prepareStatement(agregar);
 
@@ -59,7 +92,6 @@ public class AdministradorDaoImpl implements AdministradorDao {
 			}
 		}
 		return result;
-
 	}
 
 	@Override

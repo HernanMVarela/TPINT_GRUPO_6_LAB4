@@ -11,5 +11,6 @@ public interface UsuarioDao {
 	public Usuario ObtenerObjeto(int idUsuario);
 	public boolean Eliminar(int idUsuario);
 	public boolean Modificar(Usuario usuario);
+	public int existeuser(String username);
 
 }

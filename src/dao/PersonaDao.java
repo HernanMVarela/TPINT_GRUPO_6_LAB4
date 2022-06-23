@@ -11,5 +11,6 @@ public interface PersonaDao {
 	public Persona ObtenerObjeto(int idPersona);
 	public boolean Eliminar(int idPersona);
 	public boolean Modificar(Persona persona);
+	public boolean existedni(int dni);
 
 }

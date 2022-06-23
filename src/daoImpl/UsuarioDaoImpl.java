@@ -18,6 +18,7 @@ public class UsuarioDaoImpl implements UsuarioDao {
 	private String eliminar = "DELETE FROM bdtp_integrador.Usuarios WHERE IDUsuario = ?";
 	private String modificar = "UPDATE bdtp_integrador.Usuarios SET User = ?, Password = ?, IDTipo = ? WHERE IDUsuario = ?";
 	private String agregar = "INSERT INTO bdtp_integrador.Usuarios (User, Password, IDTipo) VALUES (?,?,?)";
+	private String buscaruser = "SELECT * FROM bdtp_integrador.Usuarios WHERE User LIKE ?";
 	private Tipo tipo;
 	private TipoDao tipoDao;
 	
@@ -213,6 +214,33 @@ public class UsuarioDaoImpl implements UsuarioDao {
 		
 		return result;
 		
+	}
+
+	@Override
+	public int existeuser(String username) {
+		try {
+			Class.forName("com.mysql.cj.jdbc.Driver");
+			} 
+		catch (ClassNotFoundException e) {
+			e.printStackTrace();
+			}
+		int result=-1;
+		Conexion conexion = Conexion.getConexion();
+		PreparedStatement statement;
+		ResultSet resultSet;
+		
+		try{
+			statement = conexion.getSQLConexion().prepareStatement(buscaruser);
+			statement.setString(1, username);
+			resultSet = statement.executeQuery();
+			
+			if(resultSet.next()){
+				result = resultSet.getInt("IDUsuario");
+			}
+		}catch(Exception e){
+			e.printStackTrace();
+		}finally{ }		
+		return result;
 	}
 
 }

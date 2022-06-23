@@ -1,6 +1,5 @@
 package daoImpl;
 
-import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
@@ -20,8 +19,9 @@ public class PersonaDaoImpl implements PersonaDao {
 	private String listarTodo = "SELECT * FROM bdtp_integrador.Personas";
 	private String obtenerObjeto = "SELECT * FROM bdtp_integrador.Personas WHERE DNI = ?";
 	private String eliminar = "DELETE FROM bdtp_integrador.Personas WHERE DNI = ?";
-	private String modificar = "UPDATE bdtp_integrador.Personas SET Nombre = ?, Apellido = ?, IDNacionalidad = ?, Direccion = ?, IDSexo = ?, IDLocalidad = ?, Email = ?, Telefono = ?, Fecha_nacimiento = ? WHERE DNI = ?";
-	private String agregar = "INSERT INTO bdtp_integrador.Personas (DNI, Nombre, Apellido, IDNacionalidad, Direccion, IDSexo, IDLocalidad, Email, Telefono, Fecha_nacimiento) VALUES (?,?,?,?,?,?,?,?,?,?)";
+	private String modificar = "UPDATE bdtp_integrador.Personas SET Nombre = ?, Apellido = ?, IDPais = ?, Direccion = ?, IDSexo = ?, IDLocalidad = ?, Email = ?, Telefono = ?, Fecha_nacimiento = ? WHERE DNI = ?";
+	private String agregar = "INSERT INTO bdtp_integrador.Personas (DNI, Nombre, Apellido, IDPais, Direccion, IDSexo, IDLocalidad, Email, Telefono, Fecha_nacimiento) VALUES (?,?,?,?,?,?,?,?,?,?)";
+	private String buscardni = "SELECT * FROM PERSONAS where DNI = ?";
 	
 	public boolean Agregar(Persona persona) {
 		
@@ -263,6 +263,33 @@ public class PersonaDaoImpl implements PersonaDao {
 		
 		return result;
 		
+	}
+
+	@Override
+	public boolean existedni(int dni) {
+		try {
+			Class.forName("com.mysql.cj.jdbc.Driver");
+			} 
+		catch (ClassNotFoundException e) {
+			e.printStackTrace();
+			}
+		boolean result=false;
+		Conexion conexion = Conexion.getConexion();
+		PreparedStatement statement;
+		ResultSet resultSet;
+		
+		try{
+			statement = conexion.getSQLConexion().prepareStatement(buscardni);
+			statement.setInt(1, dni);
+			resultSet = statement.executeQuery();
+			
+			if(resultSet.next()){
+				result=true;
+			}
+		}catch(Exception e){
+			e.printStackTrace();
+		}finally{ }		
+		return result;
 	}
 
 }

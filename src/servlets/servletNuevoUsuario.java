@@ -12,11 +12,13 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import dao.AdministradorDao;
 import dao.LocalidadDao;
 import dao.PaisDao;
 import dao.ProvinciaDao;
 import dao.SexoDao;
 import dao.TipoDao;
+import daoImpl.AdministradorDaoImpl;
 import daoImpl.LocalidadDaoImpl;
 import daoImpl.PaisDaoImpl;
 import daoImpl.ProvinciaDaoImpl;
@@ -43,9 +45,7 @@ public class servletNuevoUsuario extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		// EVENTO BOTON AGREGAR NUEVO USUARIO
-		if(request.getParameter("btnAgregarUsuario")!=null) {
-			System.out.println("Nombre: " + request.getParameter("txfNombrePersona").toString());
-			
+		if(request.getParameter("btnAgregarUsuario")!=null) {					
 			agregar_nuevo_usuario(request, response);
 		}
 		
@@ -225,14 +225,13 @@ public class servletNuevoUsuario extends HttpServlet {
 			Admin.setSexo(Genero);
 			Admin.setUsuario(User);
 		
-			System.out.println(Admin.getNombre()); 
-			System.out.println(Admin.getApellido()); 
-			System.out.println(Admin.getDni());
-			System.out.println(Admin.getNacionalidad().getNombre());
-			System.out.println(Admin.getSexo().getNombre());
-			System.out.println(Admin.getUsuario().getUser());
-			System.out.println(Admin.getUsuario().getPassword()); 
-			System.out.println(Admin.getFecha_nacimiento().toString());
+			AdministradorDao admindao = new AdministradorDaoImpl();
+			if(admindao.Agregar(Admin)) {
+				System.out.println("AGREGADO OK");	
+			}else {
+				System.out.println("AGREGADO NO OK");
+			}
+			
 		}else {
 			System.out.println("ALGO NO ANDUVO");		
 		}

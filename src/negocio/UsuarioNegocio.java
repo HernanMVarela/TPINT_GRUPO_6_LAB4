@@ -1,5 +1,8 @@
 package negocio;
 
-public interface UsuarioNegocio {
+import entidad.Usuario;
 
+public interface UsuarioNegocio {
+	
+	public int agregarUsuario(Usuario agregar);
 }
