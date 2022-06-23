@@ -29,7 +29,7 @@ public class MedicoDaoImpl implements MedicoDao{
 	private String modificar = "UPDATE bdtp_integrador.medicos SET DNI = ?, IDEspecialidad = ?, IDUsuario = ?, Estado = ? WHERE IDMedico = ?";
 	private String buscar = "SELECT * FROM bdtp_integrador.medicos WHERE IDMedico = ?";
 	private String eliminar = "DELETE FROM bdtp_integrador.medicos WHERE IDMedico = ?";
-	private String proxid = "SELECT MAX(m.IDMedico) FROM bdtp_integrador.medicos m order by s.IDMedico";
+	private String proxid = "SELECT MAX(m.IDMedico) FROM bdtp_integrador.medicos m order by m.IDMedico";
 	
 	
 	@Override
@@ -291,7 +291,7 @@ public class MedicoDaoImpl implements MedicoDao{
 				temp.setDirecc(direc);
 				temp.setSexo(sex);
 				temp.setEmail(resultSet.getString("Email"));
-				temp.setEmail(resultSet.getString("Telefono"));
+				temp.setTelefono(resultSet.getString("Telefono"));
 				temp.setFecha_nacimiento(resultSet.getDate("Fecha_nacimiento"));
 				
 				result = new Medico(resultSet.getInt("idMedico"),temp,esp,user,resultSet.getBoolean("Estado"));
