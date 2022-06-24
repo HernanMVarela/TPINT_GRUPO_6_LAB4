@@ -4,5 +4,7 @@ import entidad.Usuario;
 
 public interface UsuarioNegocio {
 	
-	public int agregarUsuario(Usuario agregar);
+	public boolean agregarUsuario(Usuario agregar);
+	
+	public int existeUsuario(String User);
 }

@@ -8,17 +8,17 @@ import negocio.UsuarioNegocio;
 public class UsuarioNegocioImpl implements UsuarioNegocio {
 
 	@Override
-	public int agregarUsuario(Usuario agregar) {
+	public boolean agregarUsuario(Usuario agregar) {
 		UsuarioDao userdao = new UsuarioDaoImpl();
-		int iduser = userdao.existeuser(agregar.getUser());
-		if(iduser != -1) {
-			return iduser;
-		}else {
-			if (userdao.Agregar(agregar)) {
-				iduser = userdao.existeuser(agregar.getUser());
-			}
-		}
-		return iduser; // REVISAR COMO MANEJAR CASO DE PERSONA EXISTENTE, por ahora retorna ok
+		return userdao.Agregar(agregar);
 	}
+
+	@Override
+	public int existeUsuario(String User) {
+		UsuarioDao userdao = new UsuarioDaoImpl();
+		return userdao.existeuser(User);
+	}
+	
+	
 
 }

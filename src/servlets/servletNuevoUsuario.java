@@ -28,10 +28,17 @@ import entidad.Administrador;
 import entidad.Direccion;
 import entidad.Localidad;
 import entidad.Pais;
+import entidad.Persona;
 import entidad.Provincia;
 import entidad.Sexo;
 import entidad.Tipo;
 import entidad.Usuario;
+import negocio.AdministradorNegocio;
+import negocio.PersonaNegocio;
+import negocio.UsuarioNegocio;
+import negocioImpl.AdministradorNegocioImpl;
+import negocioImpl.PersonaNegocioImpl;
+import negocioImpl.UsuarioNegocioImpl;
 
 @WebServlet("/servletNuevoUsuario")
 public class servletNuevoUsuario extends HttpServlet {
@@ -105,40 +112,46 @@ public class servletNuevoUsuario extends HttpServlet {
 		return pais;
 	}
 
-	private void agregar_nuevo_usuario (HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	private boolean agregar_nuevo_usuario (HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-		Direccion Direc = new Direccion();
-		LocalidadDao locdao = new LocalidadDaoImpl(); // REEMPLAZAR POR NEGOCIO
-		PaisDao paisdao = new PaisDaoImpl(); // REEMPLAZAR POR NEGOCIO
-		Sexo Genero = new Sexo();
-		SexoDao sexdao = new SexoDaoImpl(); // REEMPLAZAR POR NEGOCIO
-		TipoDao tipodao = new TipoDaoImpl(); // REEMPLAZAR POR NEGOCIO
+		Persona Perso = new Persona();
+		Perso.setDirecc(new Direccion());
 		Usuario User = new Usuario();
 		Administrador Admin = new Administrador();
+		
+		LocalidadDao locdao = new LocalidadDaoImpl(); // REEMPLAZAR POR NEGOCIO
+		PaisDao paisdao = new PaisDaoImpl(); // REEMPLAZAR POR NEGOCIO
+		SexoDao sexdao = new SexoDaoImpl(); // REEMPLAZAR POR NEGOCIO
+		TipoDao tipodao = new TipoDaoImpl(); // REEMPLAZAR POR NEGOCIO
+		
+		PersonaNegocio perneg = new PersonaNegocioImpl();
+		UsuarioNegocio userneg = new UsuarioNegocioImpl();
+		AdministradorNegocio adminneg = new AdministradorNegocioImpl();
+		
 		boolean flag = true;
 		
 		// NOMBRE PERSONA
 		if(!request.getParameter("txfNombrePersona").isEmpty()) {
-			Admin.setNombre(request.getParameter("txfNombrePersona").toString());
+			Perso.setNombre(request.getParameter("txfNombrePersona").toString());
 		}else {
 			flag = false;
 		}
 		// APELLIDO PERSONA
 		if(!request.getParameter("txfApellidoPersona").isEmpty()) {
-			Admin.setApellido(request.getParameter("txfApellidoPersona").toString());
+			Perso.setApellido(request.getParameter("txfApellidoPersona").toString());
 		}else {
 			flag = false;
 		}
 		
 		// DOCUMENTO PERSONA
 		if(!request.getParameter("txfDocumentoPersona").isEmpty()) {
-			Admin.setDni(Integer.parseInt(request.getParameter("txfDocumentoPersona")));
+			Perso.setDni(Integer.parseInt(request.getParameter("txfDocumentoPersona")));
 		}else {
 			flag = false;
 		}
 		// PAIS PERSONA
 		if(Integer.parseInt(request.getParameter("slcPaisPersona"))!=0) {
-			Admin.setNacionalidad(paisdao.ObtenerObjeto((Integer.parseInt(request.getParameter("slcPaisPersona")))));
+			Perso.setNacionalidad(paisdao.ObtenerObjeto((Integer.parseInt(request.getParameter("slcPaisPersona")))));
 		}else {
 			flag = false;
 		}
@@ -146,40 +159,40 @@ public class servletNuevoUsuario extends HttpServlet {
 		// DIRECCION PERSONA
 			// LOCALIDAD
 		if(Integer.parseInt(request.getParameter("slcLocPersona"))!=0) {
-			Direc.setLoc(locdao.ObtenerObjeto((Integer.parseInt(request.getParameter("slcLocPersona")))));
+			Perso.getDirecc().setLoc(locdao.ObtenerObjeto(Integer.parseInt(request.getParameter("slcLocPersona"))));
 		}else {
 			flag = false;
 		}
 			// DIRECCION
 		if(!request.getParameter("txfDireccionPersona").isEmpty()) {
-			Direc.setCalleYNum(request.getParameter("txfDireccionPersona").toString());
+			Perso.getDirecc().setCalleYNum(request.getParameter("txfDireccionPersona").toString());
 		}else {
 			flag = false;
 		}
 		
 		// SEXO
 		if(Integer.parseInt(request.getParameter("slcSexoPersona"))!=0) {
-			Genero = sexdao.ObtenerObjeto(Integer.parseInt(request.getParameter("slcSexoPersona")));
+			Perso.setSexo(sexdao.ObtenerObjeto(Integer.parseInt(request.getParameter("slcSexoPersona"))));
 		}else {
 			flag = false;
 		}
 		
 		// EMAIL PERSONA
 		if(!request.getParameter("txfEmailPersona").isEmpty()) {
-			Admin.setEmail(request.getParameter("txfEmailPersona").toString());
+			Perso.setEmail(request.getParameter("txfEmailPersona").toString());
 		}else {
 			flag = false;
 		}
 		// TELEFONO
 		if(!request.getParameter("txfTelefonoPersona").isEmpty()) {
-			Admin.setTelefono(request.getParameter("txfTelefonoPersona").toString());
+			Perso.setTelefono(request.getParameter("txfTelefonoPersona").toString());
 		}else {
 			flag = false;
 		}
 		
 		// FECHA DE NACIMIENTO
 		if(!request.getParameter("txfFechaNacPersona").isEmpty()) {
-			Admin.setFecha_nacimiento(Date.valueOf(request.getParameter("txfFechaNacPersona").toString()));
+			Perso.setFecha_nacimiento(Date.valueOf(request.getParameter("txfFechaNacPersona").toString()));
 		}else {
 			flag = false;
 		}
@@ -209,9 +222,9 @@ public class servletNuevoUsuario extends HttpServlet {
 			flag = false;
 		}
 		
-		// ESTADO DE CUENTA
+		// ESTADO DE ADMIN
 		if(Integer.parseInt(request.getParameter("slcEstadoCuenta"))!=0) {
-			if(Integer.parseInt(request.getParameter("slcEstadoCuenta"))!=1) {
+			if(Integer.parseInt(request.getParameter("slcEstadoCuenta"))==1) {
 				Admin.setEstado(true);
 			}else {
 				Admin.setEstado(false);
@@ -220,21 +233,26 @@ public class servletNuevoUsuario extends HttpServlet {
 			flag = false;
 		}
 		
-		if(flag) {
-			Admin.setDirecc(Direc);
-			Admin.setSexo(Genero);
-			Admin.setUsuario(User);
-		
-			AdministradorDao admindao = new AdministradorDaoImpl();
-			if(admindao.Agregar(Admin)) {
-				System.out.println("AGREGADO OK");	
-			}else {
-				System.out.println("AGREGADO NO OK");
-			}
-			
-		}else {
-			System.out.println("ALGO NO ANDUVO");		
+		if(adminneg.existeAdmin(Perso.getDni())) { // SI ADMIN EXISTE - REGRESA SIN AGREGAR NADA
+			return false;
 		}
-
+		
+		if(perneg.existePersona(Perso.getDni()) || userneg.existeUsuario(User.getUser())!=-1) {
+			return false;
+		} else if (!perneg.agregarPersona(Perso)) {
+			return false;
+		} else if (!userneg.agregarUsuario(User)) {
+			//perneg.eliminarPersona(Perso.getDni()); // SI NO SE PUEDE AGREGAR EL USUARIO, SE ELIMINA LA PERSONA - A REVISAR
+			return false;
+		}
+		
+		User.setIdUsuario(userneg.existeUsuario(User.getUser()));
+		System.out.println(User.getIdUsuario() + " - " + User.getUser());
+		if(flag) {
+			Admin.setUsuario(User);
+			Admin.setDni(Perso.getDni());
+			return adminneg.agregarAdmin(Admin);
+		}
+		return false;
 	}
 }

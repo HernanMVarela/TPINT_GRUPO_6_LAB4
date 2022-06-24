@@ -27,7 +27,8 @@ public class AdministradorDaoImpl implements AdministradorDao {
 	private String eliminar = "DELETE FROM bdtp_integrador.Administradores WHERE idAdmin = ?";
 	private String obtenerObjeto = "select a.idAdmin, a.dni, a.estado, a.idUsuario, u.user, u.password, u.idTipo, t.nombre tipoNombre from administradores a left join usuarios u on a.idUsuario = u.idUsuario left join tipos t on u.idTipo = t.idTipo where a.idAdmin = ?";
 	private String listarTodo = "select a.idAdmin, a.dni, a.estado, a.idUsuario, u.user, u.password, u.idTipo, t.nombre tipoNombre, p.nombre, p.apellido from administradores a left join usuarios u on a.idUsuario = u.idUsuario left join tipos t on u.idTipo = t.idTipo inner join personas p on p.dni = a.dni";
-
+	private String buscardni = "SELECT * FROM bdtp_integrador.Administradores where DNI = ?";
+	
 	private Usuario usuario;
 	private Administrador admin;
 	
@@ -44,33 +45,6 @@ public class AdministradorDaoImpl implements AdministradorDao {
 
 		Conexion conexion = Conexion.getConexion();
 		PreparedStatement statement;
-
-		Persona perso = new Persona();
-		
-		perso.setNombre(administrador.getNombre());
-		perso.setApellido(administrador.getApellido());
-		perso.setDirecc(administrador.getDirecc());
-		perso.setDni(administrador.getDni());
-		perso.setEmail(administrador.getEmail());
-		perso.setFecha_nacimiento(administrador.getFecha_nacimiento());
-		perso.setNacionalidad(administrador.getNacionalidad());
-		perso.setSexo(administrador.getSexo());
-		perso.setTelefono(administrador.getTelefono());
-		
-		PersonaNegocio perneg = new PersonaNegocioImpl();
-		
-		Usuario user = new Usuario();
-		user.setIdUsuario(administrador.getUsuario().getIdUsuario());
-		user.setUser(administrador.getUsuario().getUser());
-		user.setPassword(administrador.getUsuario().getPassword());
-		user.setTipo(administrador.getUsuario().getTipo());
-		
-		UsuarioNegocio userneg = new UsuarioNegocioImpl();
-		
-		if(!perneg.agregarPersona(perso)) {return false;}
-		
-		administrador.getUsuario().setIdUsuario(userneg.agregarUsuario(user));
-		if(administrador.getUsuario().getIdUsuario()==-1){return false;}
 		
 		try {
 			statement = conexion.getSQLConexion().prepareStatement(agregar);
@@ -254,6 +228,33 @@ public class AdministradorDaoImpl implements AdministradorDao {
 
 		return result;
 
+	}
+
+	@Override
+	public boolean existeAdmin(int dni) {
+		try {
+			Class.forName("com.mysql.cj.jdbc.Driver");
+			} 
+		catch (ClassNotFoundException e) {
+			e.printStackTrace();
+			}
+		boolean result=false;
+		Conexion conexion = Conexion.getConexion();
+		PreparedStatement statement;
+		ResultSet resultSet;
+
+		try{
+			statement = conexion.getSQLConexion().prepareStatement(buscardni);
+			statement.setInt(1, dni);
+			resultSet = statement.executeQuery();
+			
+			if(resultSet.next()){
+				result=true;
+			}
+		}catch(Exception e){
+			e.printStackTrace();
+		}finally{ }		
+		return result;
 	}
 
 }
