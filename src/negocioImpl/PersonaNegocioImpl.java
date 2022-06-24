@@ -19,4 +19,10 @@ public class PersonaNegocioImpl implements PersonaNegocio {
 		return perdao.existedni(dni);
 	}
 
+	@Override
+	public Persona buscarPersona(int dni) {
+		PersonaDao perdao = new PersonaDaoImpl();
+		return perdao.ObtenerObjeto(dni);
+	}
+
 }

@@ -5,6 +5,8 @@
 <%@page import="entidad.Pais"%>
 <%@page import="entidad.Sexo"%>
 <%@page import="entidad.Tipo"%>
+<%@page import="entidad.Medico"%>
+<%@page import="entidad.Administrador"%>
 <%@page import="servlets.servletNuevoUsuario"%>
 
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
@@ -28,6 +30,18 @@
 <%!ArrayList<Sexo> listasexos = null;%>
 <%!ArrayList<Tipo> listaTipos = null;%>
 <%!ArrayList<Pais> listapaises = null;%>
+<%!Medico medic = null;%>
+<%!Administrador admin = null;%>
+<%
+	if(request.getAttribute("medico")!=null){
+		
+		medic = (Medico)request.getAttribute("medico");
+	}
+
+	if(request.getAttribute("admin")!=null){
+		admin = (Administrador)request.getAttribute("admin");
+	}
+%>
 
 <jsp:include page="Menu.html"></jsp:include>
 
@@ -47,11 +61,20 @@
 	  <div class="row justify-content-center">
 	  	<div class="col col-md-3 mh-2 justify-content-center p-2">
 	  		<label class="p-1">Nombre</label>
-		  	<input type="text" name="txfNombrePersona" class="w-100" required>
+		  	<input type="text" name="txfNombrePersona" class="w-100" required
+	  		<% 
+	  			if(medic!=null){%>value="<%=medic.getNombre()%>"<%;}
+	  			if(admin!=null){%>value="<%=admin.getNombre()%>"<%;}
+		  	%>>
 	  	</div>
 	  	<div class="col col-md-3 mh-2 justify-content-center p-2">
 	  		<label class="p-1">Apellido</label>
-		  	<input type="text" name="txfApellidoPersona" class="w-100" required>
+		  	<input type="text" name="txfApellidoPersona" class="w-100" required
+	  		<% 
+	  		if(medic!=null){%>value="<%=medic.getApellido()%>"<%;}
+  			if(admin!=null){%>value="<%=admin.getApellido()%>"<%;}
+	  		%>
+		  	>
 	  	</div>
 	  	<div class="col col-md-3 mh-2 justify-content-center p-2">
 	  		<label class="p-1">Nombre de usuario</label>

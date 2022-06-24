@@ -18,6 +18,12 @@ public class UsuarioNegocioImpl implements UsuarioNegocio {
 		UsuarioDao userdao = new UsuarioDaoImpl();
 		return userdao.existeuser(User);
 	}
+
+	@Override
+	public Usuario ObtenerObjeto(int idUsuario) {
+		UsuarioDao userdao = new UsuarioDaoImpl();
+		return userdao.ObtenerObjeto(idUsuario);
+	}
 	
 	
 

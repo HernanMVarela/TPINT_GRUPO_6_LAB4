@@ -150,7 +150,7 @@ public class PersonaDaoImpl implements PersonaDao {
 			while(resultSet.next()){				
 				PaisDao daoPais = new PaisDaoImpl();
 				Pais pais = new Pais();
-				pais = daoPais.ObtenerObjeto(resultSet.getInt("IDNacionalidad"));
+				pais = daoPais.ObtenerObjeto(resultSet.getInt("IDPais"));
 				
 				SexoDao daoSexo = new SexoDaoImpl();
 				Sexo sexo = new Sexo();

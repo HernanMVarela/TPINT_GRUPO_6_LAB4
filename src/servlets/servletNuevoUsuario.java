@@ -58,6 +58,21 @@ public class servletNuevoUsuario extends HttpServlet {
 		request.setAttribute("existeUsuario", false);
 		
 		// EVENTO BOTON AGREGAR NUEVO USUARIO
+		if(request.getParameter("btnModificarUsuario")!=null) {
+			if(request.getParameter("radSelect")!=null){
+				if(modificar_usuario(request, response)) {
+					
+				}else {
+					// NO SE PUDO MODIFICAR
+				}
+				RequestDispatcher rd = request.getRequestDispatcher("/NuevoUsuario.jsp");   
+		        rd.forward(request, response);
+		        return;
+			}else {
+				// NO HAY NADA SELECCIONADO - DEVOLVER ATRIBUTO O MENSAJE DE ERROR
+			}
+		}
+		
 		if(request.getParameter("btnAgregarUsuario")!=null) {					
 			agregar_nuevo_usuario(request, response);
 		}
@@ -65,7 +80,7 @@ public class servletNuevoUsuario extends HttpServlet {
 		if(request.getParameter("btnEliminarUsuario")!=null) {
 			if(request.getParameter("radSelect")!=null){
 				if(eliminar_usuario(request, response)) {
-					
+					// 
 				}else {
 					// NO SE PUDO ELIMINAR
 				}
@@ -300,6 +315,60 @@ public class servletNuevoUsuario extends HttpServlet {
 		}
 		return false;
 	}
-}
 
-	
+	private boolean modificar_usuario (HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		AdministradorNegocio adminneg = new AdministradorNegocioImpl();
+		MedicoNegocio medneg = new MedicoNegocioImpl();
+		UsuarioNegocio userneg = new UsuarioNegocioImpl();
+		Usuario user = new Usuario();
+		Administrador admin = new Administrador();
+		Medico medic = new Medico();
+		
+		user = userneg.ObtenerObjeto(Integer.parseInt(request.getParameter("radSelect")));
+		System.out.println(user.getUser() + " " + user.getIdUsuario());
+		if (user!=null) {
+			System.out.println(user.getUser() + " " + user.getIdUsuario());
+			admin = adminneg.buscar_usuario(user.getIdUsuario());
+			if (admin!=null) {
+				PersonaNegocio personeg = new PersonaNegocioImpl(); 
+				Persona perso = personeg.buscarPersona(admin.getDni());
+				admin.setNombre(perso.getNombre());
+				admin.setApellido(perso.getApellido());
+				admin.setDirecc(perso.getDirecc());
+				admin.setEmail(perso.getEmail());
+				admin.setFecha_nacimiento(perso.getFecha_nacimiento());
+				admin.setNacionalidad(perso.getNacionalidad());
+				admin.setSexo(perso.getSexo());
+				admin.setTelefono(perso.getTelefono());
+				admin.setUsuario(user);
+				
+				request.setAttribute("admin", admin);
+				
+				System.out.println(admin.getIdAdmin() + " " + admin.getNombre() + " " + admin.getApellido() + " " + admin.getUsuario().getUser() + " " + admin.getDni());
+				return true;
+			}
+			
+			medic = medneg.buscar_usuario(user.getIdUsuario());
+			if (medic!=null) {
+				PersonaNegocio personeg = new PersonaNegocioImpl(); 
+				Persona perso = personeg.buscarPersona(medic.getDni());
+				medic.setNombre(perso.getNombre());
+				medic.setApellido(perso.getApellido());
+				medic.setDirecc(perso.getDirecc());
+				medic.setEmail(perso.getEmail());
+				medic.setFecha_nacimiento(perso.getFecha_nacimiento());
+				medic.setNacionalidad(perso.getNacionalidad());
+				medic.setSexo(perso.getSexo());
+				medic.setTelefono(perso.getTelefono());
+				medic.setUsuario(user);
+				
+				request.setAttribute("medico", medic);
+				
+				System.out.println(medic.getIdMedico() + " " + medic.getNombre() + " " + medic.getApellido() + " " + medic.getUsuario().getUser() + " " + medic.getDni());
+				return true;
+			}
+		}
+		return false;
+	}
+
+}

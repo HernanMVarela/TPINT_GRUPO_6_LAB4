@@ -118,7 +118,7 @@ $(document).ready( function () {
   			<a href="servletNuevoUsuario" class="btn btn-info w-75">Agregar</a>
   		</div>
   		<div class="col-md-4 d-flex justify-content-center">
-  			<input type="submit" class="btn btn-info w-100" name="btnModificar" value="Modificar">
+  			<input type="submit" class="btn btn-info w-100" name="btnModificarUsuario" value="Modificar">
   		</div>
   		<div class="col-md-4 d-flex justify-content-center">
   			<button type="button" class="btn btn-danger w-75" data-bs-toggle="modal" data-bs-target="#modalEliminarUsuario">Eliminar</button>

@@ -25,7 +25,7 @@ public class AdministradorDaoImpl implements AdministradorDao {
 	private String agregar = "INSERT INTO bdtp_integrador.Administradores (DNI, IDUsuario, Estado) VALUES (?,?,?)";
 	private String modificar = "UPDATE bdtp_integrador.Administradores SET DNI = ?, IDUsuario = ?, Estado = ? WHERE idAdmin = ?";
 	private String eliminar = "DELETE FROM bdtp_integrador.Administradores WHERE idAdmin = ?";
-	private String obtenerObjeto = "select a.idAdmin, a.dni, a.estado, a.idUsuario, u.user, u.password, u.idTipo, t.nombre tipoNombre from administradores a left join usuarios u on a.idUsuario = u.idUsuario left join tipos t on u.idTipo = t.idTipo where a.idAdmin = ?";
+	private String obtenerObjeto = "select a.idAdmin, a.dni, a.estado, a.idUsuario from administradores a where a.idAdmin = ?";
 	private String listarTodo = "select a.idAdmin, a.dni, a.estado, a.idUsuario, u.user, u.password, u.idTipo, t.nombre tipoNombre, p.nombre, p.apellido from administradores a left join usuarios u on a.idUsuario = u.idUsuario left join tipos t on u.idTipo = t.idTipo inner join personas p on p.dni = a.dni";
 	private String buscardni = "SELECT * FROM bdtp_integrador.Administradores where DNI = ?";
 	private String buscaruserid = "SELECT * FROM bdtp_integrador.Administradores where idUsuario = ?";
