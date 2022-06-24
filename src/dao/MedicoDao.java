@@ -2,6 +2,7 @@ package dao;
 
 import java.util.ArrayList;
 
+import entidad.Administrador;
 import entidad.Medico;
 
 public interface MedicoDao {
@@ -17,5 +18,9 @@ public interface MedicoDao {
 	public int UltimoID();
 
 	public Medico Buscar(int idMedico);
+	
+	public Medico buscar_usuario(int idUser);
+	
+	public boolean bajaMedico(int idAdmin);
 	
 }

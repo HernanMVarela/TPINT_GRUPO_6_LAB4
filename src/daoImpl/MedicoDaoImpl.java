@@ -12,6 +12,7 @@ import dao.MedicoDao;
 import dao.PaisDao;
 import dao.SexoDao;
 import dao.UsuarioDao;
+import entidad.Administrador;
 import entidad.Direccion;
 import entidad.Especialidad;
 import entidad.Localidad;
@@ -30,6 +31,9 @@ public class MedicoDaoImpl implements MedicoDao{
 	private String buscar = "SELECT * FROM bdtp_integrador.medicos WHERE IDMedico = ?";
 	private String eliminar = "DELETE FROM bdtp_integrador.medicos WHERE IDMedico = ?";
 	private String proxid = "SELECT MAX(m.IDMedico) FROM bdtp_integrador.medicos m order by m.IDMedico";
+	private String buscaruserid = "SELECT * FROM bdtp_integrador.medicos where idUsuario = ?";
+	private String bajaMedic = "UPDATE bdtp_integrador.medicos SET Estado = 0 where IDMedico = ?";
+	
 	
 	
 	@Override
@@ -328,6 +332,82 @@ public class MedicoDaoImpl implements MedicoDao{
 			e.printStackTrace();
 		}
 		return last;
+	}
+
+	@Override
+	public Medico buscar_usuario(int idUser) {
+		try {
+			Class.forName("com.mysql.cj.jdbc.Driver");
+			}
+		catch (ClassNotFoundException e) {
+			e.printStackTrace();
+			}
+
+		Medico result = null;
+		Conexion conexion = Conexion.getConexion();
+		PreparedStatement statement;
+		ResultSet resultSet;
+
+		try {
+
+			statement = conexion.getSQLConexion().prepareStatement(buscaruserid);
+			statement.setInt(1, idUser);
+			resultSet = statement.executeQuery();
+
+			while(resultSet.next()){
+                
+				UsuarioDao daoUser = new UsuarioDaoImpl();
+				Usuario usuario = new Usuario();
+				usuario = daoUser.ObtenerObjeto(idUser);
+                
+            	result = new Medico();
+            	System.out.println("Seleccionado buscar user: " + idUser);
+                result.setIdMedico(resultSet.getInt("IDMedico"));
+                result.setDni(resultSet.getInt("DNI"));
+                result.setEspecialidad(new Especialidad());
+                result.getEspecialidad().setIdEspecialidad(resultSet.getInt("IDEspecialidad"));
+                result.setUsuario(usuario);
+                result.setEstado(resultSet.getInt("estado") == 1 ? true : false);
+
+				return result;
+			}
+		}catch(Exception e){
+			e.printStackTrace();
+		}finally{ }
+
+		return result;
+	}
+
+	@Override
+	public boolean bajaMedico(int idMedic) {
+		try {
+			Class.forName("com.mysql.cj.jdbc.Driver");
+			}
+		catch (ClassNotFoundException e) {
+			e.printStackTrace();
+			}
+
+		boolean result = false;
+		Conexion conexion = Conexion.getConexion();
+		PreparedStatement statement;
+
+		try {
+			statement = conexion.getSQLConexion().prepareStatement(bajaMedic);
+			statement.setInt(1, idMedic);
+			System.out.println("Seleccionado baja medico: " + idMedic);
+			if(statement.executeUpdate() > 0) {
+				conexion.getSQLConexion().commit();
+				result = true;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			try {
+				conexion.getSQLConexion().rollback();
+			} catch (Exception e2) {
+				e2.printStackTrace();
+			}
+		}
+		return result;
 	}
 	
 	

@@ -12,13 +12,11 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import dao.AdministradorDao;
 import dao.LocalidadDao;
 import dao.PaisDao;
 import dao.ProvinciaDao;
 import dao.SexoDao;
 import dao.TipoDao;
-import daoImpl.AdministradorDaoImpl;
 import daoImpl.LocalidadDaoImpl;
 import daoImpl.PaisDaoImpl;
 import daoImpl.ProvinciaDaoImpl;
@@ -27,6 +25,7 @@ import daoImpl.TipoDaoImpl;
 import entidad.Administrador;
 import entidad.Direccion;
 import entidad.Localidad;
+import entidad.Medico;
 import entidad.Pais;
 import entidad.Persona;
 import entidad.Provincia;
@@ -34,9 +33,11 @@ import entidad.Sexo;
 import entidad.Tipo;
 import entidad.Usuario;
 import negocio.AdministradorNegocio;
+import negocio.MedicoNegocio;
 import negocio.PersonaNegocio;
 import negocio.UsuarioNegocio;
 import negocioImpl.AdministradorNegocioImpl;
+import negocioImpl.MedicoNegocioImpl;
 import negocioImpl.PersonaNegocioImpl;
 import negocioImpl.UsuarioNegocioImpl;
 
@@ -51,9 +52,29 @@ public class servletNuevoUsuario extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
+		//INICIALIZACION DE ATRIBUTOS
+		request.setAttribute("existeAdmin", false);
+		request.setAttribute("existePersona", false);
+		request.setAttribute("existeUsuario", false);
+		
 		// EVENTO BOTON AGREGAR NUEVO USUARIO
 		if(request.getParameter("btnAgregarUsuario")!=null) {					
 			agregar_nuevo_usuario(request, response);
+		}
+		
+		if(request.getParameter("btnEliminarUsuario")!=null) {
+			if(request.getParameter("radSelect")!=null){
+				if(eliminar_usuario(request, response)) {
+					
+				}else {
+					// NO SE PUDO ELIMINAR
+				}
+				RequestDispatcher rd = request.getRequestDispatcher("servletPanelAdministrador");   
+		        rd.forward(request, response);
+		        return;
+			}else {
+				// NO HAY NADA SELECCIONADO - DEVOLVER ATRIBUTO O MENSAJE DE ERROR
+			}
 		}
 		
 		// CARGA LISTAS COMPLETAS
@@ -234,12 +255,19 @@ public class servletNuevoUsuario extends HttpServlet {
 		}
 		
 		if(adminneg.existeAdmin(Perso.getDni())) { // SI ADMIN EXISTE - REGRESA SIN AGREGAR NADA
+			request.setAttribute("existeAdmin", true);
 			return false;
 		}
 		
 		if(perneg.existePersona(Perso.getDni()) || userneg.existeUsuario(User.getUser())!=-1) {
+			if(perneg.existePersona(Perso.getDni())) {
+				request.setAttribute("existePersona", true);
+			}else {
+				request.setAttribute("existeUsuario", true);
+			}
 			return false;
 		} else if (!perneg.agregarPersona(Perso)) {
+			
 			return false;
 		} else if (!userneg.agregarUsuario(User)) {
 			//perneg.eliminarPersona(Perso.getDni()); // SI NO SE PUEDE AGREGAR EL USUARIO, SE ELIMINA LA PERSONA - A REVISAR
@@ -247,7 +275,6 @@ public class servletNuevoUsuario extends HttpServlet {
 		}
 		
 		User.setIdUsuario(userneg.existeUsuario(User.getUser()));
-		System.out.println(User.getIdUsuario() + " - " + User.getUser());
 		if(flag) {
 			Admin.setUsuario(User);
 			Admin.setDni(Perso.getDni());
@@ -255,4 +282,24 @@ public class servletNuevoUsuario extends HttpServlet {
 		}
 		return false;
 	}
+	
+	private boolean eliminar_usuario (HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		AdministradorNegocio adminneg = new AdministradorNegocioImpl();
+		MedicoNegocio medicneg = new MedicoNegocioImpl();
+		Administrador admin = new Administrador();
+		Medico medic = new Medico();
+		
+		admin = adminneg.buscar_usuario(Integer.parseInt(request.getParameter("radSelect")));
+		if(admin != null) {
+			return adminneg.bajaAdmin(admin);
+		}
+		
+		medic = medicneg.buscar_usuario(Integer.parseInt(request.getParameter("radSelect")));
+		if(medic !=null) {
+			return medicneg.bajaMedico(medic);
+		}
+		return false;
+	}
 }
+
+	

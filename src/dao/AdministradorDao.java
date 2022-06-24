@@ -12,5 +12,7 @@ public interface AdministradorDao {
 	public Administrador ObtenerObjeto(int idAdmin);
 	public ArrayList<Administrador> ListarTodo();
 	public boolean existeAdmin(int dni);
+	public Administrador buscar_usuario(int idUser);
+	public boolean bajaAdmin(int idAdmin);
 
 }

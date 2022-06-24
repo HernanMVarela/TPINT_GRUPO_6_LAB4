@@ -44,7 +44,9 @@ $(document).ready( function () {
 <div class="row mx-2 mb-2 justify-content-center p-2">
   		<label class="subtitle w-100">Panel de control - Usuarios</label>
 </div>
+<form method="get" action="servletNuevoUsuario"><!-- REEMPLAZAR POR INPUT CON RUTA A SERVLET -->
   <div class="container-fluid">
+
    <div class="row mx-2 d-flex flex-wrap align-middle justify-content-evenly">
 	  	<div class="col-md-2 border-right">
 	  		<div class="row text-start p-2">
@@ -76,8 +78,14 @@ $(document).ready( function () {
 					if(!listaadmin.isEmpty()){
 						for(Administrador admin : listaadmin){
 						%>
-						<tr><td> <%=admin.getUsuario().getIdUsuario() %> </td><td> <%=admin.getNombre() +" "+ admin.getApellido()%> </td>
-						<td> <%=admin.getUsuario().getUser() %> </td><td> <%=admin.getUsuario().getTipo().getNombre() %> </td><td> <%=admin.isEstado() %> </td><td align="center"> <input type="radio" name="radSelect" value=""> </td></tr>
+						<tr <% if(!admin.isEstado()){%> class="table-danger" <%} %>>
+						<td> <%=admin.getUsuario().getIdUsuario() %> </td>
+						<td> <%=admin.getNombre() +" "+ admin.getApellido()%> </td>
+						<td> <%=admin.getUsuario().getUser() %> </td>
+						<td> <%=admin.getUsuario().getTipo().getNombre() %> </td>
+						<td> <%=admin.isEstado()? "Activo":"Inactivo"%> </td>
+						<td align="center"> <input type="radio" name="radSelect" value="<%=admin.getUsuario().getIdUsuario()%>"></td>
+						</tr>
 						<%
 						}
 					}
@@ -87,8 +95,14 @@ $(document).ready( function () {
 					if(!listamedic.isEmpty()){
 						for(Medico medic : listamedic){
 						%>
-						<tr><td> <%=medic.getUsuario().getIdUsuario() %> </td><td> <%=medic.getNombre() +" "+ medic.getApellido()%> </td>
-						<td> <%=medic.getUsuario().getUser() %> </td><td> <%=medic.getUsuario().getTipo().getNombre() %> </td><td> <%=medic.isEstado() %> </td><td align="center"> <input type="radio" name="radSelect" value=""> </td></tr>
+						<tr <% if(!medic.isEstado()){%> class="table-danger" <%} %>>
+						<td> <%=medic.getUsuario().getIdUsuario() %> </td>
+						<td> <%=medic.getNombre() +" "+ medic.getApellido()%> </td>
+						<td> <%=medic.getUsuario().getUser() %> </td>
+						<td> <%=medic.getUsuario().getTipo().getNombre() %> </td>
+						<td> <%=medic.isEstado()? "Activo":"Inactivo"%> </td>
+						<td align="center"> <input type="radio" name="radSelect" value="<%=medic.getUsuario().getIdUsuario()%>"></td>
+						</tr>
 						<%
 						}
 					}
@@ -104,9 +118,7 @@ $(document).ready( function () {
   			<a href="servletNuevoUsuario" class="btn btn-info w-75">Agregar</a>
   		</div>
   		<div class="col-md-4 d-flex justify-content-center">
-  			<form action="" method="get" class="w-75"><!-- REEMPLAZAR POR INPUT CON RUTA A SERVLET -->
-  				<input type="submit" class="btn btn-info w-100" name="btnModificar" value="Modificar">
-  			</form>
+  			<input type="submit" class="btn btn-info w-100" name="btnModificar" value="Modificar">
   		</div>
   		<div class="col-md-4 d-flex justify-content-center">
   			<button type="button" class="btn btn-danger w-75" data-bs-toggle="modal" data-bs-target="#modalEliminarUsuario">Eliminar</button>
@@ -127,12 +139,11 @@ $(document).ready( function () {
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-	     				<form method="post" action=""><!-- REEMPLAZAR POR INPUT CON RUTA A SERVLET -->
-	     					<input type="submit" name="btnEliminarUsuario" class="btn btn-outline-danger w-100" value="Eliminar">
-	     				</form>
+	     			<input type="submit" name="btnEliminarUsuario" class="btn btn-outline-danger w-25" value="Eliminar">
 				</div>
 			</div>
 		</div>
 	</div>
+</form>
 </body>
 </html>
