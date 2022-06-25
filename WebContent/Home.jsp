@@ -56,7 +56,7 @@
 					<h4 class="card-title">Administración</h4>
 					<p class="card-text">Panel de administración del sitio.</p>
 					<a href="servletPanelAdministrador" class="btn btn-primary w-100 my-2">Administración</a>
-					<a href="servletNuevoUsuarip" class="btn btn-primary w-100 my-2">Nuevo usuario</a>
+					<a href="servletNuevoUsuario" class="btn btn-primary w-100 my-2">Nuevo usuario</a>
 				</div>
 			</div>
 	</div>

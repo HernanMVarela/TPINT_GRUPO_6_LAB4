@@ -37,7 +37,6 @@ $(document).ready( function () {
 
 <body>
 <%!ArrayList<Administrador> listaadmin = null;%>
-<%!ArrayList<Medico> listamedic = null;%>
 
 <jsp:include page="Menu.html"></jsp:include>
 
@@ -85,23 +84,6 @@ $(document).ready( function () {
 						<td> <%=admin.getUsuario().getTipo().getNombre() %> </td>
 						<td> <%=admin.isEstado()? "Activo":"Inactivo"%> </td>
 						<td align="center"> <input type="radio" name="radSelect" value="<%=admin.getUsuario().getIdUsuario()%>"></td>
-						</tr>
-						<%
-						}
-					}
-				}
-				if(request.getAttribute("listamedic")!=null){
-					listamedic = (ArrayList<Medico>)request.getAttribute("listamedic");
-					if(!listamedic.isEmpty()){
-						for(Medico medic : listamedic){
-						%>
-						<tr <% if(!medic.isEstado()){%> class="table-danger" <%} %>>
-						<td> <%=medic.getUsuario().getIdUsuario() %> </td>
-						<td> <%=medic.getNombre() +" "+ medic.getApellido()%> </td>
-						<td> <%=medic.getUsuario().getUser() %> </td>
-						<td> <%=medic.getUsuario().getTipo().getNombre() %> </td>
-						<td> <%=medic.isEstado()? "Activo":"Inactivo"%> </td>
-						<td align="center"> <input type="radio" name="radSelect" value="<%=medic.getUsuario().getIdUsuario()%>"></td>
 						</tr>
 						<%
 						}

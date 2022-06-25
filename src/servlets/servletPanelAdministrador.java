@@ -29,7 +29,6 @@ public class servletPanelAdministrador extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		request.setAttribute("listaadmin", create_admin_list());
-		request.setAttribute("listamedic", create_medico_list());
 		
 		RequestDispatcher rd = request.getRequestDispatcher("/PanelAdministrador.jsp");   
         rd.forward(request, response);
@@ -47,12 +46,5 @@ public class servletPanelAdministrador extends HttpServlet {
 		ladmin = admindao.ListarTodo();
 		return ladmin;
 	}
-	
-	private List<Medico> create_medico_list(){
-		List<Medico> lmedic = new ArrayList<Medico>();
-		MedicoDao medicdao = new MedicoDaoImpl();
-		
-		lmedic = medicdao.ListarTodo();
-		return lmedic;
-	}
+
 }

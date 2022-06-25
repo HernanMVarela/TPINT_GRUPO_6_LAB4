@@ -28,8 +28,19 @@ public class AdministradorNegocioImpl implements AdministradorNegocio {
 	@Override
 	public boolean bajaAdmin(Administrador baja) {
 		AdministradorDao admindao = new AdministradorDaoImpl();
-		admindao.bajaAdmin(baja.getIdAdmin());
-		return false;
+		return admindao.bajaAdmin(baja.getIdAdmin());
+	}
+
+	@Override
+	public Administrador ObtenerObjeto(int idAdmin) {
+		AdministradorDao admindao = new AdministradorDaoImpl();
+		return admindao.ObtenerObjeto(idAdmin);
+	}
+
+	@Override
+	public boolean Modificar(Administrador admin) {
+		AdministradorDao admindao = new AdministradorDaoImpl();
+		return admindao.Modificar(admin);
 	}
 	
 	

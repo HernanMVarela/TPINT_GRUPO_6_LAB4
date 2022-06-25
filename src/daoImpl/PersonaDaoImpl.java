@@ -23,6 +23,7 @@ public class PersonaDaoImpl implements PersonaDao {
 	private String agregar = "INSERT INTO bdtp_integrador.Personas (DNI, Nombre, Apellido, IDPais, Direccion, IDSexo, IDLocalidad, Email, Telefono, Fecha_nacimiento) VALUES (?,?,?,?,?,?,?,?,?,?)";
 	private String buscardni = "SELECT * FROM PERSONAS where DNI = ?";
 	
+	@Override
 	public boolean Agregar(Persona persona) {
 		
 		try {
@@ -247,7 +248,7 @@ public class PersonaDaoImpl implements PersonaDao {
 			statement.setString(8, persona.getTelefono());
 			statement.setDate(9, persona.getFecha_nacimiento());
 			statement.setInt(10, persona.getDni());
-			
+
 			if(statement.executeUpdate() > 0) {
 				conexion.getSQLConexion().commit();
 				result = true;
@@ -260,9 +261,7 @@ public class PersonaDaoImpl implements PersonaDao {
 				e2.printStackTrace();
 			}
 		}
-		
 		return result;
-		
 	}
 
 	@Override

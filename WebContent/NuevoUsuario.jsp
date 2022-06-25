@@ -5,7 +5,6 @@
 <%@page import="entidad.Pais"%>
 <%@page import="entidad.Sexo"%>
 <%@page import="entidad.Tipo"%>
-<%@page import="entidad.Medico"%>
 <%@page import="entidad.Administrador"%>
 <%@page import="servlets.servletNuevoUsuario"%>
 
@@ -30,14 +29,8 @@
 <%!ArrayList<Sexo> listasexos = null;%>
 <%!ArrayList<Tipo> listaTipos = null;%>
 <%!ArrayList<Pais> listapaises = null;%>
-<%!Medico medic = null;%>
 <%!Administrador admin = null;%>
 <%
-	if(request.getAttribute("medico")!=null){
-		
-		medic = (Medico)request.getAttribute("medico");
-	}
-
 	if(request.getAttribute("admin")!=null){
 		admin = (Administrador)request.getAttribute("admin");
 	}
@@ -50,9 +43,18 @@
 </div>
 <div class="container-fluid">
 	<form action="servletNuevoUsuario" method="get" ><!-- REEMPLAZAR POR INPUT CON RUTA A SERVLET -->
+	<%
+	if(admin != null) {
+		%>
+		<input type="hidden" name="adminId" value="<%=admin.getIdAdmin()%>">
+		<%
+		}else{
+			
+		}
+	%>
 	<div class="row justify-content-center">
 	  	<div class="col col-md-6 mh-2 justify-content-center p-2">
-	  		<label class="subtitle w-100">Datos personales</label>
+	  		<label class="subtitle w-100">Datos personales </label>
 	  	</div>
 	  	<div class="col col-md-3 mh-2 justify-content-center p-2">
 	  		<label class="subtitle w-100">Cuenta de usuario</label>
@@ -63,7 +65,6 @@
 	  		<label class="p-1">Nombre</label>
 		  	<input type="text" name="txfNombrePersona" class="w-100" required
 	  		<% 
-	  			if(medic!=null){%>value="<%=medic.getNombre()%>"<%;}
 	  			if(admin!=null){%>value="<%=admin.getNombre()%>"<%;}
 		  	%>>
 	  	</div>
@@ -71,7 +72,6 @@
 	  		<label class="p-1">Apellido</label>
 		  	<input type="text" name="txfApellidoPersona" class="w-100" required
 	  		<% 
-	  		if(medic!=null){%>value="<%=medic.getApellido()%>"<%;}
   			if(admin!=null){%>value="<%=admin.getApellido()%>"<%;}
 	  		%>
 		  	>
@@ -80,7 +80,6 @@
 	  		<label class="p-1">Nombre de usuario</label>
 		  	<input type="text" name="txfUsername" class="w-100" required
 	  		<% 
-	  		if(medic!=null){%>value="<%=medic.getUsuario().getUser()%>"<%;}
   			if(admin!=null){%>value="<%=admin.getUsuario().getUser()%>"<%;}
 	  		%>
 		  	>
@@ -91,8 +90,7 @@
 	  		<label class="p-1">Documento</label>
 		  	<input type="number" name="txfDocumentoPersona" class="w-100" required
 	  		<% 
-	  		if(medic!=null){%>value="<%=medic.getDni()%>" <%;}
-  			if(admin!=null){%>value="<%=admin.getDni()%>" <%;}
+  			if(admin!=null){%>value="<%=admin.getDni()%>"<%;}
 	  		%>
 		  	>
 	  	</div>
@@ -108,7 +106,6 @@
 						%>
 						<option value="<%=pa.getIdNacionalidad()%>" 
 						<%
-				  		if(medic!=null && medic.getNacionalidad().getIdNacionalidad() == pa.getIdNacionalidad()){%>selected<%;}
 			  			if(admin!=null && admin.getNacionalidad().getIdNacionalidad() == pa.getIdNacionalidad()){%>selected<%;}
 						%>
 						><%=pa.getNombre() %></option>
@@ -123,7 +120,6 @@
 	  		<label class="p-1">Contraseña</label>
 		  	<input type="password" name="txfPassword1" class="w-100" required
 	  		<% 
-	  		if(medic!=null){%>value="<%=medic.getUsuario().getPassword()%>"<%;}
   			if(admin!=null){%>value="<%=admin.getUsuario().getPassword()%>"<%;}
 	  		%>
 		  	>
@@ -142,7 +138,6 @@
 						%>
 						<option value="<%=sex.getIdSexo()%>" 
 						<%
-				  		if(medic!=null && medic.getSexo().getIdSexo() == sex.getIdSexo()){%>selected<%;}
 			  			if(admin!=null && admin.getSexo().getIdSexo() == sex.getIdSexo()){%>selected<%;}
 						%>
 						><%=sex.getNombre()%></option>
@@ -157,7 +152,6 @@
 	  		<label class="p-1">Fecha de nacimiento</label>
 		  	<input type="date" name="txfFechaNacPersona" class="w-100" required
 	  		<% 
-	  		if(medic!=null){%>value="<%=medic.getFecha_nacimiento() %>"<%;}
   			if(admin!=null){%>value="<%=admin.getFecha_nacimiento() %>"<%;}
 	  		%>
 		  	>
@@ -166,7 +160,6 @@
 	  		<label class="p-1">Verifique su contraseña</label>
 		  	<input type="password" name="txfPassword2" class="w-100" required
 	  		<% 
-	  		if(medic!=null){%>value="<%=medic.getUsuario().getPassword()%>"<%;}
   			if(admin!=null){%>value="<%=admin.getUsuario().getPassword()%>"<%;}
 	  		%>
 		  	>
@@ -185,7 +178,6 @@
 						%>
 						<option value="<%=prov.getIdProv() %>" 
 						<%
-				  		if(medic!=null && medic.getDirecc().getLoc().getProvincia().getIdProv() == prov.getIdProv()){%>selected<%;}
 			  			if(admin!=null && admin.getDirecc().getLoc().getProvincia().getIdProv() == prov.getIdProv()){%>selected<%;}
 						%>
 						><%=prov.getNombre() %></option>
@@ -209,7 +201,6 @@
 							%>
 							<option value="<%=loc.getIdLocalidad()%>" 
 							<%
-					  		if(medic!=null && medic.getDirecc().getLoc().getIdLocalidad() == loc.getIdLocalidad()){%>selected<%;}
 				  			if(admin!=null && admin.getDirecc().getLoc().getIdLocalidad() == loc.getIdLocalidad()){%>selected<%;}
 							%>
 							><%=loc.getNombre() %></option>	
@@ -224,7 +215,6 @@
 	 		<label class="p-1">Dirección</label>
 		  	<input type="text" name="txfDireccionPersona" class="w-100" required
 	  		<% 
-	  		if(medic!=null){%>value="<%=medic.getDirecc().getCalleYNum()%>"<%;}
   			if(admin!=null){%>value="<%=admin.getDirecc().getCalleYNum()%>"<%;}
 	  		%>
 		  	>
@@ -241,7 +231,6 @@
 							%>
 							<option value="<%=tip.getIdTipo()%>" 
 							<%
-					  		if(medic!=null && medic.getUsuario().getTipo().getIdTipo() == tip.getIdTipo()){%>selected<%;}
 				  			if(admin!=null && admin.getUsuario().getTipo().getIdTipo() == tip.getIdTipo()){%>selected<%;}
 							%>
 							><%=tip.getNombre() %></option>	
@@ -258,7 +247,6 @@
 	  		<label class="p-1">Email</label>
 		  	<input type="email" name="txfEmailPersona" class="w-100" required
 	  		<% 
-	  		if(medic!=null){%>value="<%=medic.getEmail() %>"<%;}
   			if(admin!=null){%>value="<%=admin.getEmail()%>"<%;}
 	  		%>
 		  	>
@@ -267,7 +255,6 @@
 	  		<label class="p-1">Telefono</label>
 		  	<input type="text" name="txfTelefonoPersona" class="w-100" required
 	  		<% 
-	  		if(medic!=null){%>value="<%=medic.getTelefono() %>"<%;}
   			if(admin!=null){%>value="<%=admin.getTelefono()%>"<%;}
 	  		%>
 		  	>
@@ -278,12 +265,10 @@
 				<option value="0" disabled>Seleccione opción</option>
 				<option value="1" 
 				<% 
-				if(medic!=null && medic.isEstado()){%>selected<%;}
 	  			if(admin!=null && admin.isEstado()){%>selected<%;}
 				%>>Activo</option>
 				<option value="2" 
 				<% 
-				if(medic!=null && !medic.isEstado()){%>selected<%;}
 	  			if(admin!=null && !admin.isEstado()){%>selected<%;}
 				%>>Inactivo</option>
 			</select>
@@ -291,9 +276,7 @@
 	  </div>
 		<div class="row justify-content-center m-3">
 			<div class="col col-md-3">
-				
 				<input type="submit" class="btn btn-info w-100" name="btnAgregarUsuario" value="Agregar">
-				
 			</div>
 	 	</div>
 	</form>
