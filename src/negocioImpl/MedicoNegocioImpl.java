@@ -8,6 +8,12 @@ import negocio.MedicoNegocio;
 public class MedicoNegocioImpl implements MedicoNegocio{
 
 	@Override
+	public boolean agregarMedico(Medico agregar) {
+		MedicoDao medao = new MedicoDaoImpl();
+		return medao.Agregar(agregar);
+	}
+	
+	@Override
 	public Medico buscar_usuario(int idUser) {
 		MedicoDao meddao = new MedicoDaoImpl();
 		return meddao.buscar_usuario(idUser);
