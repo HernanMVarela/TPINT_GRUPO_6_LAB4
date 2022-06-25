@@ -21,6 +21,10 @@ import entidad.Pais;
 import entidad.Persona;
 import entidad.Sexo;
 import entidad.Usuario;
+import negocio.PersonaNegocio;
+import negocio.UsuarioNegocio;
+import negocioImpl.PersonaNegocioImpl;
+import negocioImpl.UsuarioNegocioImpl;
 
 public class MedicoDaoImpl implements MedicoDao{
 	
@@ -28,6 +32,7 @@ public class MedicoDaoImpl implements MedicoDao{
 	private String leerTodo = "SELECT * FROM bdtp_integrador.medicos M inner join personas P on M.DNI = P.DNI inner join usuarios u on u.idUsuario = m.IDUsuario";
 	private String alinsertar = "INSERT INTO bdtp_integrador.medicos (DNI,IDEspecialidad,IDUsuario,Estado) VALUES (?,?,?,?)";
 	private String modificar = "UPDATE bdtp_integrador.medicos SET DNI = ?, IDEspecialidad = ?, IDUsuario = ?, Estado = ? WHERE IDMedico = ?";
+	private String modif_user = "UPDATE bdtp_integrador.medicos SET IDUsuario = ?, Estado = ? WHERE DNI = ?";
 	private String buscar = "SELECT * FROM bdtp_integrador.medicos WHERE IDMedico = ?";
 	private String eliminar = "DELETE FROM bdtp_integrador.medicos WHERE IDMedico = ?";
 	private String proxid = "SELECT MAX(m.IDMedico) FROM bdtp_integrador.medicos m order by m.IDMedico";
@@ -407,6 +412,64 @@ public class MedicoDaoImpl implements MedicoDao{
 				e2.printStackTrace();
 			}
 		}
+		return result;
+	}
+
+	@Override
+	public boolean Modif_user(Medico medico) {
+		try {
+			Class.forName("com.mysql.cj.jdbc.Driver");
+			} 
+		catch (ClassNotFoundException e) {
+			e.printStackTrace();
+			}
+		
+		boolean result = false;
+		Conexion conexion = Conexion.getConexion();
+		PreparedStatement statement;
+		Persona perso = new Persona();
+		Usuario user = new Usuario();
+		PersonaNegocio perneg = new PersonaNegocioImpl();
+		UsuarioNegocio userneg = new UsuarioNegocioImpl();	
+		
+		try {
+			
+			perso.setNombre(medico.getNombre());
+			perso.setApellido(medico.getApellido());
+			perso.setDni(medico.getDni());
+			perso.setEmail(medico.getEmail());
+			perso.setFecha_nacimiento(medico.getFecha_nacimiento());
+			perso.setNacionalidad(medico.getNacionalidad());
+			perso.setSexo(medico.getSexo());
+			perso.setTelefono(medico.getTelefono());
+			
+			user.setIdUsuario(medico.getUsuario().getIdUsuario());
+			user.setUser(medico.getUsuario().getUser());
+			user.setPassword(medico.getUsuario().getPassword());
+			user.setTipo(medico.getUsuario().getTipo());
+			
+			if(!perneg.Modificar(perso)) {return false;}
+			if(!userneg.Modificar(user)) {return false;}
+			
+			statement = conexion.getSQLConexion().prepareStatement(modif_user);
+			
+			statement.setInt(1,medico.getUsuario().getIdUsuario());
+			statement.setInt(2,medico.isEstado() ? 1 : 0);
+			statement.setInt(3,medico.getDni());
+			
+			if(statement.executeUpdate() > 0) {
+				conexion.getSQLConexion().commit();
+				result = true;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			try {
+				conexion.getSQLConexion().rollback();
+			} catch (Exception e2) {
+				e2.printStackTrace();
+			}
+		}
+		
 		return result;
 	}
 	

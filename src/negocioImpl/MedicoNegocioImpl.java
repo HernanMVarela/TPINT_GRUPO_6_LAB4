@@ -19,4 +19,10 @@ public class MedicoNegocioImpl implements MedicoNegocio{
 		return meddao.bajaMedico(baja.getIdMedico());
 	}
 
+	@Override
+	public boolean modificar_usuario(Medico modif_user) {
+		MedicoDao meddao = new MedicoDaoImpl();
+		return meddao.Modificar(modif_user);
+	}
+
 }

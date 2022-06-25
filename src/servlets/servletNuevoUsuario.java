@@ -65,15 +65,12 @@ public class servletNuevoUsuario extends HttpServlet {
 				}else {
 					// NO SE PUDO MODIFICAR
 				}
-				RequestDispatcher rd = request.getRequestDispatcher("/NuevoUsuario.jsp");   
-		        rd.forward(request, response);
-		        return;
 			}else {
 				// NO HAY NADA SELECCIONADO - DEVOLVER ATRIBUTO O MENSAJE DE ERROR
 			}
 		}
 		
-		if(request.getParameter("btnAgregarUsuario")!=null) {					
+		if(request.getParameter("btnAgregarUsuario")!=null) {
 			agregar_nuevo_usuario(request, response);
 		}
 		
@@ -344,7 +341,6 @@ public class servletNuevoUsuario extends HttpServlet {
 				
 				request.setAttribute("admin", admin);
 				
-				System.out.println(admin.getIdAdmin() + " " + admin.getNombre() + " " + admin.getApellido() + " " + admin.getUsuario().getUser() + " " + admin.getDni());
 				return true;
 			}
 			
@@ -364,7 +360,6 @@ public class servletNuevoUsuario extends HttpServlet {
 				
 				request.setAttribute("medico", medic);
 				
-				System.out.println(medic.getIdMedico() + " " + medic.getNombre() + " " + medic.getApellido() + " " + medic.getUsuario().getUser() + " " + medic.getDni());
 				return true;
 			}
 		}

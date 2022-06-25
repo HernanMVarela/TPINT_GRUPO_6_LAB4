@@ -78,25 +78,40 @@
 	  	</div>
 	  	<div class="col col-md-3 mh-2 justify-content-center p-2">
 	  		<label class="p-1">Nombre de usuario</label>
-		  	<input type="text" name="txfUsername" class="w-100" required>
+		  	<input type="text" name="txfUsername" class="w-100" required
+	  		<% 
+	  		if(medic!=null){%>value="<%=medic.getUsuario().getUser()%>"<%;}
+  			if(admin!=null){%>value="<%=admin.getUsuario().getUser()%>"<%;}
+	  		%>
+		  	>
 	  	</div>
 	  </div>
 	  <div class="row justify-content-center">
 	  	<div class="col col-md-3 mh-2 justify-content-center p-2">
 	  		<label class="p-1">Documento</label>
-		  	<input type="number" name="txfDocumentoPersona" class="w-100" required>
+		  	<input type="number" name="txfDocumentoPersona" class="w-100" required
+	  		<% 
+	  		if(medic!=null){%>value="<%=medic.getDni()%>" <%;}
+  			if(admin!=null){%>value="<%=admin.getDni()%>" <%;}
+	  		%>
+		  	>
 	  	</div>
 	  	<div class="col col-md-3 mh-2 justify-content-center p-2">
 	  		<label class="p-1">Nacionalidad</label>
 		  	<select name="slcPaisPersona" class="w-100" required>
-				<option value="0">Seleccione opción</option>
+				<option value="0" disabled>Seleccione opción</option>
 				<%
 				if(request.getAttribute("listaPaises")!=null){
 					listapaises = (ArrayList<Pais>)request.getAttribute("listaPaises");
 					if(!listapaises.isEmpty()){
 						for(Pais pa : listapaises){
 						%>
-						<option value="<%=pa.getIdNacionalidad()%>"><%=pa.getNombre() %></option>
+						<option value="<%=pa.getIdNacionalidad()%>" 
+						<%
+				  		if(medic!=null && medic.getNacionalidad().getIdNacionalidad() == pa.getIdNacionalidad()){%>selected<%;}
+			  			if(admin!=null && admin.getNacionalidad().getIdNacionalidad() == pa.getIdNacionalidad()){%>selected<%;}
+						%>
+						><%=pa.getNombre() %></option>
 						<%
 						}
 					}
@@ -106,22 +121,31 @@
 	  	</div>
 	  	<div class="col col-md-3 mh-2 justify-content-center p-2">
 	  		<label class="p-1">Contraseña</label>
-		  	<input type="password" name="txfPassword1" class="w-100" required>
+		  	<input type="password" name="txfPassword1" class="w-100" required
+	  		<% 
+	  		if(medic!=null){%>value="<%=medic.getUsuario().getPassword()%>"<%;}
+  			if(admin!=null){%>value="<%=admin.getUsuario().getPassword()%>"<%;}
+	  		%>
+		  	>
 	  	</div>
 	  </div>
 	  <div class="row justify-content-center">
 	  	<div class="col col-md-3 mh-2 justify-content-center p-2">
 		  	<label class="p-1">Sexo</label> 
 			<select name="slcSexoPersona" id="slcSexoPersona" class="w-100" required>
-				<option value="0">Seleccione opción</option>
+				<option value="0" disabled>Seleccione opción</option>
 				<%
 				if(request.getAttribute("listasexos")!=null){
 					listasexos = (ArrayList<Sexo>)request.getAttribute("listasexos");
 					if(!listasexos.isEmpty()){
 						for(Sexo sex : listasexos){
 						%>
-						<option value="<%=sex.getIdSexo()%>"><%=sex.getNombre()%></option>
-							
+						<option value="<%=sex.getIdSexo()%>" 
+						<%
+				  		if(medic!=null && medic.getSexo().getIdSexo() == sex.getIdSexo()){%>selected<%;}
+			  			if(admin!=null && admin.getSexo().getIdSexo() == sex.getIdSexo()){%>selected<%;}
+						%>
+						><%=sex.getNombre()%></option>
 						<%
 						}
 					}
@@ -131,25 +155,40 @@
 	    </div>
 	     <div class="col col-md-3 mh-2 justify-content-center p-2">
 	  		<label class="p-1">Fecha de nacimiento</label>
-		  	<input type="date" name="txfFechaNacPersona" class="w-100" required>
+		  	<input type="date" name="txfFechaNacPersona" class="w-100" required
+	  		<% 
+	  		if(medic!=null){%>value="<%=medic.getFecha_nacimiento() %>"<%;}
+  			if(admin!=null){%>value="<%=admin.getFecha_nacimiento() %>"<%;}
+	  		%>
+		  	>
 	    </div>
 	     <div class="col col-md-3 mh-2 justify-content-center p-2">
 	  		<label class="p-1">Verifique su contraseña</label>
-		  	<input type="password" name="txfPassword2" class="w-100" required>
+		  	<input type="password" name="txfPassword2" class="w-100" required
+	  		<% 
+	  		if(medic!=null){%>value="<%=medic.getUsuario().getPassword()%>"<%;}
+  			if(admin!=null){%>value="<%=admin.getUsuario().getPassword()%>"<%;}
+	  		%>
+		  	>
 	    </div>
 	  </div>
 	  <div class="row justify-content-center">
 	  	<div class="col col-md-2 mh-2 justify-content-center p-2">
 	  		<label class="p-1">Provincia</label> 
 			<select name="slcProvPersona" id="slcProvPersona" class="w-100" required>
-				<option value="0">Seleccione opción</option>
+				<option value="0" disabled>Seleccione opción</option>
 				<%
 				if(request.getAttribute("listaProvincias")!=null){
 					listaProvincias = (ArrayList<Provincia>)request.getAttribute("listaProvincias");
 					if(!listaProvincias.isEmpty()){
 						for(Provincia prov : listaProvincias){
 						%>
-						<option value="<%=prov.getIdProv() %>"><%=prov.getNombre() %></option>
+						<option value="<%=prov.getIdProv() %>" 
+						<%
+				  		if(medic!=null && medic.getDirecc().getLoc().getProvincia().getIdProv() == prov.getIdProv()){%>selected<%;}
+			  			if(admin!=null && admin.getDirecc().getLoc().getProvincia().getIdProv() == prov.getIdProv()){%>selected<%;}
+						%>
+						><%=prov.getNombre() %></option>
 							
 						<%
 						}
@@ -161,14 +200,19 @@
 	  	<div class="col col-md-2 mh-2 justify-content-center p-2">
 	  		<label class="p-1">Localidad</label> 
 			<select name="slcLocPersona" id="slcLocPersona" class="w-100" required>
-				<option value="0">Seleccione opción</option>
+				<option value="0" disabled>Seleccione opción</option>
 				<%
 				if(request.getAttribute("listaLocalidades")!=null){
 					listaLocalidades = (ArrayList<Localidad>)request.getAttribute("listaLocalidades");
 					if(!listaLocalidades.isEmpty()){
 						for(Localidad loc : listaLocalidades){
 							%>
-							<option value="<%=loc.getIdLocalidad()%>"><%=loc.getNombre() %></option>	
+							<option value="<%=loc.getIdLocalidad()%>" 
+							<%
+					  		if(medic!=null && medic.getDirecc().getLoc().getIdLocalidad() == loc.getIdLocalidad()){%>selected<%;}
+				  			if(admin!=null && admin.getDirecc().getLoc().getIdLocalidad() == loc.getIdLocalidad()){%>selected<%;}
+							%>
+							><%=loc.getNombre() %></option>	
 							<%
 						}
 					}
@@ -178,19 +222,29 @@
 	  	</div>
 	  	<div class="col col-md-2 mh-2 justify-content-center p-2">
 	 		<label class="p-1">Dirección</label>
-		  	<input type="text" name="txfDireccionPersona" class="w-100" required>
+		  	<input type="text" name="txfDireccionPersona" class="w-100" required
+	  		<% 
+	  		if(medic!=null){%>value="<%=medic.getDirecc().getCalleYNum()%>"<%;}
+  			if(admin!=null){%>value="<%=admin.getDirecc().getCalleYNum()%>"<%;}
+	  		%>
+		  	>
 	  	</div>
 	  	<div class="col col-md-3 mh-2 justify-content-center p-2">
 	  		<label class="p-1">Tipo de usuario</label> 
 			<select name="slcTipoUsuario" class="w-100" required>
-				<option value="0">Seleccione opción</option>
+				<option value="0" disabled>Seleccione opción</option>
 				<%
 				if(request.getAttribute("listaTipos")!=null){
 					listaTipos = (ArrayList<Tipo>)request.getAttribute("listaTipos");
 					if(!listaTipos.isEmpty()){
 						for(Tipo tip : listaTipos){
 							%>
-							<option value="<%=tip.getIdTipo() %>"><%=tip.getNombre() %></option>	
+							<option value="<%=tip.getIdTipo()%>" 
+							<%
+					  		if(medic!=null && medic.getUsuario().getTipo().getIdTipo() == tip.getIdTipo()){%>selected<%;}
+				  			if(admin!=null && admin.getUsuario().getTipo().getIdTipo() == tip.getIdTipo()){%>selected<%;}
+							%>
+							><%=tip.getNombre() %></option>	
 							<%
 						}
 					}
@@ -202,18 +256,36 @@
 	  <div class="row justify-content-center">
 	  	<div class="col col-md-3 mh-2 justify-content-center p-2">
 	  		<label class="p-1">Email</label>
-		  	<input type="email" name="txfEmailPersona" class="w-100" required>
+		  	<input type="email" name="txfEmailPersona" class="w-100" required
+	  		<% 
+	  		if(medic!=null){%>value="<%=medic.getEmail() %>"<%;}
+  			if(admin!=null){%>value="<%=admin.getEmail()%>"<%;}
+	  		%>
+		  	>
 	  	</div>
 	  	<div class="col col-md-3 mh-2 justify-content-center p-2">
 	  		<label class="p-1">Telefono</label>
-		  	<input type="text" name="txfTelefonoPersona" class="w-100" required>
+		  	<input type="text" name="txfTelefonoPersona" class="w-100" required
+	  		<% 
+	  		if(medic!=null){%>value="<%=medic.getTelefono() %>"<%;}
+  			if(admin!=null){%>value="<%=admin.getTelefono()%>"<%;}
+	  		%>
+		  	>
 	  	</div>
 	  	<div class="col col-md-3 mh-2 justify-content-center p-2">
 	  	  	<label class="p-1">Estado de cuenta</label> 
 			<select name="slcEstadoCuenta" class="w-100" required>
-				<option value="0">Seleccione opción</option>
-				<option value="1">Activo</option>
-				<option value="2">Inactivo</option>
+				<option value="0" disabled>Seleccione opción</option>
+				<option value="1" 
+				<% 
+				if(medic!=null && medic.isEstado()){%>selected<%;}
+	  			if(admin!=null && admin.isEstado()){%>selected<%;}
+				%>>Activo</option>
+				<option value="2" 
+				<% 
+				if(medic!=null && !medic.isEstado()){%>selected<%;}
+	  			if(admin!=null && !admin.isEstado()){%>selected<%;}
+				%>>Inactivo</option>
 			</select>
 	  	</div>
 	  </div>

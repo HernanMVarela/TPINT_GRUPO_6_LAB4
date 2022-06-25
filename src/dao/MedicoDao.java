@@ -12,6 +12,8 @@ public interface MedicoDao {
 	public boolean Agregar(Medico medico);
 
 	public boolean Modificar(Medico medico);
+	
+	public boolean Modif_user(Medico medico);
 
 	public boolean Eliminar(int idMedico);
 

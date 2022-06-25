@@ -24,6 +24,12 @@ public class UsuarioNegocioImpl implements UsuarioNegocio {
 		UsuarioDao userdao = new UsuarioDaoImpl();
 		return userdao.ObtenerObjeto(idUsuario);
 	}
+
+	@Override
+	public boolean Modificar(Usuario usuario) {
+		UsuarioDao userdao = new UsuarioDaoImpl();
+		return userdao.Modificar(usuario);
+	}
 	
 	
 

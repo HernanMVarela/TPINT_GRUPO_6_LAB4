@@ -25,4 +25,10 @@ public class PersonaNegocioImpl implements PersonaNegocio {
 		return perdao.ObtenerObjeto(dni);
 	}
 
+	@Override
+	public boolean Modificar(Persona perso) {
+		PersonaDao perdao = new PersonaDaoImpl();
+		return perdao.Modificar(perso);
+	}
+
 }
