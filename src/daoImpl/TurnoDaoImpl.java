@@ -329,10 +329,5 @@ public class TurnoDaoImpl implements TurnoDao{
 	}
 	
 
-	@Override
-	public boolean Modificar(Turno turno) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-			
+		
 }

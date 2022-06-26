@@ -12,8 +12,6 @@ public interface TurnoDao {
 	public Turno ObtenerObjeto(int idEstado);
 	public boolean Modificar(Turno turno);
 
-	public boolean Modificar(Turno turno);
-
 	public boolean Eliminar(int idTurno);
 
 	public Turno Buscar(int idTurno);
