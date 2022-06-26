@@ -94,12 +94,13 @@ public class TurnoDaoImpl implements TurnoDao{
 				temp.setPaciente(par);
 				temp.setMedico(med);
 				temp.setDia(resultSet.getDate("Dia"));
-				// Revisar este--- >>> temp.setHoraDesde(direc);
 				temp.setEspecialidad(esp);
 				temp.setEstadoTurno(est);
 				temp.setObservacionConsulta(resultSet.getString("ObservacionConsulta"));
+				temp.setEstado(resultSet.getBoolean("Estado"));
 				
-				// Revisar este--- >>> result.add(new Turno(resultSet.getInt("IDTurno"),temp,resultSet.getBoolean("Estado")));
+				
+				result.add(new Turno(par,med,resultSet.getDate("Dia"),resultSet.getInt("Hora"),esp,est,resultSet.getString("ObservacionConsulta"),resultSet.getBoolean("Estado")));
 				
 			}
 			//connection.close();
@@ -127,13 +128,13 @@ public class TurnoDaoImpl implements TurnoDao{
 		try {
 			Stat = conex.prepareStatement(alinsertar);
             Stat.setInt(1,turno.getPaciente().getIdPaciente());
-            Stat.setInt(1,turno.getMedico().getIdMedico());
-            Stat.setDate(1,turno.getDia());
-            Stat.setInt(1,turno.getHora());
-            Stat.setInt(1,turno.getEspecialidad().getIdEspecialidad());
-            Stat.setInt(1,turno.getEstadoTurno().getIdEstado());
-            Stat.setString(1,turno.getObservacionConsulta());
-            Stat.setBoolean(1,turno.isEstado());
+            Stat.setInt(2,turno.getMedico().getIdMedico());
+            Stat.setDate(3,turno.getDia());
+            Stat.setInt(4,turno.getHora());
+            Stat.setInt(5,turno.getEspecialidad().getIdEspecialidad());
+            Stat.setInt(6,turno.getEstadoTurno().getIdEstado());
+            Stat.setString(7,turno.getObservacionConsulta());
+            Stat.setBoolean(8,turno.isEstado());
 	
 			
 			if(Stat.executeUpdate()>0) {
@@ -148,9 +149,151 @@ public class TurnoDaoImpl implements TurnoDao{
 				e.printStackTrace();
 			}
 		}
-		
 		return InsertState;
-		
 	}
+	
+	
+	@Override
+	public boolean Modificar(Turno turno) {
+		try {
+			Class.forName("com.mysql.cj.jdbc.Driver");
+			} 
+		catch (ClassNotFoundException e) {
+			e.printStackTrace();
+			}
+		
+		boolean result = false;
+		Conexion conexion = Conexion.getConexion();
+		PreparedStatement statement;
+		
+		try {
+			statement = conexion.getSQLConexion().prepareStatement(modificar);
+			
+            statement.setInt(1,turno.getPaciente().getIdPaciente());
+            statement.setInt(2,turno.getMedico().getIdMedico());
+            statement.setDate(3,turno.getDia());
+            statement.setInt(4,turno.getHora());
+            statement.setInt(5,turno.getEspecialidad().getIdEspecialidad());
+            statement.setInt(6,turno.getEstadoTurno().getIdEstado());
+            statement.setString(7,turno.getObservacionConsulta());
+            statement.setBoolean(8,turno.isEstado());
+			
+			if(statement.executeUpdate() > 0) {
+				conexion.getSQLConexion().commit();
+				result = true;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			try {
+				conexion.getSQLConexion().rollback();
+			} catch (Exception e2) {
+				e2.printStackTrace();
+			}
+		}
+		return result;
+	}
+	
+	
+	@Override
+	public boolean Eliminar(int idTurno) {
+		try {
+			Class.forName("com.mysql.cj.jdbc.Driver");
+			} 
+		catch (ClassNotFoundException e) {
+			e.printStackTrace();
+			}
+		
+		boolean result = false;
+		Conexion conexion = Conexion.getConexion();
+		PreparedStatement statement;
+		
+		try {
+			statement = conexion.getSQLConexion().prepareStatement(eliminar);
+			
+			statement.setInt(1, idTurno);
+			
+			if(statement.executeUpdate() > 0) {
+				conexion.getSQLConexion().commit();
+				result = true;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			try {
+				conexion.getSQLConexion().rollback();
+			} catch (Exception e2) {
+				e2.printStackTrace();
+			}
+		}
+		return result;
+	}
+	
+	
+	@Override
+	public Turno Buscar(int idTurno) {
+		try {
+			Class.forName("com.mysql.cj.jdbc.Driver");
+			} 
+		catch (ClassNotFoundException e) {
+			e.printStackTrace();
+			}
+		
+		Turno result = null;
+		Conexion conexion = Conexion.getConexion();
+		PreparedStatement statement;
+		ResultSet resultSet;
+		
+		try{
+			
+			statement = conexion.getSQLConexion().prepareStatement(buscar);
+			statement.setInt(1, idTurno);
+			resultSet = statement.executeQuery();
+			
+			while(resultSet.next()){
+
+                Paciente par = new Paciente();
+				PacienteDao pdao = new PacienteDaoImpl();
+				par = pdao.Buscar(resultSet.getInt("IDPaciente"));
+
+                Medico med = new Medico();
+				MedicoDao mdao = new MedicoDaoImpl();
+				med = mdao.Buscar(resultSet.getInt("IDMedico"));
+
+				Especialidad esp = new Especialidad();
+				EspecialidadDao espdao = new EspecialidadDaoImpl();
+				esp = espdao.ObtenerObjeto(resultSet.getInt("IDEspecialidad"));
+				
+				Persona per = new Persona();
+				PersonaDao perdao = new PersonaDaoImpl();
+				per = perdao.ObtenerObjeto(resultSet.getInt("IDPersona"));
+
+                Estado est = new Estado();
+				EstadoDao edao = new EstadoDaoImpl();
+				est = edao.ObtenerObjeto(resultSet.getInt("IDEstado"));
+
+                Sexo sex = new Sexo();
+				SexoDao sdao = new SexoDaoImpl();
+				sex = sdao.ObtenerObjeto(resultSet.getInt("IDSexo"));
+
+				Turno temp = new Turno();
+				
+				temp.setHora(resultSet.getInt("Hora"));
+				temp.setPaciente(par);
+				temp.setMedico(med);
+				temp.setDia(resultSet.getDate("Dia"));
+				temp.setEspecialidad(esp);
+				temp.setEstadoTurno(est);
+				temp.setObservacionConsulta(resultSet.getString("ObservacionConsulta"));
+				temp.setEstado(resultSet.getBoolean("Estado"));
+				
+				result = new Turno(par,med,resultSet.getDate("Dia"),resultSet.getInt("Hora"),esp,est,resultSet.getString("ObservacionConsulta"),resultSet.getBoolean("Estado"));
+					
+				return result;
+			}
+		}catch(Exception e){
+			e.printStackTrace();
+		}finally{ }	
+		return result;
+	}
+	
 	
 }
