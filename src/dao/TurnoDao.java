@@ -17,6 +17,8 @@ public interface TurnoDao {
 
 	public Turno Buscar(int idTurno);
 
+	public int UltimoID();
+
 	
 
 }
