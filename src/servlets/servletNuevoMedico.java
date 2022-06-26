@@ -13,14 +13,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import dao.EspecialidadDao;
-import dao.HorariosDao;
+import dao.HorarioDao;
 import dao.LocalidadDao;
 import dao.PaisDao;
 import dao.ProvinciaDao;
 import dao.SexoDao;
 import dao.TipoDao;
 import daoImpl.EspecialidadDaoImpl;
-import daoImpl.HorariosDaoImpl;
+import daoImpl.HorarioDaoImpl;
 import daoImpl.LocalidadDaoImpl;
 import daoImpl.PaisDaoImpl;
 import daoImpl.ProvinciaDaoImpl;
@@ -251,7 +251,7 @@ public class servletNuevoMedico extends HttpServlet {
 	
 		Horario aux = new Horario();
 		ArrayList<Horario> lista = new ArrayList<Horario>();
-		HorariosDao horaneg = new HorariosDaoImpl(); 	// REEMPLAZAR POR NEGOCIO
+		HorarioDao horaneg = new HorarioDaoImpl(); 	// REEMPLAZAR POR NEGOCIO
 		
 		boolean flag=true;
 		
@@ -394,7 +394,7 @@ public class servletNuevoMedico extends HttpServlet {
 		
 		// HORARIOS DEL MEDICO
 		ArrayList<Horario> horas = carga_horarios_medico(request, response);
-		HorariosDao horasneg = new HorariosDaoImpl();
+		HorarioDao horasneg = new HorarioDaoImpl();
 		
 		// OBTIENE ID DE MEDICO AGREGADO
 		Medico Aux = new Medico();

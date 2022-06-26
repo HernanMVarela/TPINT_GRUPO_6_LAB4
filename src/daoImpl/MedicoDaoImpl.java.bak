@@ -11,7 +11,6 @@ import dao.HorarioDao;
 import dao.LocalidadDao;
 import dao.MedicoDao;
 import dao.PaisDao;
-import dao.PersonaDao;
 import dao.SexoDao;
 import dao.UsuarioDao;
 import entidad.Administrador;
@@ -616,13 +615,19 @@ public class MedicoDaoImpl implements MedicoDao{
 				UsuarioDao daoUsuario = new UsuarioDaoImpl();
 				Usuario usuario = new Usuario();
 				usuario = daoUsuario.ObtenerObjeto(resultSet.getInt("IDUsuario"));
-								
+				
+				//int idMedico, Persona persona, Especialidad especialidad, Usuario usuario, boolean estado
+				
 				result = new Medico(
 						idMedico, 
 						persona,
 						especialidad,
 						usuario,
-						resultSet.getBoolean("Estado")					
+						direc,
+						sexo,
+						resultSet.getString("Email"),
+						resultSet.getString("Telefono"),
+						resultSet.getDate("Fecha_nacimiento")						
 						);
 				
 				return result;
