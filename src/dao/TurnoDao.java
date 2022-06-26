@@ -8,6 +8,8 @@ public interface TurnoDao {
 
 	public ArrayList<Turno> ListarTodo();
 
+	public boolean Agregar(Turno turno);
+
 	
 
 }

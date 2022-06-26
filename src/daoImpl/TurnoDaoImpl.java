@@ -99,7 +99,6 @@ public class TurnoDaoImpl implements TurnoDao{
 				temp.setEstadoTurno(est);
 				temp.setObservacionConsulta(resultSet.getString("ObservacionConsulta"));
 				
-				
 				// Revisar este--- >>> result.add(new Turno(resultSet.getInt("IDTurno"),temp,resultSet.getBoolean("Estado")));
 				
 			}
@@ -108,9 +107,50 @@ public class TurnoDaoImpl implements TurnoDao{
 			e.printStackTrace();
 		}finally{ }		
 		return result;
-			
 	}
 
+	@Override
+	public boolean Agregar(Turno turno) {
+		
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+			} 
+		catch (ClassNotFoundException e) {
+			e.printStackTrace();
+			}
+		
+		PreparedStatement Stat;
+		Connection conex = Conexion.getConexion().getSQLConexion();
+		
+		boolean InsertState = false;
+		
+		try {
+			Stat = conex.prepareStatement(alinsertar);
+            Stat.setInt(1,turno.getPaciente().getIdPaciente());
+            Stat.setInt(1,turno.getMedico().getIdMedico());
+            Stat.setDate(1,turno.getDia());
+            Stat.setInt(1,turno.getHora());
+            Stat.setInt(1,turno.getEspecialidad().getIdEspecialidad());
+            Stat.setInt(1,turno.getEstadoTurno().getIdEstado());
+            Stat.setString(1,turno.getObservacionConsulta());
+            Stat.setBoolean(1,turno.isEstado());
 	
+			
+			if(Stat.executeUpdate()>0) {
+				conex.commit();
+				InsertState=true;
+			}
+		}catch(Exception e) {
+			e.printStackTrace();
+			try {
+				conex.rollback();
+			}catch(Exception e2) {
+				e.printStackTrace();
+			}
+		}
+		
+		return InsertState;
+		
+	}
 	
 }
