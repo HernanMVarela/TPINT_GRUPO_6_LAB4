@@ -12,8 +12,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import dao.EspecialidadDao;
+import dao.HorariosDao;
 import dao.MedicoDao;
 import daoImpl.EspecialidadDaoImpl;
+import daoImpl.HorariosDaoImpl;
 import daoImpl.MedicoDaoImpl;
 import entidad.Especialidad;
 import entidad.Medico;
@@ -29,12 +31,13 @@ public class servletMedicos extends HttpServlet {
     
     }
 
-	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		request.setAttribute("listaMedicos", listarMedicos());
 		request.setAttribute("listaDeEsp", listarEspecialidades());
 		
+		HorariosDao dao = new HorariosDaoImpl();
+		dao.Listar(1);
 		
 		RequestDispatcher rd = request.getRequestDispatcher("/Medicos.jsp");   
         rd.forward(request, response);
@@ -49,9 +52,6 @@ public class servletMedicos extends HttpServlet {
 		List<Medico> listaDeMedicos = new ArrayList<Medico>();
 		MedicoDao meDao = new MedicoDaoImpl();
 		listaDeMedicos = meDao.ListarTodo();
-		for (Medico x: listaDeMedicos) {
-			System.out.println(x.toString()); 
-		}
 		return listaDeMedicos;
 	}
 

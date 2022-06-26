@@ -21,9 +21,13 @@ public interface MedicoDao {
 
 	public Medico Buscar(int idMedico);
 	
+	public Medico BuscarDNI(int DNI);
+	
 	public Medico buscar_usuario(int idUser);
 	
 	public boolean bajaMedico(int idAdmin);
+	
+	public boolean existeMedico(int DNI);
 
 	
 	

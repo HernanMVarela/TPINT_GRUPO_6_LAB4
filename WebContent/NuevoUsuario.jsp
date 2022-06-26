@@ -90,7 +90,7 @@
 	  		<label class="p-1">Documento</label>
 		  	<input type="number" name="txfDocumentoPersona" class="w-100" required
 	  		<% 
-  			if(admin!=null){%>value="<%=admin.getDni()%>"<%;}
+  			if(admin!=null){%>value="<%=admin.getDni()%>" readonly<%;}
 	  		%>
 		  	>
 	  	</div>
@@ -216,8 +216,7 @@
 		  	<input type="text" name="txfDireccionPersona" class="w-100" required
 	  		<% 
   			if(admin!=null){%>value="<%=admin.getDirecc().getCalleYNum()%>"<%;}
-	  		%>
-		  	>
+	  		%>>
 	  	</div>
 	  	<div class="col col-md-3 mh-2 justify-content-center p-2">
 	  		<label class="p-1">Tipo de usuario</label> 
@@ -245,11 +244,7 @@
 	  <div class="row justify-content-center">
 	  	<div class="col col-md-3 mh-2 justify-content-center p-2">
 	  		<label class="p-1">Email</label>
-		  	<input type="email" name="txfEmailPersona" class="w-100" required
-	  		<% 
-  			if(admin!=null){%>value="<%=admin.getEmail()%>"<%;}
-	  		%>
-		  	>
+		  	<input type="email" name="txfEmailPersona" class="w-100">
 	  	</div>
 	  	<div class="col col-md-3 mh-2 justify-content-center p-2">
 	  		<label class="p-1">Telefono</label>

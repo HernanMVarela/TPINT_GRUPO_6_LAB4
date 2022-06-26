@@ -71,8 +71,8 @@ public class TipoDaoImpl implements TipoDao {
 			
 			while(resultSet.next()){				
 				Tipo temporal = new Tipo(
-						resultSet.getInt("IDTipo"),
-						resultSet.getString("Nombre")
+						resultSet.getInt(1),
+						resultSet.getString(2)
 						);
 				result.add(temporal);
 			}
@@ -106,9 +106,9 @@ public class TipoDaoImpl implements TipoDao {
 			
 			while(resultSet.next()){				
 				result = new Tipo(
-						resultSet.getInt("IDTipo"),
-						resultSet.getString("Nombre")
-						);
+						resultSet.getInt(1),
+						resultSet.getString(2)
+						);				
 				return result;
 			}
 		}catch(Exception e){

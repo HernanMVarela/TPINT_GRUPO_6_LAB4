@@ -8,4 +8,6 @@ public interface MedicoNegocio {
 	public boolean bajaMedico(Medico baja);
 	public boolean modificar_usuario(Medico modif_user);
 	public boolean agregarMedico(Medico agregar);
+	public Medico buscar_dni(int DNI);
+	public boolean existe_medico(int DNI);
 }

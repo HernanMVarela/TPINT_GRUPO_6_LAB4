@@ -1,4 +1,5 @@
 <%@page import="servlets.servletMedicos"%>
+<%@page import="servlets.servletNuevoMedico"%>
 <%@page import="java.util.List"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="entidad.Medico"%>
@@ -92,7 +93,7 @@ $(document).ready( function () {
   	</div>
   	<div class="row mx-2 mb-2 justify-content-center p-2 border-bottom">
   		<div class="col-md-3 d-flex justify-content-center">
-  		<a href="NuevoMedico.jsp" class="btn btn-info w-75">Agregar</a><!-- REEMPLAZAR RUTA POR SERVLET -->
+  		<a href="servletNuevoMedico" name="btnAgregar" class="btn btn-info w-75">Agregar</a><!-- REEMPLAZAR RUTA POR SERVLET -->
 		</div>
   		<div class="col-md-3 d-flex justify-content-center">
   			<a href="NuevoMedico.jsp" class="btn btn-info w-75">Modificar</a><!-- REEMPLAZAR POR INPUT CON RUTA A SERVLET -->

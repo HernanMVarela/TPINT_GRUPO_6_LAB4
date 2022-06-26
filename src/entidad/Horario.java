@@ -2,30 +2,20 @@ package entidad;
 
 public class Horario {
 	
-	private Medico medico;
 	private int dia;
 	private int horaDesde;
 	private int horaHasta;
 	
 	public Horario() {}
 	
-	public Horario(Medico medico, int dia, int horaDesde, int horaHasta) {
+	public Horario(int dia, int horaDesde, int horaHasta) {
 		if (Verificar1a7(dia) && Verificar0a23(horaDesde) && Verificar0a23(horaHasta)) {
-			this.medico = medico;
 			this.dia = dia;
 			this.horaDesde = horaDesde;
 			this.horaHasta = horaHasta;
 		}
 	}
 	
-	public Medico getMedico() {
-		return medico;
-	}
-
-	public void setMedico(Medico medico) {
-		this.medico = medico;
-	}
-
 	public int getDia() {
 		return dia;
 	}

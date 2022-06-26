@@ -12,103 +12,82 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import dao.EspecialidadDao;
+import dao.HorariosDao;
 import dao.LocalidadDao;
 import dao.PaisDao;
 import dao.ProvinciaDao;
 import dao.SexoDao;
 import dao.TipoDao;
+import daoImpl.EspecialidadDaoImpl;
+import daoImpl.HorariosDaoImpl;
 import daoImpl.LocalidadDaoImpl;
 import daoImpl.PaisDaoImpl;
 import daoImpl.ProvinciaDaoImpl;
 import daoImpl.SexoDaoImpl;
 import daoImpl.TipoDaoImpl;
-import entidad.Administrador;
 import entidad.Direccion;
+import entidad.Especialidad;
+import entidad.Horario;
 import entidad.Localidad;
+import entidad.Medico;
 import entidad.Pais;
 import entidad.Persona;
 import entidad.Provincia;
 import entidad.Sexo;
 import entidad.Tipo;
 import entidad.Usuario;
-import negocio.AdministradorNegocio;
+import negocio.MedicoNegocio;
 import negocio.PersonaNegocio;
 import negocio.UsuarioNegocio;
-import negocioImpl.AdministradorNegocioImpl;
+import negocioImpl.MedicoNegocioImpl;
 import negocioImpl.PersonaNegocioImpl;
 import negocioImpl.UsuarioNegocioImpl;
 
-@WebServlet("/servletNuevoUsuario")
-public class servletNuevoUsuario extends HttpServlet {
-	
+@WebServlet("/servletNuevoMedico")
+public class servletNuevoMedico extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+       
 
-    public servletNuevoUsuario() {
+    public servletNuevoMedico() {
         super();
+
     }
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-		String redirect = "/NuevoUsuario.jsp";
-		boolean aux = true;
-		//INICIALIZACION DE ATRIBUTOS
-		request.setAttribute("existeAdmin", false);
-		request.setAttribute("existePersona", false);
-		request.setAttribute("existeUsuario", false);
-		
-		// EVENTO BOTON AGREGAR NUEVO USUARIO
-		if(request.getParameter("btnModificarUsuario")!=null) {
-			if(request.getParameter("radSelect")!=null){
-				if(carga_datos(request, response)) {
-					
-				}else {
-					// NO SE PUDO MODIFICAR
-				}
-			}else {
-				redirect = "servletPanelAdministrador"; 
-				aux = false;
+		if(request.getParameter("btnAceptar")!=null) {
+			ArrayList<Horario> lista = new ArrayList<Horario>();
+			
+			lista = carga_horarios_medico(request, response);
+			System.out.println("LLEGA HASTA ACEPTAR");
+			for (Horario horario : lista) {
+				System.out.println(horario.getDia() + " - " + horario.getHoraDesde() + " | " + horario.getHoraHasta());
 			}
+			
+			//agregar_medico(request, response);
 		}
 		
-		if(request.getParameter("btnAgregarUsuario")!=null) {
-			if (request.getParameter("adminId")!=null){
-				modificar_usuario(request, response);
-			}else {
-				agregar_nuevo_usuario(request, response);
-			}
-			redirect = "servletPanelAdministrador";
-			aux = false;
-		}
+		request.setAttribute("listaesp", listarEspecialidades());
+		request.setAttribute("listaProvincias", create_provincia_list());
+		request.setAttribute("listaLocalidades", create_localidad_list());
+		request.setAttribute("listasexos", create_sexo_list());
+		request.setAttribute("listaTipos", create_tipo_list());
+		request.setAttribute("listaPaises", create_pais_list());
 		
-		if(request.getParameter("btnEliminarUsuario")!=null) {
-			if(request.getParameter("radSelect")!=null){
-				if(eliminar_usuario(request, response)) {
-					// 
-				}else {
-					// NO SE PUDO ELIMINAR
-				}
-				redirect = "servletPanelAdministrador";
-				aux = false;
-			}else {
-				// NO HAY NADA SELECCIONADO - DEVOLVER ATRIBUTO O MENSAJE DE ERROR
-			}
-		}
-		
-		// CARGA LISTAS COMPLETAS
-		if(aux) {
-			request.setAttribute("listaProvincias", create_provincia_list());
-			request.setAttribute("listaLocalidades", create_localidad_list());
-			request.setAttribute("listasexos", create_sexo_list());
-			request.setAttribute("listaTipos", create_tipo_list());
-			request.setAttribute("listaPaises", create_pais_list());
-		}
-		RequestDispatcher rd = request.getRequestDispatcher(redirect);   
+		RequestDispatcher rd = request.getRequestDispatcher("/NuevoMedico.jsp");   
         rd.forward(request, response);
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
 		doGet(request, response);
+	}
+
+	private List<Especialidad> listarEspecialidades() {
+		List<Especialidad> listaDeEsp = new ArrayList<Especialidad>();
+		EspecialidadDao espDao = new EspecialidadDaoImpl();
+		listaDeEsp = espDao.ListarTodo();
+		return listaDeEsp;
 	}
 	
 	private List<Provincia> create_provincia_list(){
@@ -150,7 +129,7 @@ public class servletNuevoUsuario extends HttpServlet {
 		pais = paisdao.ListarTodo();
 		return pais;
 	}
-
+	
 	private Persona carga_datos_persona(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		Persona Perso = new Persona();
 		Perso.setDirecc(new Direccion());
@@ -162,23 +141,23 @@ public class servletNuevoUsuario extends HttpServlet {
 		boolean flag=true;
 		
 		// NOMBRE PERSONA
-				if(!request.getParameter("txfNombrePersona").isEmpty()) {
-					Perso.setNombre(request.getParameter("txfNombrePersona").toString());
+				if(!request.getParameter("txfNombre").isEmpty()) {
+					Perso.setNombre(request.getParameter("txfNombre").toString());
 				}else {
 					flag = false;
 				}
 				// APELLIDO PERSONA
-				if(!request.getParameter("txfApellidoPersona").isEmpty()) {
-					Perso.setApellido(request.getParameter("txfApellidoPersona").toString());
+				if(!request.getParameter("txfApellido").isEmpty()) {
+					Perso.setApellido(request.getParameter("txfApellido").toString());
 				}else {
 					flag = false;
 				}
 				
 				// DOCUMENTO PERSONA
 				if(request.getParameter("adminId")==null) {
-					if(!request.getParameter("txfDocumentoPersona").isEmpty()) {
+					if(!request.getParameter("txfDocumento").isEmpty()) {
 					{
-						Perso.setDni(Integer.parseInt(request.getParameter("txfDocumentoPersona")));
+						Perso.setDni(Integer.parseInt(request.getParameter("txfDocumento")));
 					}
 					}else {
 						flag = false;
@@ -199,8 +178,8 @@ public class servletNuevoUsuario extends HttpServlet {
 					flag = false;
 				}
 					// DIRECCION
-				if(!request.getParameter("txfDireccionPersona").isEmpty()) {
-					Perso.getDirecc().setCalleYNum(request.getParameter("txfDireccionPersona").toString());
+				if(!request.getParameter("txfDireccion").isEmpty()) {
+					Perso.getDirecc().setCalleYNum(request.getParameter("txfDireccion").toString());
 				}else {
 					flag = false;
 				}
@@ -213,14 +192,14 @@ public class servletNuevoUsuario extends HttpServlet {
 				}
 				
 				// EMAIL PERSONA
-				if(!request.getParameter("txfEmailPersona").isEmpty()) {
-					Perso.setEmail(request.getParameter("txfEmailPersona").toString());
+				if(!request.getParameter("txfCorreo").isEmpty()) {
+					Perso.setEmail(request.getParameter("txfCorreo").toString());
 				}else {
 					flag = false;
 				}
 				// TELEFONO
-				if(!request.getParameter("txfTelefonoPersona").isEmpty()) {
-					Perso.setTelefono(request.getParameter("txfTelefonoPersona").toString());
+				if(!request.getParameter("txfTelefono").isEmpty()) {
+					Perso.setTelefono(request.getParameter("txfTelefono").toString());
 				}else {
 					flag = false;
 				}
@@ -268,16 +247,97 @@ public class servletNuevoUsuario extends HttpServlet {
 		return User;
 	}
 	
-	// AGREGA NUEVO USUARIO
-	private boolean agregar_nuevo_usuario (HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	private ArrayList<Horario> carga_horarios_medico(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	
+		Horario aux = new Horario();
+		ArrayList<Horario> lista = new ArrayList<Horario>();
+		HorariosDao horaneg = new HorariosDaoImpl(); 	// REEMPLAZAR POR NEGOCIO
 		
-		Administrador Admin = new Administrador();
+		boolean flag=true;
+		
+		aux.setDia(1);
+		if(!request.getParameter("TIDomingo").isEmpty()) {
+			aux.setHoraDesde(Integer.parseInt(request.getParameter("TIDomingo")));
+		}else {flag = false;}
+		if(!request.getParameter("TEDomingo").isEmpty()) {
+			aux.setHoraHasta(Integer.parseInt(request.getParameter("TEDomingo")));
+		}else {flag = false;}
+		lista.add(aux);
+		aux = new Horario();
+		
+		aux.setDia(2);
+		if(!request.getParameter("TILunes").isEmpty()) {
+			aux.setHoraDesde(Integer.parseInt(request.getParameter("TILunes")));
+		}else {flag = false;}
+		if(!request.getParameter("TELunes").isEmpty()) {
+			aux.setHoraHasta(Integer.parseInt(request.getParameter("TELunes")));
+		}else {flag = false;}
+		lista.add(aux);
+		aux = new Horario();
+		
+		aux.setDia(3);
+		if(!request.getParameter("TIMartes").isEmpty()) {
+			aux.setHoraDesde(Integer.parseInt(request.getParameter("TIMartes")));
+		}else {flag = false;}
+		if(!request.getParameter("TEMartes").isEmpty()) {
+			aux.setHoraHasta(Integer.parseInt(request.getParameter("TEMartes")));
+		}else {flag = false;}
+		lista.add(aux);
+		aux = new Horario();
+		
+		aux.setDia(4);
+		if(!request.getParameter("TIMiercoles").isEmpty()) {
+			aux.setHoraDesde(Integer.parseInt(request.getParameter("TIMiercoles")));
+		}else {flag = false;}
+		if(!request.getParameter("TEMiercoles").isEmpty()) {
+			aux.setHoraHasta(Integer.parseInt(request.getParameter("TEMiercoles")));
+		}else {flag = false;}
+		lista.add(aux);
+		aux = new Horario();
+		
+		aux.setDia(5);
+		if(!request.getParameter("TIJueves").isEmpty()) {
+			aux.setHoraDesde(Integer.parseInt(request.getParameter("TIJueves")));
+		}else {flag = false;}
+		if(!request.getParameter("TEJueves").isEmpty()) {
+			aux.setHoraHasta(Integer.parseInt(request.getParameter("TEJueves")));
+		}else {flag = false;}
+		lista.add(aux);
+		aux = new Horario();
+		
+		aux.setDia(6);
+		if(!request.getParameter("TIViernes").isEmpty()) {
+			aux.setHoraDesde(Integer.parseInt(request.getParameter("TIViernes")));
+		}else {flag = false;}
+		if(!request.getParameter("TEViernes").isEmpty()) {
+			aux.setHoraHasta(Integer.parseInt(request.getParameter("TEViernes")));
+		}else {flag = false;}
+		lista.add(aux);
+		aux = new Horario();
+		
+		aux.setDia(7);
+		if(!request.getParameter("TISabado").isEmpty()) {
+			aux.setHoraDesde(Integer.parseInt(request.getParameter("TISabado")));
+		}else {flag = false;}
+		if(!request.getParameter("TESabado").isEmpty()) {
+			aux.setHoraHasta(Integer.parseInt(request.getParameter("TESabado")));
+		}else {flag = false;}
+		lista.add(aux);
+		
+		if(flag) {return lista;}
+		else {return null;}
+	}
+	
+	private boolean agregar_medico(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		
+		Medico Medic = new Medico();
+		Medic.setEspecialidad(new Especialidad());
 		Usuario User = null;
 		Persona Perso= null;
 		
 		PersonaNegocio perneg = new PersonaNegocioImpl();
 		UsuarioNegocio userneg = new UsuarioNegocioImpl();
-		AdministradorNegocio adminneg = new AdministradorNegocioImpl();
+		MedicoNegocio medneg = new MedicoNegocioImpl();
 		
 		boolean flag = true;
 		
@@ -289,12 +349,12 @@ public class servletNuevoUsuario extends HttpServlet {
 		User = carga_datos_usuario(request, response);
 		if(User == null) flag = false;
 		
-		// VALIDA QUE ADMIN NO EXISTA
-		if(adminneg.existeAdmin(Perso.getDni())) { // SI ADMIN EXISTE - REGRESA SIN AGREGAR NADA
+		// VALIDA QUE MEDICO NO EXISTA
+		if(medneg.existe_medico(Perso.getDni())) { // SI MEDICO EXISTE - REGRESA SIN AGREGAR NADA
 			request.setAttribute("existeAdmin", true);
 			return false;
 		}
-
+		
 		// VALIDA QUE PERSONA Y USUARIO NO EXISTAN
 		if(perneg.existePersona(Perso.getDni()) || userneg.existeUsuario(User.getUser())!=-1) {
 			if(perneg.existePersona(Perso.getDni())) {
@@ -310,103 +370,41 @@ public class servletNuevoUsuario extends HttpServlet {
 		} else if (!userneg.agregarUsuario(User)) {
 			//perneg.eliminarPersona(Perso.getDni()); // SI NO SE PUEDE AGREGAR EL USUARIO, SE ELIMINA LA PERSONA - A REVISAR COMPORTAMIENTO ADECUADO
 			return false;
-		}
+		}		
 		
-		// ESTADO DE ADMIN
+		// ESTADO DE CUENTA
 		if(Integer.parseInt(request.getParameter("slcEstadoCuenta"))!=0) {
 			if(Integer.parseInt(request.getParameter("slcEstadoCuenta"))==1) {
-				Admin.setEstado(true);
+				Medic.setEstado(true);
 			}else {
-				Admin.setEstado(false);
+				Medic.setEstado(false);
 			}
 		}else {
 			flag = false;
 		}
 		
-		User.setIdUsuario(userneg.existeUsuario(User.getUser()));
-		if(flag) {
-			Admin.setUsuario(User);
-			Admin.setDni(Perso.getDni());
-			return adminneg.agregarAdmin(Admin);
-		}
-		return false;
-	}
-
-	
-	private boolean modificar_usuario(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		Administrador Admin = null;
-		Usuario User = null;
-		Persona Perso= null;
-		
-		PersonaNegocio perneg = new PersonaNegocioImpl();
-		UsuarioNegocio userneg = new UsuarioNegocioImpl();
-		AdministradorNegocio adminneg = new AdministradorNegocioImpl();
-
-		Admin = adminneg.ObtenerObjeto(Integer.parseInt(request.getParameter("adminId").toString()));
-		if(Admin == null) {return false;}
-		System.out.println("OBTIENE ADMIN POR ID OK");
-		
-		Perso = carga_datos_persona(request, response);
-		if(Perso == null) {return false;}
-		Perso.setDni(Admin.getDni());
-		System.out.println("CARGA DATOS DE PERSONA OK");
-		
-		User = carga_datos_usuario(request, response);
-		if(User == null) {return false;}
-		User.setIdUsuario(Admin.getUsuario().getIdUsuario());
-		System.out.println("CARGA DATOS DE USUARIO OK");
-		
-		if(!perneg.Modificar(Perso)) {return false;}
-		System.out.println("MODIFICA DATOS DE PERSONA EN DB OK");
-		if(!userneg.Modificar(User)) {return false;}
-		System.out.println("MODIFICA DATOS DE USUARIO EN DB OK");
-		if(!adminneg.Modificar(Admin)) {return false;}
-		else {
-		System.out.println("MODIFICA DATOS DE ADMIN EN DB OK");	
-		return true;}
-		
-	}
-	
-	// CAMBIA ESTADO A 0 DEL ADMINISTRADOR
-	private boolean eliminar_usuario (HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		AdministradorNegocio adminneg = new AdministradorNegocioImpl();
-		Administrador admin = new Administrador();
-		
-		admin = adminneg.buscar_usuario(Integer.parseInt(request.getParameter("radSelect")));
-		if(admin != null) {
-			return adminneg.bajaAdmin(admin);
-		}
-		
-		return false;
-	}
-
-	// CARGA DATOS COMPLETOS DE ADMIN
-	private boolean carga_datos (HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		AdministradorNegocio adminneg = new AdministradorNegocioImpl();
-		UsuarioNegocio userneg = new UsuarioNegocioImpl();
-		Usuario user = new Usuario();
-		Administrador admin = new Administrador();
-		
-		user = userneg.ObtenerObjeto(Integer.parseInt(request.getParameter("radSelect")));
-		if (user!=null) {
-			admin = adminneg.buscar_usuario(user.getIdUsuario());
-			if (admin!=null) {
-				PersonaNegocio personeg = new PersonaNegocioImpl(); 
-				Persona perso = personeg.buscarPersona(admin.getDni());
-				admin.setNombre(perso.getNombre());
-				admin.setApellido(perso.getApellido());
-				admin.setDirecc(perso.getDirecc());
-				admin.setEmail(perso.getEmail());
-				admin.setFecha_nacimiento(perso.getFecha_nacimiento());
-				admin.setNacionalidad(perso.getNacionalidad());
-				admin.setSexo(perso.getSexo());
-				admin.setTelefono(perso.getTelefono());
-				admin.setUsuario(user);
-				request.setAttribute("admin", admin);
-				return true;
+		// ESPECIALIDAD DEL MEDICO
+		if(Integer.parseInt(request.getParameter("slcEsp"))!=0) {
+			if(Integer.parseInt(request.getParameter("slcEsp"))==1) {
+				Medic.getEspecialidad().setIdEspecialidad(Integer.parseInt(request.getParameter("slcEsp")));
 			}
-		
+		}else {
+			flag = false;
 		}
+		
+		// HORARIOS DEL MEDICO
+		ArrayList<Horario> horas = carga_horarios_medico(request, response);
+		HorariosDao horasneg = new HorariosDaoImpl();
+		
+		// OBTIENE ID DE MEDICO AGREGADO
+		Medico Aux = new Medico();
+		Aux = medneg.buscar_dni(Medic.getDni());
+		
+		// CARGA HORAS DE ATENCION DEL MEDICO (NECESITA IDMEDICO)
+		for (Horario horario : horas) {
+			horasneg.Agregar(Aux.getIdMedico(), horario);
+		}
+		
 		return false;
 	}
 

@@ -31,4 +31,16 @@ public class MedicoNegocioImpl implements MedicoNegocio{
 		return meddao.Modificar(modif_user);
 	}
 
+	@Override
+	public Medico buscar_dni(int DNI) {
+		MedicoDao meddao = new MedicoDaoImpl();
+		return meddao.BuscarDNI(DNI);
+	}
+
+	@Override
+	public boolean existe_medico(int DNI) {
+		MedicoDao meddao = new MedicoDaoImpl();
+		return meddao.existeMedico(DNI);
+	}
+
 }

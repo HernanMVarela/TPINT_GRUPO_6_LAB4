@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import dao.EspecialidadDao;
+import dao.HorariosDao;
 import dao.LocalidadDao;
 import dao.MedicoDao;
 import dao.PaisDao;
@@ -32,11 +33,12 @@ public class MedicoDaoImpl implements MedicoDao{
 	private String leerTodo = "SELECT * FROM bdtp_integrador.medicos M inner join personas P on M.DNI = P.DNI inner join usuarios u on u.idUsuario = m.IDUsuario";
 	private String alinsertar = "INSERT INTO bdtp_integrador.medicos (DNI,IDEspecialidad,IDUsuario,Estado) VALUES (?,?,?,?)";
 	private String modificar = "UPDATE bdtp_integrador.medicos SET DNI = ?, IDEspecialidad = ?, IDUsuario = ?, Estado = ? WHERE IDMedico = ?";
-	private String modif_user = "UPDATE bdtp_integrador.medicos SET IDUsuario = ?, Estado = ? WHERE DNI = ?";
+	//private String modif_user = "UPDATE bdtp_integrador.medicos SET IDUsuario = ?, Estado = ? WHERE DNI = ?";
 	private String buscar = "SELECT * FROM bdtp_integrador.medicos WHERE IDMedico = ?";
 	private String eliminar = "DELETE FROM bdtp_integrador.medicos WHERE IDMedico = ?";
 	private String proxid = "SELECT MAX(m.IDMedico) FROM bdtp_integrador.medicos m order by m.IDMedico";
 	private String buscaruserid = "SELECT * FROM bdtp_integrador.medicos where idUsuario = ?";
+	private String buscarDNI = "SELECT * FROM bdtp_integrador.medicos where DNI = ?";
 	private String bajaMedic = "UPDATE bdtp_integrador.medicos SET Estado = 0 where IDMedico = ?";
 	
 	
@@ -100,7 +102,11 @@ public class MedicoDaoImpl implements MedicoDao{
 				temp.setEmail(resultSet.getString("Telefono"));
 				temp.setFecha_nacimiento(resultSet.getDate("Fecha_nacimiento"));
 				
-				result.add(new Medico(resultSet.getInt("idMedico"),temp,esp,user,resultSet.getBoolean("Estado")));
+				Medico temporal = new Medico(resultSet.getInt("idMedico"),temp,esp,user,resultSet.getBoolean("Estado"));
+				HorariosDao horasdao = new HorariosDaoImpl();
+				temporal.setHorarios(horasdao.Listar(temporal.getIdMedico()));				
+				
+				result.add(temporal);
 				
 			}
 			//connection.close();
@@ -156,9 +162,7 @@ public class MedicoDaoImpl implements MedicoDao{
 				e.printStackTrace();
 			}
 		}
-		
 		return InsertState;
-		
 	}
 
 	@Override
@@ -204,7 +208,6 @@ public class MedicoDaoImpl implements MedicoDao{
 				e2.printStackTrace();
 			}
 		}
-		
 		return result;
 	}
 
@@ -238,10 +241,7 @@ public class MedicoDaoImpl implements MedicoDao{
 				e2.printStackTrace();
 			}
 		}
-		
 		return result;
-	
-		
 	}
 
 	@Override
@@ -253,7 +253,7 @@ public class MedicoDaoImpl implements MedicoDao{
 			e.printStackTrace();
 			}
 		
-		Medico result = new Medico();
+		Medico result = null;
 		Conexion conexion = Conexion.getConexion();
 		PreparedStatement statement;
 		ResultSet resultSet;
@@ -304,6 +304,9 @@ public class MedicoDaoImpl implements MedicoDao{
 				temp.setFecha_nacimiento(resultSet.getDate("Fecha_nacimiento"));
 				
 				result = new Medico(resultSet.getInt("idMedico"),temp,esp,user,resultSet.getBoolean("Estado"));
+				HorariosDao horasdao = new HorariosDaoImpl();
+				result.setHorarios(horasdao.Listar(result.getIdMedico()));				
+				
 				return result;
 			}
 		}catch(Exception e){
@@ -414,7 +417,8 @@ public class MedicoDaoImpl implements MedicoDao{
 		}
 		return result;
 	}
-
+	
+/*
 	@Override
 	public boolean Modif_user(Medico medico) {
 		try {
@@ -470,6 +474,112 @@ public class MedicoDaoImpl implements MedicoDao{
 			}
 		}
 		
+		return result;
+	}*/
+
+	@Override
+	public Medico BuscarDNI(int DNI) {
+		try {
+			Class.forName("com.mysql.cj.jdbc.Driver");
+			} 
+		catch (ClassNotFoundException e) {
+			e.printStackTrace();
+			}
+		
+		Medico result = null;
+		Conexion conexion = Conexion.getConexion();
+		PreparedStatement statement;
+		ResultSet resultSet;
+		
+		try{
+			
+			statement = conexion.getSQLConexion().prepareStatement(buscarDNI);
+			statement.setInt(1, DNI);
+			resultSet = statement.executeQuery();
+			
+			while(resultSet.next()){
+
+				Pais pais = new Pais();
+				PaisDao paisdao = new PaisDaoImpl();
+				
+				pais = paisdao.ObtenerObjeto(resultSet.getInt("IDPais"));
+				
+				Localidad loc = new Localidad();
+				LocalidadDao locdao = new LocalidadDaoImpl();
+				loc = locdao.ObtenerObjeto(resultSet.getInt("IDLocalidad"));
+				
+				Direccion direc = new Direccion();
+				direc.setCalleYNum(resultSet.getString("Direccion"));
+				direc.setLoc(loc);				
+				
+				Sexo sex = new Sexo();
+				SexoDao sexdao = new SexoDaoImpl();
+				sex= sexdao.ObtenerObjeto(resultSet.getInt("IDSexo"));
+				
+				Especialidad esp = new Especialidad();
+				EspecialidadDao espdao = new EspecialidadDaoImpl();
+				esp = espdao.ObtenerObjeto(resultSet.getInt("IDEspecialidad"));
+				
+				Usuario user = new Usuario();
+				UsuarioDao userdao = new UsuarioDaoImpl();
+				user = userdao.ObtenerObjeto(resultSet.getInt("IDUsuario"));
+				
+				Persona temp = new Persona();
+				
+				temp.setDni(resultSet.getInt("DNI"));
+				temp.setNombre(resultSet.getString("Nombre"));
+				temp.setApellido(resultSet.getString("Apellido"));
+				temp.setNacionalidad(pais);
+				temp.setDirecc(direc);
+				temp.setSexo(sex);
+				temp.setEmail(resultSet.getString("Email"));
+				temp.setTelefono(resultSet.getString("Telefono"));
+				temp.setFecha_nacimiento(resultSet.getDate("Fecha_nacimiento"));
+				
+				result = new Medico(resultSet.getInt("idMedico"),temp,esp,user,resultSet.getBoolean("Estado"));
+				HorariosDao horasdao = new HorariosDaoImpl();
+				result.setHorarios(horasdao.Listar(result.getIdMedico()));				
+				
+				return result;
+			}
+		}catch(Exception e){
+			e.printStackTrace();
+		}finally{ }		
+		
+		return result;
+	}
+
+	@Override
+	public boolean Modif_user(Medico medico) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean existeMedico(int DNI) {
+		try {
+			Class.forName("com.mysql.cj.jdbc.Driver");
+			} 
+		catch (ClassNotFoundException e) {
+			e.printStackTrace();
+			}
+		boolean result=false;
+		
+		Conexion conexion = Conexion.getConexion();
+		PreparedStatement statement;
+		ResultSet resultSet;
+
+		try{
+			statement = conexion.getSQLConexion().prepareStatement(buscarDNI);
+			statement.setInt(1, DNI);
+			resultSet = statement.executeQuery();
+			
+			if(resultSet.next()){
+				result=true;
+			}
+		}catch(Exception e){
+			e.printStackTrace();
+		}finally{ }		
 		return result;
 	}
 	

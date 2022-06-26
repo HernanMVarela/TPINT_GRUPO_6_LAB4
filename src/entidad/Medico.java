@@ -1,10 +1,13 @@
 package entidad;
 
+import java.util.ArrayList;
+
 public class Medico extends Persona {
 
 	private int idMedico;
 	private Especialidad especialidad;
 	private Usuario usuario;
+	private ArrayList<Horario> horarios;
 	private boolean estado;
 	
 	public Medico() {}
@@ -19,6 +22,14 @@ public class Medico extends Persona {
 
 	public int getIdMedico() {
 		return idMedico;
+	}
+
+	public ArrayList<Horario> getHorarios() {
+		return horarios;
+	}
+
+	public void setHorarios(ArrayList<Horario> horarios) {
+		this.horarios = horarios;
 	}
 
 	public void setIdMedico(int idMedico) {
