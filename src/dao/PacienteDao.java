@@ -18,4 +18,6 @@ public interface PacienteDao {
 	public int UltimoID();
 
 	public Paciente Buscar(int idPaciente);
+
+	
 }

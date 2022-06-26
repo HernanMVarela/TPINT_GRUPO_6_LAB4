@@ -24,5 +24,7 @@ public interface MedicoDao {
 	public Medico buscar_usuario(int idUser);
 	
 	public boolean bajaMedico(int idAdmin);
+
+	
 	
 }
