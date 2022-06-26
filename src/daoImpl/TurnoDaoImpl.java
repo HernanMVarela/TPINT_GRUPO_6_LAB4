@@ -320,5 +320,19 @@ public class TurnoDaoImpl implements TurnoDao{
 		}
 		return last;
 	}
+
+
+	@Override
+	public Turno ObtenerObjeto(int idEstado) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	
+
+	@Override
+	public boolean Modificar(Turno turno) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+			
 }

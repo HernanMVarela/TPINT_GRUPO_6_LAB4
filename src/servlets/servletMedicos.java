@@ -12,10 +12,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import dao.EspecialidadDao;
-import dao.HorariosDao;
+import dao.HorarioDao;
 import dao.MedicoDao;
 import daoImpl.EspecialidadDaoImpl;
-import daoImpl.HorariosDaoImpl;
+import daoImpl.HorarioDaoImpl;
 import daoImpl.MedicoDaoImpl;
 import entidad.Especialidad;
 import entidad.Medico;
@@ -36,7 +36,7 @@ public class servletMedicos extends HttpServlet {
 		request.setAttribute("listaMedicos", listarMedicos());
 		request.setAttribute("listaDeEsp", listarEspecialidades());
 		
-		HorariosDao dao = new HorariosDaoImpl();
+		HorarioDao dao = new HorarioDaoImpl();
 		dao.Listar(1);
 		
 		RequestDispatcher rd = request.getRequestDispatcher("/Medicos.jsp");   

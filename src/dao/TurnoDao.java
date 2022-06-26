@@ -7,9 +7,10 @@ import entidad.Turno;
 
 public interface TurnoDao {
 
-	public ArrayList<Turno> ListarTodo();
-
 	public boolean Agregar(Turno turno);
+	public ArrayList<Turno> ListarTodo();
+	public Turno ObtenerObjeto(int idEstado);
+	public boolean Modificar(Turno turno);
 
 	public boolean Modificar(Turno turno);
 
@@ -20,5 +21,4 @@ public interface TurnoDao {
 	public int UltimoID();
 
 	
-
 }
