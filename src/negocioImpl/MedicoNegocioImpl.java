@@ -43,4 +43,10 @@ public class MedicoNegocioImpl implements MedicoNegocio{
 		return meddao.existeMedico(DNI);
 	}
 
+	@Override
+	public Medico buscar_id(int idMedico) {
+		MedicoDao meddao = new MedicoDaoImpl();
+		return meddao.ObtenerObjeto(idMedico);
+	}
+
 }

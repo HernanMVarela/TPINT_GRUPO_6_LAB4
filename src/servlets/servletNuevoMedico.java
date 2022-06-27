@@ -26,6 +26,7 @@ import daoImpl.PaisDaoImpl;
 import daoImpl.ProvinciaDaoImpl;
 import daoImpl.SexoDaoImpl;
 import daoImpl.TipoDaoImpl;
+import entidad.Administrador;
 import entidad.Direccion;
 import entidad.Especialidad;
 import entidad.Horario;
@@ -37,9 +38,11 @@ import entidad.Provincia;
 import entidad.Sexo;
 import entidad.Tipo;
 import entidad.Usuario;
+import negocio.AdministradorNegocio;
 import negocio.MedicoNegocio;
 import negocio.PersonaNegocio;
 import negocio.UsuarioNegocio;
+import negocioImpl.AdministradorNegocioImpl;
 import negocioImpl.MedicoNegocioImpl;
 import negocioImpl.PersonaNegocioImpl;
 import negocioImpl.UsuarioNegocioImpl;
@@ -55,17 +58,24 @@ public class servletNuevoMedico extends HttpServlet {
     }
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		String redirect = "/NuevoMedico.jsp";
 		
 		if(request.getParameter("btnAceptar")!=null) {
-			ArrayList<Horario> lista = new ArrayList<Horario>();
-			
-			lista = carga_horarios_medico(request, response);
-			System.out.println("LLEGA HASTA ACEPTAR");
-			for (Horario horario : lista) {
-				System.out.println(horario.getDia() + " - " + horario.getHoraDesde() + " | " + horario.getHoraHasta());
+			redirect = "servletMedicos";
+			agregar_medico(request, response);
+		}
+		
+		if(request.getParameter("btnEliminarMedico")!=null) {
+			if(request.getParameter("radSelect")!=null){
+				if(eliminar_medico(request, response)) {
+					// 
+				}else {
+					// NO SE PUDO ELIMINAR
+				}
+				redirect = "servletMedicos";
+			}else {
+				// NO HAY NADA SELECCIONADO - DEVOLVER ATRIBUTO O MENSAJE DE ERROR
 			}
-			
-			//agregar_medico(request, response);
 		}
 		
 		request.setAttribute("listaesp", listarEspecialidades());
@@ -75,7 +85,7 @@ public class servletNuevoMedico extends HttpServlet {
 		request.setAttribute("listaTipos", create_tipo_list());
 		request.setAttribute("listaPaises", create_pais_list());
 		
-		RequestDispatcher rd = request.getRequestDispatcher("/NuevoMedico.jsp");   
+		RequestDispatcher rd = request.getRequestDispatcher(redirect);   
         rd.forward(request, response);
 	}
 
@@ -250,9 +260,7 @@ public class servletNuevoMedico extends HttpServlet {
 	private ArrayList<Horario> carga_horarios_medico(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 	
 		Horario aux = new Horario();
-		ArrayList<Horario> lista = new ArrayList<Horario>();
-		HorarioDao horaneg = new HorarioDaoImpl(); 	// REEMPLAZAR POR NEGOCIO
-		
+		ArrayList<Horario> lista = new ArrayList<Horario>();		
 		boolean flag=true;
 		
 		aux.setDia(1);
@@ -262,7 +270,7 @@ public class servletNuevoMedico extends HttpServlet {
 		if(!request.getParameter("TEDomingo").isEmpty()) {
 			aux.setHoraHasta(Integer.parseInt(request.getParameter("TEDomingo")));
 		}else {flag = false;}
-		lista.add(aux);
+		if(aux.getHoraDesde()!=0 && aux.getHoraHasta()!=0) {lista.add(aux);}
 		aux = new Horario();
 		
 		aux.setDia(2);
@@ -272,7 +280,7 @@ public class servletNuevoMedico extends HttpServlet {
 		if(!request.getParameter("TELunes").isEmpty()) {
 			aux.setHoraHasta(Integer.parseInt(request.getParameter("TELunes")));
 		}else {flag = false;}
-		lista.add(aux);
+		if(aux.getHoraDesde()!=0 && aux.getHoraHasta()!=0) {lista.add(aux);}
 		aux = new Horario();
 		
 		aux.setDia(3);
@@ -282,7 +290,7 @@ public class servletNuevoMedico extends HttpServlet {
 		if(!request.getParameter("TEMartes").isEmpty()) {
 			aux.setHoraHasta(Integer.parseInt(request.getParameter("TEMartes")));
 		}else {flag = false;}
-		lista.add(aux);
+		if(aux.getHoraDesde()!=0 && aux.getHoraHasta()!=0) {lista.add(aux);}
 		aux = new Horario();
 		
 		aux.setDia(4);
@@ -292,7 +300,7 @@ public class servletNuevoMedico extends HttpServlet {
 		if(!request.getParameter("TEMiercoles").isEmpty()) {
 			aux.setHoraHasta(Integer.parseInt(request.getParameter("TEMiercoles")));
 		}else {flag = false;}
-		lista.add(aux);
+		if(aux.getHoraDesde()!=0 && aux.getHoraHasta()!=0) {lista.add(aux);}
 		aux = new Horario();
 		
 		aux.setDia(5);
@@ -302,7 +310,7 @@ public class servletNuevoMedico extends HttpServlet {
 		if(!request.getParameter("TEJueves").isEmpty()) {
 			aux.setHoraHasta(Integer.parseInt(request.getParameter("TEJueves")));
 		}else {flag = false;}
-		lista.add(aux);
+		if(aux.getHoraDesde()!=0 && aux.getHoraHasta()!=0) {lista.add(aux);}
 		aux = new Horario();
 		
 		aux.setDia(6);
@@ -312,7 +320,7 @@ public class servletNuevoMedico extends HttpServlet {
 		if(!request.getParameter("TEViernes").isEmpty()) {
 			aux.setHoraHasta(Integer.parseInt(request.getParameter("TEViernes")));
 		}else {flag = false;}
-		lista.add(aux);
+		if(aux.getHoraDesde()!=0 && aux.getHoraHasta()!=0) {lista.add(aux);}
 		aux = new Horario();
 		
 		aux.setDia(7);
@@ -322,7 +330,16 @@ public class servletNuevoMedico extends HttpServlet {
 		if(!request.getParameter("TESabado").isEmpty()) {
 			aux.setHoraHasta(Integer.parseInt(request.getParameter("TESabado")));
 		}else {flag = false;}
-		lista.add(aux);
+		if(aux.getHoraDesde()!=0 && aux.getHoraHasta()!=0) {lista.add(aux);}
+		
+		
+		// EL HORARIO DE INICIO DEBE SER MENOR QUE EL FINAL
+		for (Horario horario : lista) {
+			if(horario.getHoraDesde()>horario.getHoraHasta()) {
+				flag=false;
+			}
+			System.out.println(horario.getDia() +" - "+horario.getHoraDesde()+" | " + horario.getHoraHasta());
+		}
 		
 		if(flag) {return lista;}
 		else {return null;}
@@ -344,16 +361,29 @@ public class servletNuevoMedico extends HttpServlet {
 		// CARGO DATOS DE PERSONA
 		Perso = carga_datos_persona(request, response);
 		if(Perso == null) flag = false;
+		System.out.println("OBTIENE DATOS DE PERSONA: OK" + " " + flag);
 		
 		// CARGO DATOS DEL USUARIO
 		User = carga_datos_usuario(request, response);
 		if(User == null) flag = false;
+		System.out.println("OBTIENE DATOS DE USUARIO: OK" + " " + flag);
 		
 		// VALIDA QUE MEDICO NO EXISTA
 		if(medneg.existe_medico(Perso.getDni())) { // SI MEDICO EXISTE - REGRESA SIN AGREGAR NADA
 			request.setAttribute("existeAdmin", true);
 			return false;
 		}
+		System.out.println("MEDICO NO EXISTE: OK" + " " + flag);
+		
+		// HORARIOS DEL MEDICO
+		ArrayList<Horario> horas = carga_horarios_medico(request, response);
+		HorarioDao horasneg = new HorarioDaoImpl();	
+		
+		// VALIDACION DE HORARIO CARGADO CORRECTAMENTE
+		if(horas==null) {
+			return false;
+		}
+		System.out.println("OBTIENE HORAS DEL MEDICO: OK" + " " + flag);
 		
 		// VALIDA QUE PERSONA Y USUARIO NO EXISTAN
 		if(perneg.existePersona(Perso.getDni()) || userneg.existeUsuario(User.getUser())!=-1) {
@@ -370,7 +400,14 @@ public class servletNuevoMedico extends HttpServlet {
 		} else if (!userneg.agregarUsuario(User)) {
 			//perneg.eliminarPersona(Perso.getDni()); // SI NO SE PUEDE AGREGAR EL USUARIO, SE ELIMINA LA PERSONA - A REVISAR COMPORTAMIENTO ADECUADO
 			return false;
-		}		
+		}
+		System.out.println("AGREGA PERSONA Y USUARIO: OK" + " " + flag);
+		
+		User.setIdUsuario(userneg.existeUsuario(User.getUser()));
+		
+		Medic.setDni(Perso.getDni());
+		Medic.setUsuario(User);
+		Medic.setEstado(true);
 		
 		// ESTADO DE CUENTA
 		if(Integer.parseInt(request.getParameter("slcEstadoCuenta"))!=0) {
@@ -382,30 +419,49 @@ public class servletNuevoMedico extends HttpServlet {
 		}else {
 			flag = false;
 		}
-		
+
 		// ESPECIALIDAD DEL MEDICO
 		if(Integer.parseInt(request.getParameter("slcEsp"))!=0) {
-			if(Integer.parseInt(request.getParameter("slcEsp"))==1) {
-				Medic.getEspecialidad().setIdEspecialidad(Integer.parseInt(request.getParameter("slcEsp")));
-			}
+			Medic.getEspecialidad().setIdEspecialidad(Integer.parseInt(request.getParameter("slcEsp")));
 		}else {
 			flag = false;
 		}
+		System.out.println("OBTIENE DATOS LABORALES DEL MEDICO: OK" + " " + flag + " IDEsp: " + Integer.parseInt(request.getParameter("slcEsp")) + " ID ESP MEDIC: " + Medic.getEspecialidad().getIdEspecialidad());
 		
-		// HORARIOS DEL MEDICO
-		ArrayList<Horario> horas = carga_horarios_medico(request, response);
-		HorarioDao horasneg = new HorarioDaoImpl();
+		// CARGA MEDICO A DB
+		if(!medneg.agregarMedico(Medic)) {
+			return false;
+		}
 		
+		System.out.println("CARGA MEDICO A DB: OK" + " " + flag);
 		// OBTIENE ID DE MEDICO AGREGADO
 		Medico Aux = new Medico();
 		Aux = medneg.buscar_dni(Medic.getDni());
 		
+		
+		System.out.println("OBTIENE ID DEL MEDICO: OK" + " " + flag + " " + Aux.getIdMedico());
 		// CARGA HORAS DE ATENCION DEL MEDICO (NECESITA IDMEDICO)
 		for (Horario horario : horas) {
-			horasneg.Agregar(Aux.getIdMedico(), horario);
+			if(!horasneg.Agregar(Aux.getIdMedico(), horario)){
+				return false;
+			}
+		}
+		
+		System.out.println("CARGA HORAS A DB: OK" + " " + flag);
+		return flag;
+	}
+
+	// CAMBIA ESTADO A 0 DEL ADMINISTRADOR
+	private boolean eliminar_medico (HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		MedicoNegocio medneg = new MedicoNegocioImpl();
+		Medico medic = new Medico();
+		
+		medic = medneg.buscar_id(Integer.parseInt(request.getParameter("radSelect")));
+		if(medic != null) {
+			return medneg.bajaMedico(medic);
 		}
 		
 		return false;
 	}
-
+	
 }

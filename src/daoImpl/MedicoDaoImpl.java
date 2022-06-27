@@ -39,7 +39,7 @@ public class MedicoDaoImpl implements MedicoDao{
 	private String eliminar = "DELETE FROM bdtp_integrador.medicos WHERE IDMedico = ?";
 	private String proxid = "SELECT MAX(m.IDMedico) FROM bdtp_integrador.medicos m order by m.IDMedico";
 	private String buscaruserid = "SELECT * FROM bdtp_integrador.medicos where idUsuario = ?";
-	private String buscarDNI = "SELECT * FROM bdtp_integrador.medicos where DNI = ?";
+	private String buscarDNI = "SELECT * FROM bdtp_integrador.medicos M inner join personas P on M.DNI = P.DNI inner join usuarios u on u.idUsuario = m.IDUsuario where M.DNI = ?";
 	private String bajaMedic = "UPDATE bdtp_integrador.medicos SET Estado = 0 where IDMedico = ?";
 	private String obtenerObjeto = "SELECT * FROM bdtp_integrador.medicos WHERE IDMedico = ?";
 	
@@ -133,23 +133,13 @@ public class MedicoDaoImpl implements MedicoDao{
 		boolean InsertState = false;
 		
 		try {
+			System.out.println(medico.getDni() + " " + medico.getEspecialidad().getIdEspecialidad() + " " + medico.getUsuario().getIdUsuario());
 			Stat = conex.prepareStatement(alinsertar);
 			Stat.setInt(1,medico.getDni());
-			Stat.setString(2,medico.getNombre());
-			Stat.setString(3,medico.getApellido());
-			//Aca se guarda el ID
-			Stat.setInt(4,medico.getNacionalidad().getIdNacionalidad());
-			Stat.setString(5,medico.getDirecc().getCalleYNum());
-			Stat.setInt(6,medico.getSexo().getIdSexo());
-			Stat.setInt(7,medico.getDirecc().getLoc().getIdLocalidad());
-			Stat.setString(8,medico.getEmail());
-			Stat.setString(9,medico.getTelefono());
-			Stat.setDate(10,medico.getFecha_nacimiento());
-			Stat.setInt(11,medico.getEspecialidad().getIdEspecialidad());
-			Stat.setInt(12,medico.getUsuario().getIdUsuario());
-			Stat.setBoolean(13,medico.isEstado());
-			
-			
+			Stat.setInt(2,medico.getEspecialidad().getIdEspecialidad());
+			Stat.setInt(3,medico.getUsuario().getIdUsuario());
+			Stat.setBoolean(4,medico.isEstado());
+
 			if(Stat.executeUpdate()>0) {
 				conex.commit();
 				InsertState=true;

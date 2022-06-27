@@ -40,6 +40,7 @@ $(document).ready( function () {
   <div class="row mx-2 mb-2 justify-content-center p-2">
   		<label class="subtitle w-100">Médico</label>
 	</div>
+<form method="get" action="servletNuevoMedico"><!-- REEMPLAZAR POR INPUT CON RUTA A SERVLET -->
   <div class="container-fluid">
   <div class="row mx-2 d-flex flex-wrap align-middle justify-content-evenly">
 	  	<div class="col-md-2 border-right">
@@ -76,12 +77,13 @@ $(document).ready( function () {
   					if(!listaDeMedicos.isEmpty()) {
   						for (Medico x: listaDeMedicos){
   							%>
-  								<tr><td> <%= x.getIdMedico() %> </td>
+  								<tr <% if(!x.isEstado()){%> class="table-danger" <%} %>>
+  								<td> <%= x.getIdMedico() %> </td>
   								<td> <%= x.getNombre() + " " + x.getApellido() %> </td> 
   								<td> <%= x.getDni() %>  </td>
 								<td> <%= x.getEspecialidad().getNombre() %> </td>
 								<td> <%= x.isEstado()? "Activo":"Inactivo"%> </td>
-								<td align="center"> <input type="radio" name="radSelect" value=""> </td></tr>
+								<td align="center"> <input type="radio" name="radSelect" value="<%=x.getIdMedico()%>"></td>
   							<%
   						}   					
   					}
@@ -116,10 +118,11 @@ $(document).ready( function () {
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-      				<a href="Medicos.jsp" class="btn btn-outline-danger w-25">Eliminar</a><!-- REEMPLAZAR POR INPUT CON RUTA A SERVLET -->
+      				<input type="submit" name="btnEliminarMedico" class="btn btn-outline-danger w-25" value="Eliminar">
 				</div>
 			</div>
 		</div>
 	</div>
+	</form>
 </body>
 </html>

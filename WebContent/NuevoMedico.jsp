@@ -281,24 +281,24 @@
   		<div class="col col-md-3 mh-2 justify-content-center p-2"> 
 	  		<div class="row justify-content-center mx-2">
 	  			<label class="p-1">Especialidad</label> 
-	  			<select name="v" class="w-100" required>
-				<option value="0" disabled>Seleccione opción</option>
-				<%
-				if(request.getAttribute("listaesp")!=null){
-					listaesp = (ArrayList<Especialidad>)request.getAttribute("listaesp");
-					if(!listaesp.isEmpty()){
-						for(Especialidad esp : listaesp){
-							%>
-							<option value="<%=esp.getIdEspecialidad() %>" 
-							<%
-				  			if(medic!=null && medic.getUsuario().getTipo().getIdTipo() == esp.getIdEspecialidad()){%>selected<%;}
-							%>
-							><%=esp.getNombre() %></option>	
-							<%
+	  			<select name=slcEsp class="w-100" required>
+					<option value="0" disabled>Seleccione opción</option>
+					<%
+					if(request.getAttribute("listaesp")!=null){
+						listaesp = (ArrayList<Especialidad>)request.getAttribute("listaesp");
+						if(!listaesp.isEmpty()){
+							for(Especialidad esp : listaesp){
+								%>
+								<option value="<%=esp.getIdEspecialidad()%>" 
+								<%
+					  			if(medic!=null && medic.getUsuario().getTipo().getIdTipo() == esp.getIdEspecialidad()){%>selected<%;}
+								%>
+								><%=esp.getNombre() %></option>	
+								<%
+							}
 						}
 					}
-				}
-				%>
+					%>
 			</select>	
 	  		</div>
 	  		<div class="row justify-content-center mx-2">

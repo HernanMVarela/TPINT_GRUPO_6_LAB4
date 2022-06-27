@@ -244,7 +244,11 @@
 	  <div class="row justify-content-center">
 	  	<div class="col col-md-3 mh-2 justify-content-center p-2">
 	  		<label class="p-1">Email</label>
-		  	<input type="email" name="txfEmailPersona" class="w-100">
+		  	<input type="email" name="txfEmailPersona" class="w-100" required
+	  		<% 
+  			if(admin!=null){%>value="<%=admin.getEmail()%>"<%;}
+	  		%>
+		  	>
 	  	</div>
 	  	<div class="col col-md-3 mh-2 justify-content-center p-2">
 	  		<label class="p-1">Telefono</label>

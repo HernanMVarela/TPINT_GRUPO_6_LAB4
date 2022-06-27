@@ -10,4 +10,5 @@ public interface MedicoNegocio {
 	public boolean agregarMedico(Medico agregar);
 	public Medico buscar_dni(int DNI);
 	public boolean existe_medico(int DNI);
+	public Medico buscar_id(int idMedico);
 }
