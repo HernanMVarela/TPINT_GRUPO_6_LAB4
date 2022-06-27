@@ -4,8 +4,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
-import java.util.List;
-
 import dao.TurnoDao;
 import dao.PacienteDao;
 import dao.MedicoDao;
@@ -21,14 +19,6 @@ import entidad.Especialidad;
 import entidad.Persona;
 import entidad.Estado;
 import entidad.Sexo;
-
-import negocio.TurnoNegocio;
-import negocio.MedicoNegocio;
-import negocio.PacienteNegocio;
-
-import negocioImpl.TurnoNegocioImpl;
-import negocioImpl.MedicoNegocioImpl;
-import negocioImpl.PacienteNegocioImpl;
 
 public class TurnoDaoImpl implements TurnoDao{
 

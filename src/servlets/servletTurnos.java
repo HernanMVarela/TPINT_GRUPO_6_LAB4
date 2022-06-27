@@ -2,6 +2,8 @@ package servlets;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 import javax.servlet.RequestDispatcher;
@@ -40,6 +42,13 @@ public class servletTurnos extends HttpServlet {
 		List<Turno> listaturnos = new ArrayList<Turno>();
 		TurnoNegocio turneg = new TurnoNegocioImpl();
 
+		Calendar date = new GregorianCalendar();
+		
+		for (Turno turno : listaturnos) {
+			date.setTime(turno.getDia());
+			date.get(Calendar.DAY_OF_WEEK);
+		}
+		
 		listaturnos = turneg.Listar();
 		return listaturnos;
 	}
