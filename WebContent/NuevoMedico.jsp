@@ -7,6 +7,7 @@
 <%@page import="entidad.Tipo"%>
 <%@page import="entidad.Especialidad"%>
 <%@page import="entidad.Medico"%>
+<%@page import="entidad.Horario"%>
 <%@page import="servlets.servletNuevoMedico"%>
 
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
@@ -205,10 +206,14 @@
   					<label class="p-1">Domingo</label>
   				</div>
   				<div class="col col-md-4">
-  					<select name="TIDomingo" class="w-100" required><%for(int x=0; x<24; x++){ %><option value="<%=x %>"><%=x%>:00</option><%} %></select>
+  					<select name="TIDomingo" class="w-100" required><%for(int x=0; x<24; x++){ %><option value="<%=x %>"
+  					<%if(medic!=null){for (Horario horas : medic.getHorarios()) {if(horas.getDia()==1 && horas.getHoraDesde()==x){%>selected <%}}}%>
+  					><%=x%>:00</option><%} %></select>
   				</div>
   				<div class="col col-md-4">
-  				  	<select name="TEDomingo" class="w-100" required><%for(int x=0; x<24; x++){ %><option value="<%=x %>"><%=x%>:00</option><%} %></select>
+  				  	<select name="TEDomingo" class="w-100" required><%for(int x=0; x<24; x++){ %><option value="<%=x %>"
+  					<%if(medic!=null){for (Horario horas : medic.getHorarios()) {if(horas.getDia()==1 && horas.getHoraHasta()==x){%>selected <%}}}%>
+  					><%=x%>:00</option><%} %></select>
   				</div>
   			</div>
   			<div class="row justify-content-center">
@@ -216,10 +221,14 @@
   					<label class="p-1">Lunes</label>
   				</div>
   				<div class="col col-md-4">
-  					<select name="TILunes"  class="w-100" required><%for(int x=0; x<24; x++){ %><option value="<%=x %>"><%=x%>:00</option><%} %></select>
+  					<select name="TILunes" class="w-100" required><%for(int x=0; x<24; x++){ %><option value="<%=x %>"
+  					<%if(medic!=null){for (Horario horas : medic.getHorarios()) {if(horas.getDia()==2 && horas.getHoraDesde()==x){%>selected <%}}}%>
+  					><%=x%>:00</option><%} %></select>
   				</div>
   				<div class="col col-md-4">
-  					<select name="TELunes"  class="w-100" required><%for(int x=0; x<24; x++){ %><option value="<%=x %>"><%=x%>:00</option><%} %></select>
+  					<select name="TELunes" class="w-100" required><%for(int x=0; x<24; x++){ %><option value="<%=x %>"
+  					<%if(medic!=null){for (Horario horas : medic.getHorarios()) {if(horas.getDia()==2 && horas.getHoraHasta()==x){%>selected <%}}}%>
+  					><%=x%>:00</option><%} %></select>
   				</div>
   			</div>
   			<div class="row justify-content-center">
@@ -227,10 +236,14 @@
   					<label class="p-1">Martes</label>
   				</div>
   				<div class="col col-md-4">
-  					<select name="TIMartes" class="timepicker w-100" required><%for(int x=0; x<24; x++){ %><option value="<%=x %>"><%=x%>:00</option><%} %></select>
+  					<select name="TIMartes" class="w-100" required><%for(int x=0; x<24; x++){ %><option value="<%=x %>"
+  					<%if(medic!=null){for (Horario horas : medic.getHorarios()) {if(horas.getDia()==3 && horas.getHoraDesde()==x){%>selected <%}}}%>
+  					><%=x%>:00</option><%} %></select>
   				</div>
   				<div class="col col-md-4">
-  					<select name="TEMartes" class="timepicker w-100" required><%for(int x=0; x<24; x++){ %><option value="<%=x %>"><%=x%>:00</option><%} %></select>
+  					<select name="TEMartes" class="w-100" required><%for(int x=0; x<24; x++){ %><option value="<%=x %>"
+  					<%if(medic!=null){for (Horario horas : medic.getHorarios()) {if(horas.getDia()==3 && horas.getHoraHasta()==x){%>selected <%}}}%>
+  					><%=x%>:00</option><%} %></select>
   				</div>
   			</div>
   			<div class="row justify-content-center">
@@ -238,10 +251,14 @@
   					<label class="p-1">Miércoles</label>
   				</div>
   				<div class="col col-md-4">
-  					<select name="TIMiercoles" class="w-100" required><%for(int x=0; x<24; x++){ %><option value="<%=x %>"><%=x%>:00</option><%} %></select>
+  					<select name="TIMiercoles" class="w-100" required><%for(int x=0; x<24; x++){ %><option value="<%=x %>"
+  					<%if(medic!=null){for (Horario horas : medic.getHorarios()) {if(horas.getDia()==4 && horas.getHoraDesde()==x){%>selected <%}}}%>
+  					><%=x%>:00</option><%} %></select>
   				</div>
   				<div class="col col-md-4">
-  					<select name="TEMiercoles" class="w-100" required><%for(int x=0; x<24; x++){ %><option value="<%=x %>"><%=x%>:00</option><%} %></select>
+  					<select name="TEMiercoles" class="w-100" required><%for(int x=0; x<24; x++){ %><option value="<%=x %>"
+  					<%if(medic!=null){for (Horario horas : medic.getHorarios()) {if(horas.getDia()==4 && horas.getHoraHasta()==x){%>selected <%}}}%>
+  					><%=x%>:00</option><%} %></select>
   				</div>
   			</div>
   			<div class="row justify-content-center">
@@ -249,10 +266,14 @@
   					<label class="p-1">Jueves</label>
   				</div>
   				<div class="col col-md-4">
-  					<select name="TIJueves" class="w-100" required><%for(int x=0; x<24; x++){ %><option value="<%=x %>"><%=x%>:00</option><%} %></select>
+  					<select name="TIJueves" class="w-100" required><%for(int x=0; x<24; x++){ %><option value="<%=x %>"
+  					<%if(medic!=null){for (Horario horas : medic.getHorarios()) {if(horas.getDia()==5 && horas.getHoraDesde()==x){%>selected <%}}}%>
+  					><%=x%>:00</option><%} %></select>
   				</div>
   				<div class="col col-md-4">
-  					<select name="TEJueves" class="w-100" required><%for(int x=0; x<24; x++){ %><option value="<%=x %>"><%=x%>:00</option><%} %></select>
+  					<select name="TEJueves" class="w-100" required><%for(int x=0; x<24; x++){ %><option value="<%=x %>"
+  					<%if(medic!=null){for (Horario horas : medic.getHorarios()) {if(horas.getDia()==5 && horas.getHoraHasta()==x){%>selected <%}}}%>
+  					><%=x%>:00</option><%} %></select>
   				</div>
   			</div>
   			<div class="row justify-content-center">
@@ -260,10 +281,14 @@
   					<label class="p-1">Viernes</label>
   				</div>
   				<div class="col col-md-4">
-  					<select name="TIViernes" class="w-100" required><%for(int x=0; x<24; x++){ %><option value="<%=x %>"><%=x%>:00</option><%} %></select>
+  					<select name="TIViernes" class="w-100" required><%for(int x=0; x<24; x++){ %><option value="<%=x %>"
+  					<%if(medic!=null){for (Horario horas : medic.getHorarios()) {if(horas.getDia()==6 && horas.getHoraDesde()==x){%>selected <%}}}%>
+  					><%=x%>:00</option><%} %></select>
   				</div>
   				<div class="col col-md-4">
-  					<select name="TEViernes" class="w-100" required><%for(int x=0; x<24; x++){ %><option value="<%=x %>"><%=x%>:00</option><%} %></select>
+  					<select name="TEViernes" class="w-100" required><%for(int x=0; x<24; x++){ %><option value="<%=x %>"
+  					<%if(medic!=null){for (Horario horas : medic.getHorarios()) {if(horas.getDia()==6 && horas.getHoraHasta()==x){%>selected <%}}}%>
+  					><%=x%>:00</option><%} %></select>
   				</div>
   			</div>
   			<div class="row justify-content-center">
@@ -271,10 +296,14 @@
   					<label class="p-1">Sábado</label>
   				</div>
   				<div class="col col-md-4">
-  					<select name="TISabado" class="w-100" required><%for(int x=0; x<24; x++){ %><option value="<%=x %>"><%=x%>:00</option><%} %></select>
+  					<select name="TISabado" class="w-100" required><%for(int x=0; x<24; x++){ %><option value="<%=x %>"
+  					<%if(medic!=null){for (Horario horas : medic.getHorarios()) {if(horas.getDia()==7 && horas.getHoraDesde()==x){%>selected <%}}}%>
+  					><%=x%>:00</option><%} %></select>
   				</div>
   				<div class="col col-md-4">
-  					<select name="TESabado" class="w-100" required><%for(int x=0; x<24; x++){ %><option value="<%=x %>"><%=x%>:00</option><%} %></select>
+  				  	<select name="TESabado" class="w-100" required><%for(int x=0; x<24; x++){ %><option value="<%=x %>"
+  					<%if(medic!=null){for (Horario horas : medic.getHorarios()) {if(horas.getDia()==7 && horas.getHoraHasta()==x){%>selected <%}}}%>
+  					><%=x%>:00</option><%} %></select>
   				</div>
   			</div>
   		</div>

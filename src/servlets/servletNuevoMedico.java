@@ -39,10 +39,12 @@ import entidad.Sexo;
 import entidad.Tipo;
 import entidad.Usuario;
 import negocio.AdministradorNegocio;
+import negocio.HorarioNegocio;
 import negocio.MedicoNegocio;
 import negocio.PersonaNegocio;
 import negocio.UsuarioNegocio;
 import negocioImpl.AdministradorNegocioImpl;
+import negocioImpl.HorarioNegocioImpl;
 import negocioImpl.MedicoNegocioImpl;
 import negocioImpl.PersonaNegocioImpl;
 import negocioImpl.UsuarioNegocioImpl;
@@ -59,11 +61,25 @@ public class servletNuevoMedico extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String redirect = "/NuevoMedico.jsp";
+		boolean aux = true;
+		request.setAttribute("medic", null);		
 		
-		if(request.getParameter("btnAceptar")!=null) {
-			redirect = "servletMedicos";
-			agregar_medico(request, response);
+		// EVENTO BOTON MODIFICAR USUARIO
+		if(request.getParameter("btnModificarMedico")!=null) {
+			if(request.getParameter("radSelect")!=null){
+				if(carga_datos(request, response)) {
+					// DATOS DEL ELEMENTO SELECCIONADO OBTENIDOS
+				}else {
+					request.setAttribute("medic", null);	
+					// NO SE PUEDEN CARGAR LOS DATOS
+				}
+			}else {
+				// NO HAY ELEMENTO SELECCIONADO
+				aux = false;
+				redirect = "servletMedicos"; 
+			}
 		}
+		
 		
 		if(request.getParameter("btnEliminarMedico")!=null) {
 			if(request.getParameter("radSelect")!=null){
@@ -72,18 +88,33 @@ public class servletNuevoMedico extends HttpServlet {
 				}else {
 					// NO SE PUDO ELIMINAR
 				}
+				aux = false;
 				redirect = "servletMedicos";
 			}else {
 				// NO HAY NADA SELECCIONADO - DEVOLVER ATRIBUTO O MENSAJE DE ERROR
 			}
 		}
 		
-		request.setAttribute("listaesp", listarEspecialidades());
-		request.setAttribute("listaProvincias", create_provincia_list());
-		request.setAttribute("listaLocalidades", create_localidad_list());
-		request.setAttribute("listasexos", create_sexo_list());
-		request.setAttribute("listaTipos", create_tipo_list());
-		request.setAttribute("listaPaises", create_pais_list());
+		// EVENTO BOTON AGREGAR NUEVO USUARIO
+		if(request.getParameter("btnAceptar")!=null) {
+			if (request.getParameter("medicId")!=null){
+				System.out.println("LLEGA A MODIFICAR: " + Integer.parseInt(request.getParameter("medicId")));
+				modificar_medico(request, response);
+			}else {
+				agregar_medico(request, response);
+			}
+			redirect = "servletMedicos";
+			aux = false;
+		}
+		
+		if(aux) {
+			request.setAttribute("listaesp", listarEspecialidades());
+			request.setAttribute("listaProvincias", create_provincia_list());
+			request.setAttribute("listaLocalidades", create_localidad_list());
+			request.setAttribute("listasexos", create_sexo_list());
+			request.setAttribute("listaTipos", create_tipo_list());
+			request.setAttribute("listaPaises", create_pais_list());
+		}
 		
 		RequestDispatcher rd = request.getRequestDispatcher(redirect);   
         rd.forward(request, response);
@@ -338,7 +369,6 @@ public class servletNuevoMedico extends HttpServlet {
 			if(horario.getHoraDesde()>horario.getHoraHasta()) {
 				flag=false;
 			}
-			System.out.println(horario.getDia() +" - "+horario.getHoraDesde()+" | " + horario.getHoraHasta());
 		}
 		
 		if(flag) {return lista;}
@@ -462,6 +492,61 @@ public class servletNuevoMedico extends HttpServlet {
 		}
 		
 		return false;
+	}
+	
+	private boolean carga_datos (HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		Medico medic = new Medico();
+		
+		MedicoNegocio medneg = new MedicoNegocioImpl();
+		medic = medneg.buscar_id(Integer.parseInt(request.getParameter("radSelect")));
+		if (medic!=null) {
+			request.setAttribute("medic", medic);
+			return true;
+		}
+		return false;
+	}
+	
+	private boolean modificar_medico(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		Medico Medic = null;
+		Usuario User = null;
+		Persona Perso= null;
+		
+		PersonaNegocio perneg = new PersonaNegocioImpl();
+		UsuarioNegocio userneg = new UsuarioNegocioImpl();
+		MedicoNegocio medicneg = new MedicoNegocioImpl();
+		HorarioNegocio horasneg = new HorarioNegocioImpl();
+
+		Medic = medicneg.buscar_id(Integer.parseInt(request.getParameter("medicId").toString()));
+		if(Medic == null) {return false;}
+		System.out.println("OBTIENE MEDICO POR ID OK: " + Medic.getDni() + " " + Medic.getIdMedico() );
+		
+		Perso = carga_datos_persona(request, response);
+		if(Perso == null) {return false;}
+		Perso.setDni(Medic.getDni());
+		System.out.println("CARGA DATOS DE PERSONA OK: " + Perso.getNombre() + " " + Perso.getApellido() );
+		
+		User = carga_datos_usuario(request, response);
+		if(User == null) {return false;}
+		User.setIdUsuario(Medic.getUsuario().getIdUsuario());
+		System.out.println("CARGA DATOS DE USUARIO OK: " + User.getUser() +" "+ User.getIdUsuario());
+		
+		Medic.setHorarios(carga_horarios_medico(request, response));
+		if(Medic.getHorarios()==null) {return false;}		
+		System.out.println("CARGA HORAS DEL MEDICO OK");
+		
+		if(!perneg.Modificar(Perso)) {return false;}
+		System.out.println("MODIFICA DATOS DE PERSONA EN DB OK:");
+		if(!userneg.Modificar(User)) {return false;}
+		System.out.println("MODIFICA DATOS DE USUARIO EN DB OK");
+		
+		if(!horasneg.Modificar(Medic.getIdMedico(), Medic.getHorarios())) {return false;}
+		System.out.println("MODIFICA HORAS DEL MEDICO EN DB OK");
+		
+		if(!medicneg.Modificar(Medic)) {return false;}
+		else {
+		System.out.println("MODIFICA DATOS DE MEDICO EN DB OK");	
+		return true;}
+		
 	}
 	
 }

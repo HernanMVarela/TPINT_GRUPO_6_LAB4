@@ -51,25 +51,28 @@ public class servletNuevoUsuario extends HttpServlet {
 		
 		String redirect = "/NuevoUsuario.jsp";
 		boolean aux = true;
+		request.setAttribute("admin", null);
 		//INICIALIZACION DE ATRIBUTOS
 		request.setAttribute("existeAdmin", false);
 		request.setAttribute("existePersona", false);
 		request.setAttribute("existeUsuario", false);
 		
-		// EVENTO BOTON AGREGAR NUEVO USUARIO
+		// EVENTO BOTON MODIFICAR USUARIO
 		if(request.getParameter("btnModificarUsuario")!=null) {
 			if(request.getParameter("radSelect")!=null){
 				if(carga_datos(request, response)) {
-					
+					// DATOS DEL ELEMENTO SELECCIONADO OBTENIDOS
 				}else {
 					// NO SE PUDO MODIFICAR
 				}
 			}else {
+				// NO HAY ELEMENTO SELECCIONADO
 				redirect = "servletPanelAdministrador"; 
 				aux = false;
 			}
 		}
 		
+		// EVENTO BOTON AGREGAR NUEVO USUARIO
 		if(request.getParameter("btnAgregarUsuario")!=null) {
 			if (request.getParameter("adminId")!=null){
 				modificar_usuario(request, response);

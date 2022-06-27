@@ -26,9 +26,9 @@ public class MedicoNegocioImpl implements MedicoNegocio{
 	}
 
 	@Override
-	public boolean modificar_usuario(Medico modif_user) {
+	public boolean Modificar(Medico medic) {
 		MedicoDao meddao = new MedicoDaoImpl();
-		return meddao.Modificar(modif_user);
+		return meddao.Modificar(medic);
 	}
 
 	@Override

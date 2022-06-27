@@ -98,7 +98,7 @@ $(document).ready( function () {
   		<a href="servletNuevoMedico" name="btnAgregar" class="btn btn-info w-75">Agregar</a><!-- REEMPLAZAR RUTA POR SERVLET -->
 		</div>
   		<div class="col-md-3 d-flex justify-content-center">
-  			<a href="NuevoMedico.jsp" class="btn btn-info w-75">Modificar</a><!-- REEMPLAZAR POR INPUT CON RUTA A SERVLET -->
+  			<input type="submit" class="btn btn-info w-100" name="btnModificarMedico" value="Modificar">
   		</div>
   		<div class="col-md-3 d-flex justify-content-center">
   			<button type="button" class="btn btn-danger w-75" data-bs-toggle="modal" data-bs-target="#modalEliminar">Eliminar Seleccionado</button>

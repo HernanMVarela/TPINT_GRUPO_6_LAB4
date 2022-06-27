@@ -17,6 +17,7 @@ import dao.UsuarioDao;
 import entidad.Administrador;
 import entidad.Direccion;
 import entidad.Especialidad;
+import entidad.Horario;
 import entidad.Localidad;
 import entidad.Medico;
 import entidad.Pais;
@@ -172,20 +173,11 @@ public class MedicoDaoImpl implements MedicoDao{
 			statement = conexion.getSQLConexion().prepareStatement(modificar);
 			
 			statement.setInt(1,medico.getDni());
-			statement.setString(2,medico.getNombre());
-			statement.setString(3,medico.getApellido());
-			//Aca se guarda el ID
-			statement.setInt(4,medico.getNacionalidad().getIdNacionalidad());
-			statement.setString(5,medico.getDirecc().getCalleYNum());
-			statement.setInt(6,medico.getSexo().getIdSexo());
-			statement.setInt(7,medico.getDirecc().getLoc().getIdLocalidad());
-			statement.setString(8,medico.getEmail());
-			statement.setString(9,medico.getTelefono());
-			statement.setDate(10,medico.getFecha_nacimiento());
-			statement.setInt(11,medico.getEspecialidad().getIdEspecialidad());
-			statement.setInt(12,medico.getUsuario().getIdUsuario());
-			statement.setBoolean(13,medico.isEstado());
-			
+			statement.setInt(2,medico.getEspecialidad().getIdEspecialidad());
+			statement.setInt(3,medico.getUsuario().getIdUsuario());
+			statement.setInt(4,medico.isEstado() ? 1 : 0);
+			statement.setInt(5,medico.getIdMedico());
+
 			if(statement.executeUpdate() > 0) {
 				conexion.getSQLConexion().commit();
 				result = true;
@@ -582,7 +574,6 @@ public class MedicoDaoImpl implements MedicoDao{
 			e.printStackTrace();
 			}
 		
-		Medico result = new Medico();
 		Conexion conexion = Conexion.getConexion();
 		PreparedStatement statement;
 		ResultSet resultSet;
@@ -606,14 +597,19 @@ public class MedicoDaoImpl implements MedicoDao{
 				UsuarioDao daoUsuario = new UsuarioDaoImpl();
 				Usuario usuario = new Usuario();
 				usuario = daoUsuario.ObtenerObjeto(resultSet.getInt("IDUsuario"));
+				
+				HorarioDao horasdao = new HorarioDaoImpl();
+				ArrayList<Horario> horas = new ArrayList<Horario>();
+				horas = horasdao.Listar(idMedico);
 								
-				result = new Medico(
+				Medico result = new Medico(
 						idMedico, 
 						persona,
 						especialidad,
 						usuario,
-						resultSet.getBoolean("Estado")					
+						resultSet.getBoolean("Estado")		
 						);
+				result.setHorarios(horas);
 				
 				return result;
 			}
@@ -621,7 +617,7 @@ public class MedicoDaoImpl implements MedicoDao{
 			e.printStackTrace();
 		}finally{ }		
 		
-		return result;
+		return null;
 	}
 	
 	
