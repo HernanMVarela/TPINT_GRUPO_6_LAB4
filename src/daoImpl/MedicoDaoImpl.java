@@ -32,7 +32,7 @@ import negocioImpl.UsuarioNegocioImpl;
 public class MedicoDaoImpl implements MedicoDao{
 	
 	//Atributos
-	private String leerTodo = "SELECT * FROM bdtp_integrador.medicos M inner join personas P on M.DNI = P.DNI inner join usuarios u on u.idUsuario = m.IDUsuario";
+	private String leerTodo = "SELECT * FROM bdtp_integrador.medicos";
 	private String alinsertar = "INSERT INTO bdtp_integrador.medicos (DNI,IDEspecialidad,IDUsuario,Estado) VALUES (?,?,?,?)";
 	private String modificar = "UPDATE bdtp_integrador.medicos SET DNI = ?, IDEspecialidad = ?, IDUsuario = ?, Estado = ? WHERE IDMedico = ?";
 	//private String modif_user = "UPDATE bdtp_integrador.medicos SET IDUsuario = ?, Estado = ? WHERE DNI = ?";
@@ -66,48 +66,41 @@ public class MedicoDaoImpl implements MedicoDao{
 			
 			while(resultSet.next()){
 				
-				Pais pais = new Pais();
-				PaisDao paisdao = new PaisDaoImpl();
+				Medico Medic = new Medico();
 				
-				pais = paisdao.ObtenerObjeto(resultSet.getInt("IDPais"));
+				Persona Perso = new Persona();
+				PersonaDao perdao = new PersonaDaoImpl();
+				Perso = perdao.ObtenerObjeto(resultSet.getInt("DNI"));
 				
-				Localidad loc = new Localidad();
-				LocalidadDao locdao = new LocalidadDaoImpl();
-				loc = locdao.ObtenerObjeto(resultSet.getInt("IDLocalidad"));
-				
-				Direccion direc = new Direccion();
-				direc.setCalleYNum(resultSet.getString("Direccion"));
-				direc.setLoc(loc);				
-				
-				Sexo sex = new Sexo();
-				SexoDao sexdao = new SexoDaoImpl();
-				sex= sexdao.ObtenerObjeto(resultSet.getInt("IDSexo"));
-				
-				Especialidad esp = new Especialidad();
+				Especialidad Espe = new Especialidad();
 				EspecialidadDao espdao = new EspecialidadDaoImpl();
-				esp = espdao.ObtenerObjeto(resultSet.getInt("IDEspecialidad"));
+				Espe = espdao.ObtenerObjeto(resultSet.getInt("IDEspecialidad"));
 				
-				Usuario user = new Usuario();
+				Usuario User = new Usuario();
 				UsuarioDao userdao = new UsuarioDaoImpl();
-				user = userdao.ObtenerObjeto(resultSet.getInt("IDUsuario"));
+				User = userdao.ObtenerObjeto(resultSet.getInt("IDUsuario"));
 				
-				Persona temp = new Persona();
+				// DATOS DE PERSONA
+				Medic.setDni(resultSet.getInt("DNI"));			
+				Medic.setNombre(Perso.getNombre());
+				Medic.setApellido(Perso.getApellido());
+				Medic.setDirecc(Perso.getDirecc());
+				Medic.setEmail(Perso.getEmail());
+				Medic.setEstado(resultSet.getBoolean("Estado"));
+				Medic.setFecha_nacimiento(Perso.getFecha_nacimiento());
+				Medic.setNacionalidad(Perso.getNacionalidad());
+				Medic.setSexo(Perso.getSexo());
+				Medic.setTelefono(Perso.getTelefono());
 				
-				temp.setDni(resultSet.getInt("DNI"));
-				temp.setNombre(resultSet.getString("Nombre"));
-				temp.setApellido(resultSet.getString("Apellido"));
-				temp.setNacionalidad(pais);
-				temp.setDirecc(direc);
-				temp.setSexo(sex);
-				temp.setEmail(resultSet.getString("Email"));
-				temp.setEmail(resultSet.getString("Telefono"));
-				temp.setFecha_nacimiento(resultSet.getDate("Fecha_nacimiento"));
+				// DATOS DE MEDICO
+				Medic.setIdMedico(resultSet.getInt("IDMedico"));
+				Medic.setEspecialidad(Espe);
+				Medic.setUsuario(User);
 				
-				Medico temporal = new Medico(resultSet.getInt("idMedico"),temp,esp,user,resultSet.getBoolean("Estado"));
 				HorarioDao horasdao = new HorarioDaoImpl();
-				temporal.setHorarios(horasdao.Listar(temporal.getIdMedico()));				
+				Medic.setHorarios(horasdao.Listar(Medic.getIdMedico()));				
 				
-				result.add(temporal);
+				result.add(Medic);
 				
 			}
 			//connection.close();
@@ -248,44 +241,36 @@ public class MedicoDaoImpl implements MedicoDao{
 			
 			while(resultSet.next()){
 
-				Pais pais = new Pais();
-				PaisDao paisdao = new PaisDaoImpl();
+				Persona Perso = new Persona();
+				PersonaDao perdao = new PersonaDaoImpl();
+				Perso = perdao.ObtenerObjeto(resultSet.getInt("DNI"));
 				
-				pais = paisdao.ObtenerObjeto(resultSet.getInt("IDPais"));
-				
-				Localidad loc = new Localidad();
-				LocalidadDao locdao = new LocalidadDaoImpl();
-				loc = locdao.ObtenerObjeto(resultSet.getInt("IDLocalidad"));
-				
-				Direccion direc = new Direccion();
-				direc.setCalleYNum(resultSet.getString("Direccion"));
-				direc.setLoc(loc);				
-				
-				Sexo sex = new Sexo();
-				SexoDao sexdao = new SexoDaoImpl();
-				sex= sexdao.ObtenerObjeto(resultSet.getInt("IDSexo"));
-				
-				Especialidad esp = new Especialidad();
+				Especialidad Espe = new Especialidad();
 				EspecialidadDao espdao = new EspecialidadDaoImpl();
-				esp = espdao.ObtenerObjeto(resultSet.getInt("IDEspecialidad"));
+				Espe = espdao.ObtenerObjeto(resultSet.getInt("IDEspecialidad"));
 				
-				Usuario user = new Usuario();
+				Usuario User = new Usuario();
 				UsuarioDao userdao = new UsuarioDaoImpl();
-				user = userdao.ObtenerObjeto(resultSet.getInt("IDUsuario"));
+				User = userdao.ObtenerObjeto(resultSet.getInt("IDUsuario"));
 				
-				Persona temp = new Persona();
+				// DATOS DE PERSONA
+				result = new Medico();
+				result.setDni(resultSet.getInt("DNI"));			
+				result.setNombre(Perso.getNombre());
+				result.setApellido(Perso.getApellido());
+				result.setDirecc(Perso.getDirecc());
+				result.setEmail(Perso.getEmail());
+				result.setEstado(resultSet.getBoolean("Estado"));
+				result.setFecha_nacimiento(Perso.getFecha_nacimiento());
+				result.setNacionalidad(Perso.getNacionalidad());
+				result.setSexo(Perso.getSexo());
+				result.setTelefono(Perso.getTelefono());
 				
-				temp.setDni(resultSet.getInt("DNI"));
-				temp.setNombre(resultSet.getString("Nombre"));
-				temp.setApellido(resultSet.getString("Apellido"));
-				temp.setNacionalidad(pais);
-				temp.setDirecc(direc);
-				temp.setSexo(sex);
-				temp.setEmail(resultSet.getString("Email"));
-				temp.setTelefono(resultSet.getString("Telefono"));
-				temp.setFecha_nacimiento(resultSet.getDate("Fecha_nacimiento"));
+				// DATOS DE MEDICO
+				result.setIdMedico(idMedico);
+				result.setEspecialidad(Espe);
+				result.setUsuario(User);
 				
-				result = new Medico(resultSet.getInt("idMedico"),temp,esp,user,resultSet.getBoolean("Estado"));
 				HorarioDao horasdao = new HorarioDaoImpl();
 				result.setHorarios(horasdao.Listar(result.getIdMedico()));				
 				

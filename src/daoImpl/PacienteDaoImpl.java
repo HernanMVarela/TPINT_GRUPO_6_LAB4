@@ -9,6 +9,7 @@ import java.util.List;
 import dao.PacienteDao;
 import dao.LocalidadDao;
 import dao.PaisDao;
+import dao.PersonaDao;
 import dao.SexoDao;
 import dao.UsuarioDao;
 import entidad.Direccion;
@@ -21,7 +22,7 @@ import entidad.Usuario;
 
 public class PacienteDaoImpl implements PacienteDao{
 
-	private String leerTodo = "SELECT * FROM bdtp_integrador.pacientes M inner join personas P on M.DNI = P.DNI";
+	private String leerTodo = "SELECT * FROM bdtp_integrador.pacientes";
 	private String alinsertar = "INSERT INTO bdtp_integrador.pacientes (DNI,Estado) VALUES (?,?)";
 	private String modificar = "UPDATE bdtp_integrador.pacientes SET DNI = ?, Estado = ? WHERE IDPaciente = ?";
 	private String buscar = "SELECT * FROM bdtp_integrador.pacientes WHERE IDPaciente = ?";
@@ -50,37 +51,13 @@ public class PacienteDaoImpl implements PacienteDao{
 			
 			while(resultSet.next()){
 				
-				Pais pais = new Pais();
-				PaisDao paisdao = new PaisDaoImpl();
+				PersonaDao perdao = new PersonaDaoImpl();
+				Persona Perso = new Persona();
+				Perso = perdao.ObtenerObjeto(resultSet.getInt("DNI"));
 				
-				pais = paisdao.ObtenerObjeto(resultSet.getInt("IDPais"));
+				Paciente paciente = new Paciente(resultSet.getInt("IDPaciente"),Perso ,resultSet.getBoolean("Estado"));
 				
-				Localidad loc = new Localidad();
-				LocalidadDao locdao = new LocalidadDaoImpl();
-				loc = locdao.ObtenerObjeto(resultSet.getInt("IDLocalidad"));
-				
-				Direccion direc = new Direccion();
-				direc.setCalleYNum(resultSet.getString("Direccion"));
-				direc.setLoc(loc);				
-				
-				Sexo sex = new Sexo();
-				SexoDao sexdao = new SexoDaoImpl();
-				sex= sexdao.ObtenerObjeto(resultSet.getInt("IDSexo"));
-				
-						
-				Persona temp = new Persona();
-				
-				temp.setDni(resultSet.getInt("DNI"));
-				temp.setNombre(resultSet.getString("Nombre"));
-				temp.setApellido(resultSet.getString("Apellido"));
-				temp.setNacionalidad(pais);
-				temp.setDirecc(direc);
-				temp.setSexo(sex);
-				temp.setEmail(resultSet.getString("Email"));
-				temp.setEmail(resultSet.getString("Telefono"));
-				temp.setFecha_nacimiento(resultSet.getDate("Fecha_nacimiento"));
-				
-				result.add(new Paciente(resultSet.getInt("idPaciente"),temp,resultSet.getBoolean("Estado")));
+				result.add(paciente);
 				
 			}
 			//connection.close();
@@ -91,7 +68,6 @@ public class PacienteDaoImpl implements PacienteDao{
 			
 	}
 
-	
 	@Override
 	public boolean Agregar(Paciente paciente) {
 		
@@ -140,7 +116,6 @@ public class PacienteDaoImpl implements PacienteDao{
 		
 	}
 
-	
 	@Override
 	public boolean Modificar(Paciente paciente) {
 		try {
@@ -186,67 +161,65 @@ public class PacienteDaoImpl implements PacienteDao{
 		return result;
 	}
 
-	
-
-@Override
-public boolean Eliminar(int idPaciente) {
-    try {
-        Class.forName("com.mysql.cj.jdbc.Driver");
-        } 
-    catch (ClassNotFoundException e) {
-        e.printStackTrace();
-        }
-    
-    boolean result = false;
-    Conexion conexion = Conexion.getConexion();
-    PreparedStatement statement;
-    
-    try {
-        statement = conexion.getSQLConexion().prepareStatement(eliminar);
-        
-        statement.setInt(1, idPaciente);
-        
-        if(statement.executeUpdate() > 0) {
-            conexion.getSQLConexion().commit();
-            result = true;
-        }
-    } catch (Exception e) {
-        e.printStackTrace();
-        try {
-            conexion.getSQLConexion().rollback();
-        } catch (Exception e2) {
-            e2.printStackTrace();
-        }
-    }
-    
-    return result;    
-}
-
-@Override
-public int UltimoID() {
-	try {
-		Class.forName("com.mysql.jdbc.Driver");
-	} catch (ClassNotFoundException e) {
-		e.printStackTrace();
+	@Override
+	public boolean Eliminar(int idPaciente) {
+	    try {
+	        Class.forName("com.mysql.cj.jdbc.Driver");
+	        } 
+	    catch (ClassNotFoundException e) {
+	        e.printStackTrace();
+	        }
+	    
+	    boolean result = false;
+	    Conexion conexion = Conexion.getConexion();
+	    PreparedStatement statement;
+	    
+	    try {
+	        statement = conexion.getSQLConexion().prepareStatement(eliminar);
+	        
+	        statement.setInt(1, idPaciente);
+	        
+	        if(statement.executeUpdate() > 0) {
+	            conexion.getSQLConexion().commit();
+	            result = true;
+	        }
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        try {
+	            conexion.getSQLConexion().rollback();
+	        } catch (Exception e2) {
+	            e2.printStackTrace();
+	        }
+	    }
+	    
+	    return result;    
 	}
 	
-	int last=0;
-	Conexion conexion = Conexion.getConexion();
-	PreparedStatement st;
-	ResultSet rs;
-	
-	try {
-		st = conexion.getSQLConexion().prepareStatement(proxid);
-		rs = st.executeQuery();
-		while(rs.next()) {
-			last = rs.getInt(1);			
+	@Override
+	public int UltimoID() {
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
 		}
-	} catch (Exception e) {
-		e.printStackTrace();
+		
+		int last=0;
+		Conexion conexion = Conexion.getConexion();
+		PreparedStatement st;
+		ResultSet rs;
+		
+		try {
+			st = conexion.getSQLConexion().prepareStatement(proxid);
+			rs = st.executeQuery();
+			while(rs.next()) {
+				last = rs.getInt(1);			
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return last;
 	}
-	return last;
-}
-
+	
 	@Override
 	public Paciente Buscar(int idPaciente) {
 		try {
@@ -269,36 +242,22 @@ public int UltimoID() {
 			
 			while(resultSet.next()){
 
-				Pais pais = new Pais();
-				PaisDao paisdao = new PaisDaoImpl();
+				PersonaDao perdao = new PersonaDaoImpl();
+				Persona Perso = new Persona();
+				Perso = perdao.ObtenerObjeto(resultSet.getInt("DNI"));
+			
+				result.setDni(resultSet.getInt("DNI"));			
+				result.setNombre(Perso.getNombre());
+				result.setApellido(Perso.getApellido());
+				result.setDirecc(Perso.getDirecc());
+				result.setEmail(Perso.getEmail());
+				result.setEstado(resultSet.getBoolean("Estado"));
+				result.setFecha_nacimiento(Perso.getFecha_nacimiento());
+				result.setIdPaciente(idPaciente);
+				result.setNacionalidad(Perso.getNacionalidad());
+				result.setSexo(Perso.getSexo());
+				result.setTelefono(Perso.getTelefono());
 				
-				pais = paisdao.ObtenerObjeto(resultSet.getInt("IDPais"));
-				
-				Localidad loc = new Localidad();
-				LocalidadDao locdao = new LocalidadDaoImpl();
-				loc = locdao.ObtenerObjeto(resultSet.getInt("IDLocalidad"));
-				
-				Direccion direc = new Direccion();
-				direc.setCalleYNum(resultSet.getString("Direccion"));
-				direc.setLoc(loc);				
-				
-				Sexo sex = new Sexo();
-				SexoDao sexdao = new SexoDaoImpl();
-				sex= sexdao.ObtenerObjeto(resultSet.getInt("IDSexo"));
-				
-				Persona temp = new Persona();
-				
-				temp.setDni(resultSet.getInt("DNI"));
-				temp.setNombre(resultSet.getString("Nombre"));
-				temp.setApellido(resultSet.getString("Apellido"));
-				temp.setNacionalidad(pais);
-				temp.setDirecc(direc);
-				temp.setSexo(sex);
-				temp.setEmail(resultSet.getString("Email"));
-				temp.setTelefono(resultSet.getString("Telefono"));
-				temp.setFecha_nacimiento(resultSet.getDate("Fecha_nacimiento"));
-				
-				result = new Paciente(resultSet.getInt("idPaciente"),temp,resultSet.getBoolean("Estado"));
 				return result;
 			}
 		}catch(Exception e){

@@ -1,5 +1,7 @@
 package negocio;
 
+import java.util.ArrayList;
+
 import entidad.Turno;
 
 public interface TurnoNegocio {
@@ -11,5 +13,7 @@ public interface TurnoNegocio {
 	public boolean Eliminar(int baja);
 
 	public Turno Buscar(int idTurno);
+	
+	public ArrayList<Turno> Listar();
 
 }

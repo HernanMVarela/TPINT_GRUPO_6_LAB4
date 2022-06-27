@@ -95,7 +95,7 @@ $(document).ready( function () {
   	</div>
   	<div class="row mx-2 mb-2 justify-content-center p-2 border-bottom">
   		<div class="col-md-3 d-flex justify-content-center">
-  		<a href="servletNuevoMedico" name="btnAgregar" class="btn btn-info w-75">Agregar</a><!-- REEMPLAZAR RUTA POR SERVLET -->
+  		<a href="servletNuevoMedico" name="btnAgregar" class="btn btn-info w-75">Agregar</a>
 		</div>
   		<div class="col-md-3 d-flex justify-content-center">
   			<input type="submit" class="btn btn-info w-100" name="btnModificarMedico" value="Modificar">

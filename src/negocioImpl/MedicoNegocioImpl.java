@@ -1,5 +1,7 @@
 package negocioImpl;
 
+import java.util.ArrayList;
+
 import dao.MedicoDao;
 import daoImpl.MedicoDaoImpl;
 import entidad.Medico;
@@ -47,6 +49,12 @@ public class MedicoNegocioImpl implements MedicoNegocio{
 	public Medico buscar_id(int idMedico) {
 		MedicoDao meddao = new MedicoDaoImpl();
 		return meddao.ObtenerObjeto(idMedico);
+	}
+
+	@Override
+	public ArrayList<Medico> listar() {
+		MedicoDao meddao = new MedicoDaoImpl();
+		return meddao.ListarTodo();
 	}
 
 }

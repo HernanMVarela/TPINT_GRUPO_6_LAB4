@@ -25,7 +25,7 @@
 				<div class="card-body">
 					<h4 class="card-title">Turnos</h4>
 					<p class="card-text">Vista de turnos</p>
-					<a href="Turnos.jsp" class="btn btn-primary w-100 my-2">Listado</a><!-- REEMPLAZAR RUTA POR SERVLET -->
+					<a href="servletTurnos" class="btn btn-primary w-100 my-2">Listado</a><!-- REEMPLAZAR RUTA POR SERVLET -->
 					<a href="NuevoTurno.jsp" class="btn btn-success w-100 my-2">Sacar turno</a><!-- REEMPLAZAR RUTA POR SERVLET -->
 				</div>
 			</div>

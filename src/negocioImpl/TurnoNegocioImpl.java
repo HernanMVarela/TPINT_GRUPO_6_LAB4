@@ -1,5 +1,7 @@
 package negocioImpl;
 
+import java.util.ArrayList;
+
 import dao.TurnoDao;
 import daoImpl.TurnoDaoImpl;
 import entidad.Turno;
@@ -30,6 +32,12 @@ public class TurnoNegocioImpl implements TurnoNegocio{
 	public Turno Buscar(int idTurno) {
 		TurnoDao tdao = new TurnoDaoImpl();
 		return tdao.Buscar(idTurno);
+	}
+
+	@Override
+	public ArrayList<Turno> Listar() {
+		TurnoDao tdao = new TurnoDaoImpl();
+		return tdao.ListarTodo();
 	}
 
 	

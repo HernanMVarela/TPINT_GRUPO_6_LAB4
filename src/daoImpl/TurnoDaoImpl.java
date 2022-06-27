@@ -32,7 +32,7 @@ import negocioImpl.PacienteNegocioImpl;
 
 public class TurnoDaoImpl implements TurnoDao{
 
-	private String leerTodo = "SELECT * FROM bdtp_integrador.turnos T inner join Pacientes P on T.IDPaciente = P.IDPaciente inner join medicos M on T.IDMedico = M.IDMedico inner join especialidades E on T.IDEspecialidad = E.IDEspecialidad inner join estados ES on T.IDEstado = ES.IDEstado";
+	private String leerTodo = "SELECT * FROM bdtp_integrador.turnos";
 	private String alinsertar = "INSERT INTO bdtp_integrador.turnos (IDTurno,IDPaciente,IDMedico,Dia,Hora,IDEspecialidad, IDEstado, ObservacionConsulta,Estado) VALUES (?,?,?,?,?,?,?,?,?)";
     private String modificar = "UPDATE bdtp_integrador.turnos SET IDTurno = ?,IDPaciente = ?,IDMedico = ?,Dia = ?,Hora = ?,IDEspecialidad = ?, IDEstado = ?, ObservacionConsulta = ?,Estado = ? WHERE IDTurno = ?";
 	private String buscar = "SELECT * FROM bdtp_integrador.turnos WHERE IDTurno = ?";
@@ -64,9 +64,9 @@ public class TurnoDaoImpl implements TurnoDao{
 			while(resultSet.next()){
 				
            
-                Paciente par = new Paciente();
+                Paciente pac = new Paciente();
 				PacienteDao pdao = new PacienteDaoImpl();
-				par = pdao.Buscar(resultSet.getInt("IDPaciente"));
+				pac = pdao.Buscar(resultSet.getInt("IDPaciente"));
 
                 Medico med = new Medico();
 				MedicoDao mdao = new MedicoDaoImpl();
@@ -75,23 +75,16 @@ public class TurnoDaoImpl implements TurnoDao{
 				Especialidad esp = new Especialidad();
 				EspecialidadDao espdao = new EspecialidadDaoImpl();
 				esp = espdao.ObtenerObjeto(resultSet.getInt("IDEspecialidad"));
-				
-				Persona per = new Persona();
-				PersonaDao perdao = new PersonaDaoImpl();
-				per = perdao.ObtenerObjeto(resultSet.getInt("IDPersona"));
 
                 Estado est = new Estado();
 				EstadoDao edao = new EstadoDaoImpl();
 				est = edao.ObtenerObjeto(resultSet.getInt("IDEstado"));
 
-                Sexo sex = new Sexo();
-				SexoDao sdao = new SexoDaoImpl();
-				sex = sdao.ObtenerObjeto(resultSet.getInt("IDSexo"));
-
 				Turno temp = new Turno();
 				
+				temp.setIdTurno(resultSet.getInt("IDTurno"));
 				temp.setHora(resultSet.getInt("Hora"));
-				temp.setPaciente(par);
+				temp.setPaciente(pac);
 				temp.setMedico(med);
 				temp.setDia(resultSet.getDate("Dia"));
 				temp.setEspecialidad(esp);
@@ -99,8 +92,7 @@ public class TurnoDaoImpl implements TurnoDao{
 				temp.setObservacionConsulta(resultSet.getString("ObservacionConsulta"));
 				temp.setEstado(resultSet.getBoolean("Estado"));
 				
-				
-				result.add(new Turno(par,med,resultSet.getDate("Dia"),resultSet.getInt("Hora"),esp,est,resultSet.getString("ObservacionConsulta"),resultSet.getBoolean("Estado")));
+				result.add(temp);
 				
 			}
 			//connection.close();

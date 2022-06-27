@@ -1,5 +1,7 @@
 package negocioImpl;
 
+import java.util.ArrayList;
+
 import dao.PacienteDao;
 import daoImpl.PacienteDaoImpl;
 import entidad.Paciente;
@@ -30,5 +32,11 @@ public class PacienteNegocioImpl implements PacienteNegocio{
 		PacienteDao padao = new PacienteDaoImpl();
 		padao.Eliminar(baja.getIdPaciente());
 		return false;
+	}
+
+	@Override
+	public ArrayList<Paciente> listar() {
+		PacienteDao padao = new PacienteDaoImpl();
+		return padao.ListarTodo();
 	}
 }

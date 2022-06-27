@@ -1,6 +1,9 @@
 package negocio;
 
+import java.util.ArrayList;
+
 import entidad.Paciente;
+
 
 public interface PacienteNegocio {
 
@@ -12,4 +15,6 @@ public interface PacienteNegocio {
 
 	public boolean bajaPaciente(Paciente baja);
 
+	public ArrayList<Paciente> listar();
+	
 }

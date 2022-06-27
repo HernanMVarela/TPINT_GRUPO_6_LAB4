@@ -1,5 +1,7 @@
 package negocio;
 
+import java.util.ArrayList;
+
 import entidad.Medico;
 
 public interface MedicoNegocio {
@@ -11,4 +13,5 @@ public interface MedicoNegocio {
 	public Medico buscar_dni(int DNI);
 	public boolean existe_medico(int DNI);
 	public Medico buscar_id(int idMedico);
+	public ArrayList<Medico> listar();
 }

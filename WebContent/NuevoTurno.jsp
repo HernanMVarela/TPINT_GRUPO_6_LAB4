@@ -1,3 +1,11 @@
+<%@page import="java.util.List"%>
+<%@page import="java.util.ArrayList"%>
+<%@page import="entidad.Turno"%>
+<%@page import="entidad.Medico"%>
+<%@page import="entidad.Paciente"%>
+<%@page import="servlets.servletNuevoTurno"%>
+<%@page import="servlets.servletTurnos"%>
+
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -14,8 +22,12 @@
 <title>Nuevo Turno</title>
 </head>
 <body>
-<div class="container-fluid">
+
+<%!ArrayList<Paciente> listaPacientes = null;%>
+<%!ArrayList<Medico> listaMedicos = null;%>
+
 <jsp:include page="Menu.html"></jsp:include>
+<div class="container-fluid">
 <div class="row mh-2 mb-2 justify-content-center p-2">
   	<label class="subtitle w-100">Nuevo turno</label>
 </div>	
@@ -24,12 +36,17 @@
 			<div class="row justify-content-center align-items-center">
 				<div class="col col-md-6 mh-2 d-flex justify-content-between  p-2">
 					<label class="p-1">Paciente</label>
-					<select name="slcPaciente" class="w-75">
-						<option value="0">Seleccione opción</option>
-						<option value="1">Paciente 1</option>
-						<option value="2">Paciente 2</option>
-						<option value="3">Paciente 3</option>
-					</select>
+					<select name="slcPaciente" class="w-100">
+	  				<option value="0">Seleccione opción</option>
+	  				<% if(request.getAttribute("listaPacientes")!=null){
+	  					listaPacientes = (ArrayList<Paciente>)request.getAttribute("listaPacientes");
+	  					if(!listaPacientes.isEmpty()) {
+	  						for (Paciente x: listaPacientes){
+	  							%><option value="<%= x.getIdPaciente() %>"><%= x.getNombre() + " " + x.getApellido() %></option><%
+	  						} 
+	  					}
+	  				}%>
+	  				</select>
 				</div>
 				<div class="col col-md-4 mh-3 justify-content-center p-2">
 					<a href="Pacientes.jsp" class="btn btn-info w-100 px-2">Agregar nuevo Paciente</a>
@@ -52,12 +69,17 @@
 			<div class="row justify-content-center align-items-center">
 				<div class="col col-md-6 mh-2 d-flex justify-content-between  p-2">
 					<label class="p-1">Medico</label>
-					<select name="slcMedico" class="w-75">
-						<option value="0">Seleccione opción</option>
-						<option value="1">Medico 1</option>
-						<option value="2">Medico 2</option>
-						<option value="3">Medico 3</option>
-					</select>
+					<select name="slcMedico" class="w-100">
+	  				<option value="0">Seleccione opción</option>
+	  				<% if(request.getAttribute("listaMedicos")!=null){
+	  					listaMedicos = (ArrayList<Medico>)request.getAttribute("listaMedicos");
+	  					if(!listaMedicos.isEmpty()) {
+	  						for (Medico x: listaMedicos){
+	  							%><option value="<%= x.getIdMedico() %>"><%= x.getNombre() + " " + x.getApellido() %></option><%
+	  						} 
+	  					}
+	  				}%>
+	  				</select>
 				</div>
 				<div class="col col-md-4 mh-3 justify-content-center p-2">
 					<a href="Medicos.jsp" class="btn btn-info w-100 px-2">Agregar nuevo médico</a>
