@@ -23,7 +23,7 @@ import entidad.Sexo;
 public class TurnoDaoImpl implements TurnoDao{
 
 	private String leerTodo = "SELECT * FROM bdtp_integrador.turnos";
-	private String alinsertar = "INSERT INTO bdtp_integrador.turnos (IDTurno,IDPaciente,IDMedico,Dia,Hora,IDEspecialidad, IDEstado, ObservacionConsulta,Estado) VALUES (?,?,?,?,?,?,?,?,?)";
+	private String alinsertar = "INSERT INTO bdtp_integrador.turnos (IDPaciente,IDMedico,Dia,Hora,IDEspecialidad, IDEstado, ObservacionConsulta,Estado) VALUES (?,?,?,?,?,?,?,?)";
     private String modificar = "UPDATE bdtp_integrador.turnos SET IDTurno = ?,IDPaciente = ?,IDMedico = ?,Dia = ?,Hora = ?,IDEspecialidad = ?, IDEstado = ?, ObservacionConsulta = ?,Estado = ? WHERE IDTurno = ?";
 	private String buscar = "SELECT * FROM bdtp_integrador.turnos WHERE IDTurno = ?";
     private String eliminar = "DELETE FROM bdtp_integrador.turnos WHERE IDTurno = ?";
@@ -117,7 +117,6 @@ public class TurnoDaoImpl implements TurnoDao{
             Stat.setInt(6,turno.getEstadoTurno().getIdEstado());
             Stat.setString(7,turno.getObservacionConsulta());
             Stat.setBoolean(8,turno.isEstado());
-	
 			
 			if(Stat.executeUpdate()>0) {
 				conex.commit();
