@@ -30,6 +30,7 @@
 <%!ArrayList<Medico> listaMedicos = null;%>
 <%!ArrayList<Especialidad> listaEsp = null;%>
 <%!ArrayList<Estado> listaEstadoTurno = null;%>
+<%!ArrayList<Integer> horasDisponibles = null; %>
 
 <%!Turno turno = null;%>
 
@@ -46,7 +47,7 @@
 				<div class="col col-md-6 d-flex justify-content-between  p-2">
 					<label class="p-1">Paciente</label>
 					<select name="slcPaciente" class="w-75">
-	  				<option value="0">Seleccione opción</option>
+	  				<option value="0" disabled>Seleccione opción</option>
 	  				<% if(request.getAttribute("listaPacientes")!=null){
 	  					listaPacientes = (ArrayList<Paciente>)request.getAttribute("listaPacientes");
 	  					if(!listaPacientes.isEmpty()) {
@@ -92,7 +93,7 @@
 				<div class="col col-md-6 d-flex justify-content-between p-2">
 					<label class="p-1">Medico  </label>
 					<select name="slcMedico" class="w-75">
-	  				<option value="0">Seleccione opción</option>
+	  				<option value="0" disabled>Seleccione opción</option>
 	  				<% if(request.getAttribute("listaMedicos")!=null){
 	  					listaMedicos = (ArrayList<Medico>)request.getAttribute("listaMedicos");
 	  					if(!listaMedicos.isEmpty()) {
@@ -127,9 +128,16 @@
 			<div class="row justify-content-center w-100">
 				<div class="col col-md-8 d-flex justify-content-between  p-2">
 					<label class="p-1">Horarios disponibles</label>
-					<select name="slcHoras" class="w-50" required>
-					<%for(int x=0; x<24; x++){ %>
-					<option value="<%=x %>"<%if(turno!=null){if(turno.getHora()==x){%>selected <%}}%>><%= x%>:00</option><%} %>
+					<select name="slcHoras" class="w-50" <%if(horasDisponibles!=null) {%>required<%} %>>
+						<option value="0" disabled>Seleccione opción</option>
+						<% if(request.getAttribute("horasDisponibles")!=null){
+							horasDisponibles = (ArrayList<Integer>)request.getAttribute("horasDisponibles");
+		  					if(!horasDisponibles.isEmpty()) {
+		  						for (Integer x: horasDisponibles){
+		  							%><option value="<%= x %>"><%=x+":00hs"%></option><%
+		  						} 
+		  					}
+		  				}%>
 					</select>
 				</div>
 			</div>

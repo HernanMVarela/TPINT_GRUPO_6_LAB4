@@ -44,14 +44,15 @@ public class TurnoNegocioImpl implements TurnoNegocio{
 	public int ObtenerDiaSemana (String dia) {
 		
 		try{ 
+			
 			boolean diaValido= ValidarDia(dia); 
 			if(diaValido==true) 
 				{ 
-					SimpleDateFormat df = new SimpleDateFormat( "dd/MM/yy" );
+					SimpleDateFormat df = new SimpleDateFormat( "yyyy-MM-dd" );
 					java.util.Date date = df.parse(dia);
-					df.applyPattern( "EEE" );
+					df.applyPattern( "EEE" );					
 					String day= df.format( date );
-					
+
 					switch (day) {
 					case "lun":
 						return 1;
@@ -78,10 +79,11 @@ public class TurnoNegocioImpl implements TurnoNegocio{
 	} 
 	
 	public boolean ValidarDia(String fecha) {
-		String dateArray[]= fecha.split("/");
-		int day=Integer.parseInt(dateArray[0]);
+		String dateArray[]= fecha.split("-");
+		int year=Integer.parseInt(dateArray[0]);
 		int month=Integer.parseInt(dateArray[1]);
-		int year=Integer.parseInt(dateArray[2]);
+		int day=Integer.parseInt(dateArray[2]);
+
 		boolean leapYear=false; 
 		if((year % 4 == 0) && (year % 100 != 0) || (year % 400 == 0)) {
 			leapYear=true;

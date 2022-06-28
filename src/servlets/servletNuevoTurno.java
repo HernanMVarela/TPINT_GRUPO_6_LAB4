@@ -1,13 +1,8 @@
 package servlets;
 
 import java.io.IOException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.time.DayOfWeek;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.servlet.RequestDispatcher;
@@ -17,8 +12,11 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.mysql.cj.protocol.x.SyncFlushDeflaterOutputStream;
+
 import entidad.Especialidad;
 import entidad.Estado;
+import entidad.Horario;
 import entidad.Medico;
 import entidad.Paciente;
 import entidad.Turno;
@@ -26,10 +24,12 @@ import negocio.EspecialidadNegocio;
 import negocio.EstadoNegocio;
 import negocio.MedicoNegocio;
 import negocio.PacienteNegocio;
+import negocio.TurnoNegocio;
 import negocioImpl.EspecialidadNegocioImpl;
 import negocioImpl.EstadoNegocioImpl;
 import negocioImpl.MedicoNegocioImpl;
 import negocioImpl.PacienteNegocioImpl;
+import negocioImpl.TurnoNegocioImpl;
 
 
 @WebServlet("/servletNuevoTurno")
@@ -41,26 +41,52 @@ public class servletNuevoTurno extends HttpServlet {
     }
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		
 		if(request.getParameter("btnFiltrarDatos")!=null) {
 			
-			
-			Date date = new Date();
-			
-			SimpleDateFormat format = new SimpleDateFormat("YYYY-mm-dd");
+			TurnoNegocio turneg = new TurnoNegocioImpl();
+
 			Turno nuevo = new Turno();
 			nuevo.setMedico(cargar_datos_medico(request, response));
-			try {
-				date = format.parse(request.getParameter("inpFechaTurno"));
-			} catch (ParseException e) {
-				
+			
+			ArrayList<Turno> turnos = new ArrayList<Turno>();
+			turnos = turneg.Listar();
+			
+			ArrayList<Integer> horas = new ArrayList<Integer>();
+			
+			// HORARIOS DISPONIBLES DEL MEDICO POR DIA DE LA SEMANA
+			for (Horario hora : nuevo.getMedico().getHorarios()) {
+				System.out.println("Dia: "+hora.getDia()+" Desde "+hora.getHoraDesde()+" Hasta "+ hora.getHoraHasta());
+				System.out.println("Dia elegido:" +turneg.ObtenerDiaSemana(request.getParameter("inpFechaTurno").toString()));
+				if(hora.getDia()==turneg.ObtenerDiaSemana(request.getParameter("inpFechaTurno").toString())) {
+					for(int x=hora.getHoraDesde(); x<hora.getHoraHasta(); x++) {
+						System.out.println(x+":00hs");
+						horas.add(x);
+					}
+				}
+			}	
+			
+			for (Integer integer : horas) {
+				System.out.println(integer+":00hs");
 			}
-			Calendar cal = Calendar.getInstance();
-			cal.setTime(date);
-			System.out.println(date);
-			System.out.println(cal.toString());
-			System.out.println(cal.get(Calendar.DAY_OF_WEEK));
-			cal = null;
-			date = null;
+
+			// SE QUITAN HORARIOS OCUPADOS POR FECHAS EN OTROS TURNOS
+			for (Turno turno : turnos) {
+				if(turno.getDia().toString().equals(request.getParameter("inpFechaTurno").toString())){
+					if(turno.getMedico().getIdMedico()==nuevo.getMedico().getIdMedico()){
+						System.out.println(turno.getMedico().getIdMedico() +" "+nuevo.getMedico().getIdMedico());
+						Iterator<Integer> it = horas.iterator();
+						while(it.hasNext()) {
+							if(it.next()==turno.getHora()) {
+								System.out.println("SE QUITA: "+it.next()+":00hs");
+								it.remove();
+							}
+						}
+					}
+				}
+			}
+			request.setAttribute("horasDisponibles", horas);
+		
 		}
 		
 		request.setAttribute("listaPacientes", listarPacientes());
