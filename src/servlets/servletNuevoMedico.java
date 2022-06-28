@@ -481,7 +481,7 @@ public class servletNuevoMedico extends HttpServlet {
 		return flag;
 	}
 
-	// CAMBIA ESTADO A 0 DEL ADMINISTRADOR
+	// CAMBIA ESTADO A 0 DEL MEDICO
 	private boolean eliminar_medico (HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		MedicoNegocio medneg = new MedicoNegocioImpl();
 		Medico medic = new Medico();

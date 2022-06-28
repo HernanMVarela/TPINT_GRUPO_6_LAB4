@@ -1,7 +1,6 @@
 package servlets;
 
 import java.io.IOException;
-import java.sql.Date;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -14,8 +13,6 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import com.mysql.cj.protocol.x.SyncFlushDeflaterOutputStream;
 
 import entidad.Especialidad;
 import entidad.Estado;
@@ -45,6 +42,9 @@ public class servletNuevoTurno extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
+		String redirect = "/NuevoTurno.jsp";
+		boolean flag = true;
+		
 		if(request.getParameter("btnFiltrarDatos")!=null) {
 			filtar_horarios(request, response);
 		}
@@ -53,19 +53,45 @@ public class servletNuevoTurno extends HttpServlet {
 			if(validar_campos_finales(request, response)) {
 				// TODOS LOS CAMPOS SON CORRECTOS - SE PROCEDE CON EL ALTA DE TURNO
 				if(generar_turno(request, response)) {
-					System.out.println("NUEVO TURNO CARGADO OK");
+					// SE AGREGA O MODIFICA TURNO
+					redirect = "servletTurnos";
+					flag = false;
 				}
-			}else {
-				System.out.println("NO PASA POR GENERAR TURNO");
 			}
 		}
 		
-		request.setAttribute("listaPacientes", listarPacientes());
-		request.setAttribute("listaMedicos", listarMedicos());
-		request.setAttribute("listaEsp", listarEspecialidades());
-		request.setAttribute("listaEstadoTurno", listarEstadoTurno());
-		
-		RequestDispatcher rd = request.getRequestDispatcher("/NuevoTurno.jsp");   
+		if(request.getParameter("btnEliminarTurno")!=null) { 
+			if(request.getParameter("radSelect")!=null) {
+				if(liberar_turno(request, response)) {
+					// TURNO LIBERADO
+					redirect = "servletTurnos";
+					flag = false;
+				}
+			}else {
+				redirect = "servletTurnos";
+				flag = false;
+			}
+		}
+				
+		if(request.getParameter("btnModificarTurno")!=null) { 
+			if(request.getParameter("radSelect")!=null) { 
+				if(cargar_turno_a_modificar(request, response)) {
+					// TURNO MODIFICADO
+					redirect = "servletTurnos";
+					flag = false;
+				}
+			}else {
+				redirect = "servletTurnos";
+				flag = false;
+			}
+		}
+		if(flag) {
+			request.setAttribute("listaPacientes", listarPacientes());
+			request.setAttribute("listaMedicos", listarMedicos());
+			request.setAttribute("listaEsp", listarEspecialidades());
+			request.setAttribute("listaEstadoTurno", listarEstadoTurno());
+		}
+		RequestDispatcher rd = request.getRequestDispatcher(redirect);   
         rd.forward(request, response);
 	}
 
@@ -127,8 +153,7 @@ public class servletNuevoTurno extends HttpServlet {
 	}
 	
 	private boolean filtar_horarios(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
-		TurnoNegocio turneg = new TurnoNegocioImpl();
+
 		Medico medico = new Medico();
 		Paciente paci = new Paciente();
 		
@@ -141,34 +166,19 @@ public class servletNuevoTurno extends HttpServlet {
 		paci=cargar_datos_paciente(request, response);
 		
 		// CARGA LISTA DE TURNOS
+		TurnoNegocio turneg = new TurnoNegocioImpl();
 		ArrayList<Turno> turnos = new ArrayList<Turno>();
 		turnos = turneg.Listar();
 		
 		// HORARIOS DISPONIBLES DEL MEDICO POR DIA DE LA SEMANA
 		ArrayList<Integer> horas = new ArrayList<Integer>();		
 		
-		for (Horario hora : medico.getHorarios()) {
-			if(hora.getDia()==turneg.ObtenerDiaSemana(request.getParameter("inpFechaTurno").toString())) {
-				for(int x=hora.getHoraDesde(); x<=hora.getHoraHasta(); x++) {
-					horas.add(x);
-				}
-			}
-		}	
+		// CARGA HORAS DEL MEDICO
+		horas = cargar_horas_medico(medico, horas,request.getParameter("inpFechaTurno").toString());
 		
 		// SE QUITAN HORARIOS OCUPADOS POR FECHAS EN OTROS TURNOS
-		for (Turno turno : turnos) {
-			if(turno.getDia().toString().equals(request.getParameter("inpFechaTurno").toString())){
-				if(turno.getMedico().getIdMedico()==medico.getIdMedico()){
-					Iterator<Integer> it = horas.iterator();
-					while(it.hasNext()) {
-						if(it.next()+1==turno.getHora()) {
-							System.out.println("SE QUITA: "+it.next()+":00hs - HORA OCUPADA POR OTRO TURNO");
-							it.remove();
-						}
-					}
-				}
-			}
-		}
+		horas = quitar_horas_ocupadas(medico,horas,request.getParameter("inpFechaTurno").toString(),request,response);
+		
 		Turno turno = new Turno();
 		turno.setMedico(medico);
 		turno.setPaciente(paci);
@@ -180,7 +190,6 @@ public class servletNuevoTurno extends HttpServlet {
 			java.sql.Date fecha = new java.sql.Date(date.getTime());
 			turno.setDia(fecha);
 		} catch (ParseException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
@@ -188,6 +197,48 @@ public class servletNuevoTurno extends HttpServlet {
 		request.setAttribute("horasDisponibles", horas);
 		
 		return false;
+	}
+	
+	private ArrayList<Integer> cargar_horas_medico(Medico medico, ArrayList<Integer> horarios, String fecha){
+		ArrayList<Integer> horas = new ArrayList<Integer>();
+		TurnoNegocio turneg = new TurnoNegocioImpl();
+		
+		for (Horario hora : medico.getHorarios()) {
+			if(hora.getDia()==turneg.ObtenerDiaSemana(fecha.toString())) {
+				for(int x=hora.getHoraDesde(); x<=hora.getHoraHasta(); x++) {
+					horas.add(x);
+				}
+			}
+		}	
+		return horas;
+	}
+	
+	
+	private ArrayList<Integer> quitar_horas_ocupadas(Medico medico, ArrayList<Integer> horas, String fecha, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		
+		// CARGA LISTA DE TURNOS
+		TurnoNegocio turneg = new TurnoNegocioImpl();
+		ArrayList<Turno> turnos = new ArrayList<Turno>();
+		turnos = turneg.Listar();
+		
+		int turno_actual = 0;
+		if(request.getParameter("radSelect")!=null && Integer.parseInt(request.getParameter("radSelect"))!=0){
+			turno_actual=Integer.parseInt(request.getParameter("radSelect"));
+			
+		}
+		for (Turno turno : turnos) {
+			if(turno.getDia().toString().equals(fecha)){
+				if(turno.getMedico().getIdMedico()==medico.getIdMedico() && turno.getIdTurno()!=turno_actual){
+					Iterator<Integer> it = horas.iterator();
+					while(it.hasNext()) {
+						if(it.next()+1==turno.getHora()) {
+							it.remove();
+						}
+					}
+				}
+			}
+		}
+		return horas;
 	}
 	
 	private boolean validacion_campos_iniciales(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -282,12 +333,44 @@ public class servletNuevoTurno extends HttpServlet {
 		nuevo.setObservacionConsulta(request.getParameter("txfObservacion").toString());
 		nuevo.setEstadoTurno(est.ObtenerObjeto(Integer.parseInt(request.getParameter("slcEstadoTurno"))));
 		nuevo.setEstado(true);
-
-		System.out.println(nuevo.getDia().toString()+" "+nuevo.getHora()+":00 "+nuevo.getEspecialidad().getNombre());
-		System.out.println("Medico: "+ nuevo.getMedico().getNombre() + " " + nuevo.getMedico().getApellido());
-		System.out.println("Paciente: "+ nuevo.getPaciente().getNombre() + " " + nuevo.getPaciente().getApellido());
-		System.out.println(nuevo.getEstadoTurno().getNombre() + " - " + nuevo.getObservacionConsulta());
 		
-		return turneg.agregarTurno(nuevo);
+		if(request.getParameter("turnoId")!=null && Integer.parseInt(request.getParameter("turnoId"))!=0) {
+			nuevo.setIdTurno(Integer.parseInt(request.getParameter("turnoId")));
+			return turneg.Modificar(nuevo);
+		}else {
+			return turneg.agregarTurno(nuevo);
+		}	
 	}
+
+	// CAMBIA ESTADO A 0 DEL ADMINISTRADOR
+	private boolean liberar_turno(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		TurnoNegocio turneg = new TurnoNegocioImpl();
+		Turno turno = new Turno();
+		EstadoNegocio estneg = new EstadoNegocioImpl();
+		
+		turno = turneg.Buscar(Integer.parseInt(request.getParameter("radSelect")));
+		if(turno != null) {
+			turno.setEstadoTurno(estneg.ObtenerObjeto(1));
+			turno.setEstado(false);
+			if(turneg.Modificar(turno)) {return true;}
+		}
+		return false;
+	}
+	
+	private boolean cargar_turno_a_modificar(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		
+		TurnoNegocio turneg = new TurnoNegocioImpl();
+		Turno turno = new Turno();
+		
+		turno = turneg.Buscar(Integer.parseInt(request.getParameter("radSelect")));
+		if(turno != null) {
+			ArrayList<Integer> horas = new ArrayList<Integer>();	
+			horas = cargar_horas_medico(turno.getMedico(), horas, turno.getDia().toString());
+			horas = quitar_horas_ocupadas(turno.getMedico(),horas, turno.getDia().toString(),request,response);
+			request.setAttribute("horasDisponibles", horas);
+			request.setAttribute("fullturno", turno);
+		}
+		return false;
+	}
+
 }

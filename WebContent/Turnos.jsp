@@ -37,6 +37,7 @@ $(document).ready( function () {
 <jsp:include page="Menu.html"></jsp:include>
 
 <div class="container-fluid">
+<form action="servletNuevoTurno" method="get">
 <div class="row mx-2 mb-2 justify-content-center p-2">
   	<label class="subtitle w-100">Turnos</label>
 </div>	
@@ -78,13 +79,13 @@ $(document).ready( function () {
 </div>
 <div class="row mx-2 mb-2 justify-content-center p-2">
 	<div class="col-md-3 d-flex justify-content-center">
-		<a href="VerTurno.jsp" class="btn btn-info w-75">Ver detalle del turno</a><!-- REEMPLAZAR POR INPUT CON RUTA A SERVLET -->
+		<input type="submit" name="btnVerTurno" class="btn btn-info w-75" value="Ver detalle del turno">
 	</div>
 	<div class="col-md-3 d-flex justify-content-center">
 		<a href="servletNuevoTurno" class="btn btn-info w-75">Agregar nuevo turno</a>
 	</div>
 	<div class="col-md-3 d-flex justify-content-center">
-		<a href="NuevoTurno.jsp" class="btn btn-info w-75">Modificar turno</a><!-- REEMPLAZAR POR INPUT CON RUTA A SERVLET -->
+		<input type="submit" class="btn btn-info w-75" name="btnModificarTurno" value="Modificar">
 	</div>
 	<div class="col-md-3 d-flex justify-content-center">
 		<button type="button" class="btn btn-danger w-75" data-bs-toggle="modal" data-bs-target="#modalEliminarTurno">Eliminar turno</button>
@@ -103,12 +104,12 @@ $(document).ready( function () {
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-	     			<a href="" class="btn btn-outline-danger w-25">Eliminar</a><!-- REEMPLAZAR POR INPUT CON RUTA A SERVLET -->
+					<input type="submit" name="btnEliminarTurno" class="btn btn-outline-danger w-25" value="Eliminar">
 				</div>
 			</div>
 		</div>
 	</div>
- 
+ </form>
 </div> <!-- Fin del container -->
 </body>
 </html>

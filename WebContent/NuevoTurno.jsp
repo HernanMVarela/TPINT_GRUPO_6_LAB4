@@ -55,11 +55,19 @@ if(request.getAttribute("elegirmedico")!=null){
 	verMed=(boolean)request.getAttribute("elegirmedico");
 }
 
-if(request.getAttribute("preturno")!=null){
-	turno=(Turno)request.getAttribute("preturno");
-}
 %>
 <form action="servletNuevoTurno" method="get">
+<%
+if(request.getAttribute("preturno")!=null){
+	turno=(Turno)request.getAttribute("preturno");
+	%><input type="hidden" name="turnoId" value="<%= 0%>"><%
+}
+
+if(request.getAttribute("fullturno")!=null){
+	turno=(Turno)request.getAttribute("fullturno");
+	%><input type="hidden" name="turnoId" value="<%= turno.getIdTurno() %>"><%
+}
+%>
 	<div class="row mb-2 justify-content-center p-2">
 	  	<label class="subtitle w-100">Nuevo turno</label>
 	</div>	
@@ -68,7 +76,7 @@ if(request.getAttribute("preturno")!=null){
 			<div class="row justify-content-center align-items-center">
 				<div class="col col-md-6 d-flex justify-content-between  p-2">
 					<label class="p-1">Paciente</label>
-					<select name="slcPaciente" class="w-75 <%if(!verPac){%> btn-danger <%}else{%>btn-secondary<%}%>">
+					<select name="slcPaciente" class="w-75 <%if(!verPac){%> btn-danger <%}else{%>btn-light<%}%>">
 	  				<option value="0" disabled selected>Seleccione opción</option>
 	  				<% if(request.getAttribute("listaPacientes")!=null){
 	  					listaPacientes = (ArrayList<Paciente>)request.getAttribute("listaPacientes");
@@ -89,7 +97,7 @@ if(request.getAttribute("preturno")!=null){
 			<div class="row justify-content-center align-items-center">
 				<div class="col col-md-6 d-flex justify-content-between p-2">
 					<label class="p-1">Especialidad  </label>
-					<select name=slcEsp class="w-75 <%if(!verEsp){%> btn-danger <%}else{%>btn-outline-secondary<%}%>" required>
+					<select name=slcEsp class="w-75 <%if(!verEsp){%> btn-danger <%}else{%>btn-light<%}%>" required>
 						<option value="0" disabled selected>Seleccione opción</option>
 						<%
 						if(request.getAttribute("listaEsp")!=null){
@@ -116,7 +124,7 @@ if(request.getAttribute("preturno")!=null){
 			<div class="row justify-content-center align-items-center">
 				<div class="col col-md-6 d-flex justify-content-between p-2">
 					<label class="p-1">Medico  </label>
-					<select name="slcMedico" class="w-75 <%if(!verMed){%> btn-danger <%}else{%>btn-outline-secondary<%}%>">
+					<select name="slcMedico" class="w-75 <%if(!verMed){%> btn-danger <%}else{%>btn-light<%}%>">
 	  				<option value="0" disabled selected>Seleccione opción</option>
 	  				<% if(request.getAttribute("listaMedicos")!=null){
 	  					listaMedicos = (ArrayList<Medico>)request.getAttribute("listaMedicos");
@@ -137,7 +145,7 @@ if(request.getAttribute("preturno")!=null){
 				<div class="col col-md-6 d-flex justify-content-between  p-2">
 					<label class="p-1">Seleccione una fecha</label>
 					
-					<input type="date" name="inpFechaTurno" class="w-50 <%if(!verFec){%> btn-danger <%}else{%>btn-outline-secondary<%}%>" min="2022-01-01"
+					<input type="date" name="inpFechaTurno" class="w-50 <%if(!verFec){%> btn-danger <%}else{%>btn-light<%}%>" min="2022-01-01"
 					<%if(turno!=null){%>value="<%=turno.getDia()%>" <%} %>
 					>
 				</div>
@@ -155,13 +163,14 @@ if(request.getAttribute("preturno")!=null){
 			<div class="row justify-content-center w-100">
 				<div class="col col-md-8 d-flex justify-content-between  p-2">
 					<label class="p-1">Horarios disponibles</label>
-					<select name="slcHoras" class="w-50" <%if(horasDisponibles!=null) {%>required<%} %>>
+					<select name="slcHoras" class="w-50 btn-light" <%if(horasDisponibles!=null) {%>required<%} %>>
 						<option value="0" disabled selected>Seleccione opción</option>
 						<% if(request.getAttribute("horasDisponibles")!=null){
 							horasDisponibles = (ArrayList<Integer>)request.getAttribute("horasDisponibles");
 		  					if(!horasDisponibles.isEmpty()) {
 		  						for (Integer x: horasDisponibles){
-		  							%><option value="<%= x %>"><%=x+":00hs"%></option><%
+		  							%><option value="<%= x %>"
+		  							<%if(request.getAttribute("fullturno")!=null && turno.getHora()==x){%>selected<%}%>><%=x+":00hs"%></option><%
 		  						} 
 		  					}
 		  				}%>
@@ -171,13 +180,15 @@ if(request.getAttribute("preturno")!=null){
 			<div class="row justify-content-center w-100">
 				<div class="col col-md-8 d-flex justify-content-between  p-2">
 					<label class="p-1">Observaciones</label>
-					<textarea name="txfObservacion" rows="5" cols="40" <%if(horasDisponibles!=null) {%>required<%} %>></textarea>
+					<textarea name="txfObservacion" rows="5" cols="40" <%if(horasDisponibles!=null) {%>required<%} %>>
+					<%if(request.getAttribute("fullturno")!=null && !turno.getObservacionConsulta().isEmpty()){%><%=turno.getObservacionConsulta().trim() %><%}%>
+					</textarea>
 				</div>
 			</div>
 			<div class="row justify-content-center w-100">
 				<div class="col col-md-8 d-flex justify-content-between  p-2">
 					<label class="p-1">Estado</label>
-						<select name="slcEstadoTurno" class="w-50">
+						<select name="slcEstadoTurno" class="w-50 btn-light">
 						<option value="0" disabled selected>Seleccione opción</option>
 						<%
 						if(request.getAttribute("listaEstadoTurno")!=null){
@@ -185,7 +196,8 @@ if(request.getAttribute("preturno")!=null){
 							if(!listaEstadoTurno.isEmpty()){
 								for(Estado est : listaEstadoTurno){
 									%>
-									<option value="<%=est.getIdEstado()%>"><%=est.getNombre() %></option>	
+									<option value="<%=est.getIdEstado()%>"
+									<%if(request.getAttribute("fullturno")!=null && turno.getEstadoTurno().getIdEstado()==est.getIdEstado()){%>selected<%}%>><%=est.getNombre() %></option>	
 									<%
 								}
 							}

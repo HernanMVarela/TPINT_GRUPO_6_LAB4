@@ -16,8 +16,9 @@ public class Turno {
 	
 	public Turno() {}
 	
-	public Turno(Paciente paciente, Medico medico, Date dia, int hora, Especialidad especialidad, Estado estadoTurno,
+	public Turno(int idTurno, Paciente paciente, Medico medico, Date dia, int hora, Especialidad especialidad, Estado estadoTurno,
 			String observacionConsulta, boolean estado) {
+		this.idTurno = idTurno;
 		this.paciente = paciente;
 		this.medico = medico;
 		this.dia = dia;

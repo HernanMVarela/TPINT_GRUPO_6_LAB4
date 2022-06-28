@@ -24,11 +24,11 @@ public class TurnoDaoImpl implements TurnoDao{
 
 	private String leerTodo = "SELECT * FROM bdtp_integrador.turnos";
 	private String alinsertar = "INSERT INTO bdtp_integrador.turnos (IDPaciente,IDMedico,Dia,Hora,IDEspecialidad, IDEstado, ObservacionConsulta,Estado) VALUES (?,?,?,?,?,?,?,?)";
-    private String modificar = "UPDATE bdtp_integrador.turnos SET IDTurno = ?,IDPaciente = ?,IDMedico = ?,Dia = ?,Hora = ?,IDEspecialidad = ?, IDEstado = ?, ObservacionConsulta = ?,Estado = ? WHERE IDTurno = ?";
+    private String modificar = "UPDATE bdtp_integrador.turnos SET IDPaciente = ?,IDMedico = ?,Dia = ?,Hora = ?,IDEspecialidad = ?, IDEstado = ?, ObservacionConsulta = ?,Estado = ? WHERE IDTurno = ?";
 	private String buscar = "SELECT * FROM bdtp_integrador.turnos WHERE IDTurno = ?";
     private String eliminar = "DELETE FROM bdtp_integrador.turnos WHERE IDTurno = ?";
     private String proxid = "SELECT MAX(m.IDTurno) FROM bdtp_integrador.turnos m order by m.IDTurno";
-	private String bajaMedic = "UPDATE bdtp_integrador.turnos SET Estado = 0 where IDTurno = ?";
+	private String bajaturno = "UPDATE bdtp_integrador.turnos SET Estado = 0 where IDTurno = ?";
 	
 	
 	@Override
@@ -158,7 +158,10 @@ public class TurnoDaoImpl implements TurnoDao{
             statement.setInt(6,turno.getEstadoTurno().getIdEstado());
             statement.setString(7,turno.getObservacionConsulta());
             statement.setBoolean(8,turno.isEstado());
+            statement.setInt(9,turno.getIdTurno());
 			
+            System.out.println(turno.getIdTurno()+" "+turno.getMedico().getNombre()+" "+turno.getDia()+" "+turno.getHora()+" "+turno.getEstadoTurno().getNombre());
+            
 			if(statement.executeUpdate() > 0) {
 				conexion.getSQLConexion().commit();
 				result = true;
@@ -243,31 +246,22 @@ public class TurnoDaoImpl implements TurnoDao{
 				EspecialidadDao espdao = new EspecialidadDaoImpl();
 				esp = espdao.ObtenerObjeto(resultSet.getInt("IDEspecialidad"));
 				
-				Persona per = new Persona();
-				PersonaDao perdao = new PersonaDaoImpl();
-				per = perdao.ObtenerObjeto(resultSet.getInt("IDPersona"));
-
                 Estado est = new Estado();
 				EstadoDao edao = new EstadoDaoImpl();
 				est = edao.ObtenerObjeto(resultSet.getInt("IDEstado"));
-
-                Sexo sex = new Sexo();
-				SexoDao sdao = new SexoDaoImpl();
-				sex = sdao.ObtenerObjeto(resultSet.getInt("IDSexo"));
-
-				Turno temp = new Turno();
 				
-				temp.setHora(resultSet.getInt("Hora"));
-				temp.setPaciente(par);
-				temp.setMedico(med);
-				temp.setDia(resultSet.getDate("Dia"));
-				temp.setEspecialidad(esp);
-				temp.setEstadoTurno(est);
-				temp.setObservacionConsulta(resultSet.getString("ObservacionConsulta"));
-				temp.setEstado(resultSet.getBoolean("Estado"));
+				result = new Turno();
 				
-				result = new Turno(par,med,resultSet.getDate("Dia"),resultSet.getInt("Hora"),esp,est,resultSet.getString("ObservacionConsulta"),resultSet.getBoolean("Estado"));
-					
+				result.setIdTurno(resultSet.getInt("IDTurno"));
+				result.setHora(resultSet.getInt("Hora"));
+				result.setPaciente(par);
+				result.setMedico(med);
+				result.setDia(resultSet.getDate("Dia"));
+				result.setEspecialidad(esp);
+				result.setEstadoTurno(est);
+				result.setObservacionConsulta(resultSet.getString("ObservacionConsulta"));
+				result.setEstado(resultSet.getBoolean("Estado"));
+				
 				return result;
 			}
 		}catch(Exception e){
