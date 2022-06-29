@@ -12,21 +12,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import dao.EspecialidadDao;
-import dao.HorarioDao;
-import dao.LocalidadDao;
-import dao.PaisDao;
-import dao.ProvinciaDao;
-import dao.SexoDao;
-import dao.TipoDao;
-import daoImpl.EspecialidadDaoImpl;
-import daoImpl.HorarioDaoImpl;
-import daoImpl.LocalidadDaoImpl;
-import daoImpl.PaisDaoImpl;
-import daoImpl.ProvinciaDaoImpl;
-import daoImpl.SexoDaoImpl;
-import daoImpl.TipoDaoImpl;
-import entidad.Administrador;
 import entidad.Direccion;
 import entidad.Especialidad;
 import entidad.Horario;
@@ -38,15 +23,25 @@ import entidad.Provincia;
 import entidad.Sexo;
 import entidad.Tipo;
 import entidad.Usuario;
-import negocio.AdministradorNegocio;
+import negocio.EspecialidadNegocio;
 import negocio.HorarioNegocio;
+import negocio.LocalidadNegocio;
 import negocio.MedicoNegocio;
+import negocio.PaisNegocio;
 import negocio.PersonaNegocio;
+import negocio.ProvinciaNegocio;
+import negocio.SexoNegocio;
+import negocio.TipoNegocio;
 import negocio.UsuarioNegocio;
-import negocioImpl.AdministradorNegocioImpl;
+import negocioImpl.EspecialidadNegocioImpl;
 import negocioImpl.HorarioNegocioImpl;
+import negocioImpl.LocalidadNegocioImpl;
 import negocioImpl.MedicoNegocioImpl;
+import negocioImpl.PaisNegocioImpl;
 import negocioImpl.PersonaNegocioImpl;
+import negocioImpl.ProvinciaNegocioImpl;
+import negocioImpl.SexoNegocioImpl;
+import negocioImpl.TipoNegocioImpl;
 import negocioImpl.UsuarioNegocioImpl;
 
 @WebServlet("/servletNuevoMedico")
@@ -126,48 +121,43 @@ public class servletNuevoMedico extends HttpServlet {
 
 	private List<Especialidad> listarEspecialidades() {
 		List<Especialidad> listaDeEsp = new ArrayList<Especialidad>();
-		EspecialidadDao espDao = new EspecialidadDaoImpl();
-		listaDeEsp = espDao.ListarTodo();
+		EspecialidadNegocio espneg = new EspecialidadNegocioImpl();
+		listaDeEsp = espneg.ListarTodo();
 		return listaDeEsp;
 	}
 	
 	private List<Provincia> create_provincia_list(){
 		List<Provincia> prov = new ArrayList<Provincia>();
-		ProvinciaDao provdao = new ProvinciaDaoImpl();
-		
-		prov = provdao.ListarTodo();
+		ProvinciaNegocio provneg = new ProvinciaNegocioImpl();
+		prov = provneg.ListarTodo();
 		return prov;
 	}
 	
 	private List<Localidad> create_localidad_list(){
 		List<Localidad> loc = new ArrayList<Localidad>();
-		LocalidadDao locdao = new LocalidadDaoImpl();
-		
-		loc = locdao.ListarTodo();
+		LocalidadNegocio locneg = new LocalidadNegocioImpl();
+		loc = locneg.ListarTodo();
 		return loc;
 	}
 	
 	private List<Sexo> create_sexo_list(){
 		List<Sexo> sex = new ArrayList<Sexo>();
-		SexoDao sexdao = new SexoDaoImpl();
-		
-		sex = sexdao.ListarTodo();
+		SexoNegocio sexneg = new SexoNegocioImpl();		
+		sex = sexneg.ListarTodo();
 		return sex;
 	}
 	
 	private List<Tipo> create_tipo_list(){
 		List<Tipo> tipo = new ArrayList<Tipo>();
-		TipoDao tipodao = new TipoDaoImpl();
-		
-		tipo = tipodao.ListarTodo();
+		TipoNegocio tipneg = new TipoNegocioImpl();		
+		tipo = tipneg.ListarTodo();
 		return tipo;
 	}
 	
 	private List<Pais> create_pais_list(){
 		List<Pais> pais = new ArrayList<Pais>();
-		PaisDao paisdao = new PaisDaoImpl();
-		
-		pais = paisdao.ListarTodo();
+		PaisNegocio paineg = new PaisNegocioImpl();		
+		pais = paineg.ListarTodo();
 		return pais;
 	}
 	
@@ -175,9 +165,9 @@ public class servletNuevoMedico extends HttpServlet {
 		Persona Perso = new Persona();
 		Perso.setDirecc(new Direccion());
 		
-		LocalidadDao locdao = new LocalidadDaoImpl(); // REEMPLAZAR POR NEGOCIO
-		PaisDao paisdao = new PaisDaoImpl(); // REEMPLAZAR POR NEGOCIO
-		SexoDao sexdao = new SexoDaoImpl(); // REEMPLAZAR POR NEGOCIO
+		LocalidadNegocio locneg = new LocalidadNegocioImpl();
+		PaisNegocio paineg = new PaisNegocioImpl();	
+		SexoNegocio sexneg = new SexoNegocioImpl();
 		
 		boolean flag=true;
 		
@@ -206,7 +196,7 @@ public class servletNuevoMedico extends HttpServlet {
 				}
 				// PAIS PERSONA
 				if(Integer.parseInt(request.getParameter("slcPaisPersona"))!=0) {
-					Perso.setNacionalidad(paisdao.ObtenerObjeto((Integer.parseInt(request.getParameter("slcPaisPersona")))));
+					Perso.setNacionalidad(paineg.ObtenerObjeto((Integer.parseInt(request.getParameter("slcPaisPersona")))));
 				}else {
 					flag = false;
 				}
@@ -214,7 +204,7 @@ public class servletNuevoMedico extends HttpServlet {
 				// DIRECCION PERSONA
 					// LOCALIDAD
 				if(Integer.parseInt(request.getParameter("slcLocPersona"))!=0) {
-					Perso.getDirecc().setLoc(locdao.ObtenerObjeto(Integer.parseInt(request.getParameter("slcLocPersona"))));
+					Perso.getDirecc().setLoc(locneg.ObtenerObjeto(Integer.parseInt(request.getParameter("slcLocPersona"))));
 				}else {
 					flag = false;
 				}
@@ -227,7 +217,7 @@ public class servletNuevoMedico extends HttpServlet {
 				
 				// SEXO
 				if(Integer.parseInt(request.getParameter("slcSexoPersona"))!=0) {
-					Perso.setSexo(sexdao.ObtenerObjeto(Integer.parseInt(request.getParameter("slcSexoPersona"))));
+					Perso.setSexo(sexneg.ObtenerObjeto(Integer.parseInt(request.getParameter("slcSexoPersona"))));
 				}else {
 					flag = false;
 				}
@@ -257,7 +247,7 @@ public class servletNuevoMedico extends HttpServlet {
 	
 	private Usuario carga_datos_usuario(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		Usuario User = new Usuario();
-		TipoDao tipodao = new TipoDaoImpl(); // REEMPLAZAR POR NEGOCIO
+		TipoNegocio tipneg = new TipoNegocioImpl();
 		
 		boolean flag=true;
 		if(!request.getParameter("txfUsername").isEmpty()) {
@@ -279,7 +269,7 @@ public class servletNuevoMedico extends HttpServlet {
 		
 		// TIPO DE USUARIO
 		if(Integer.parseInt(request.getParameter("slcTipoUsuario"))!=0) {
-			User.setTipo(tipodao.ObtenerObjeto(Integer.parseInt(request.getParameter("slcTipoUsuario"))));
+			User.setTipo(tipneg.ObtenerObjeto(Integer.parseInt(request.getParameter("slcTipoUsuario"))));
 		}else {
 			flag = false;
 		}
@@ -391,29 +381,25 @@ public class servletNuevoMedico extends HttpServlet {
 		// CARGO DATOS DE PERSONA
 		Perso = carga_datos_persona(request, response);
 		if(Perso == null) flag = false;
-		System.out.println("OBTIENE DATOS DE PERSONA: OK" + " " + flag);
 		
 		// CARGO DATOS DEL USUARIO
 		User = carga_datos_usuario(request, response);
 		if(User == null) flag = false;
-		System.out.println("OBTIENE DATOS DE USUARIO: OK" + " " + flag);
 		
 		// VALIDA QUE MEDICO NO EXISTA
 		if(medneg.existe_medico(Perso.getDni())) { // SI MEDICO EXISTE - REGRESA SIN AGREGAR NADA
 			request.setAttribute("existeAdmin", true);
 			return false;
 		}
-		System.out.println("MEDICO NO EXISTE: OK" + " " + flag);
 		
 		// HORARIOS DEL MEDICO
 		ArrayList<Horario> horas = carga_horarios_medico(request, response);
-		HorarioDao horasneg = new HorarioDaoImpl();	
+		HorarioNegocio horasneg = new HorarioNegocioImpl();
 		
 		// VALIDACION DE HORARIO CARGADO CORRECTAMENTE
 		if(horas==null) {
 			return false;
 		}
-		System.out.println("OBTIENE HORAS DEL MEDICO: OK" + " " + flag);
 		
 		// VALIDA QUE PERSONA Y USUARIO NO EXISTAN
 		if(perneg.existePersona(Perso.getDni()) || userneg.existeUsuario(User.getUser())!=-1) {
@@ -431,7 +417,6 @@ public class servletNuevoMedico extends HttpServlet {
 			//perneg.eliminarPersona(Perso.getDni()); // SI NO SE PUEDE AGREGAR EL USUARIO, SE ELIMINA LA PERSONA - A REVISAR COMPORTAMIENTO ADECUADO
 			return false;
 		}
-		System.out.println("AGREGA PERSONA Y USUARIO: OK" + " " + flag);
 		
 		User.setIdUsuario(userneg.existeUsuario(User.getUser()));
 		
@@ -456,20 +441,17 @@ public class servletNuevoMedico extends HttpServlet {
 		}else {
 			flag = false;
 		}
-		System.out.println("OBTIENE DATOS LABORALES DEL MEDICO: OK" + " " + flag + " IDEsp: " + Integer.parseInt(request.getParameter("slcEsp")) + " ID ESP MEDIC: " + Medic.getEspecialidad().getIdEspecialidad());
 		
 		// CARGA MEDICO A DB
 		if(!medneg.agregarMedico(Medic)) {
 			return false;
 		}
 		
-		System.out.println("CARGA MEDICO A DB: OK" + " " + flag);
 		// OBTIENE ID DE MEDICO AGREGADO
 		Medico Aux = new Medico();
 		Aux = medneg.buscar_dni(Medic.getDni());
 		
 		
-		System.out.println("OBTIENE ID DEL MEDICO: OK" + " " + flag + " " + Aux.getIdMedico());
 		// CARGA HORAS DE ATENCION DEL MEDICO (NECESITA IDMEDICO)
 		for (Horario horario : horas) {
 			if(!horasneg.Agregar(Aux.getIdMedico(), horario)){
@@ -477,7 +459,6 @@ public class servletNuevoMedico extends HttpServlet {
 			}
 		}
 		
-		System.out.println("CARGA HORAS A DB: OK" + " " + flag);
 		return flag;
 	}
 
@@ -518,33 +499,25 @@ public class servletNuevoMedico extends HttpServlet {
 
 		Medic = medicneg.buscar_id(Integer.parseInt(request.getParameter("medicId").toString()));
 		if(Medic == null) {return false;}
-		System.out.println("OBTIENE MEDICO POR ID OK: " + Medic.getDni() + " " + Medic.getIdMedico() );
 		
 		Perso = carga_datos_persona(request, response);
 		if(Perso == null) {return false;}
 		Perso.setDni(Medic.getDni());
-		System.out.println("CARGA DATOS DE PERSONA OK: " + Perso.getNombre() + " " + Perso.getApellido() );
 		
 		User = carga_datos_usuario(request, response);
 		if(User == null) {return false;}
 		User.setIdUsuario(Medic.getUsuario().getIdUsuario());
-		System.out.println("CARGA DATOS DE USUARIO OK: " + User.getUser() +" "+ User.getIdUsuario());
 		
 		Medic.setHorarios(carga_horarios_medico(request, response));
 		if(Medic.getHorarios()==null) {return false;}		
-		System.out.println("CARGA HORAS DEL MEDICO OK");
 		
 		if(!perneg.Modificar(Perso)) {return false;}
-		System.out.println("MODIFICA DATOS DE PERSONA EN DB OK:");
 		if(!userneg.Modificar(User)) {return false;}
-		System.out.println("MODIFICA DATOS DE USUARIO EN DB OK");
 		
 		if(!horasneg.Modificar(Medic.getIdMedico(), Medic.getHorarios())) {return false;}
-		System.out.println("MODIFICA HORAS DEL MEDICO EN DB OK");
 		
 		if(!medicneg.Modificar(Medic)) {return false;}
 		else {
-		System.out.println("MODIFICA DATOS DE MEDICO EN DB OK");	
 		return true;}
 		
 	}

@@ -1,3 +1,12 @@
+<%@page import="java.util.List"%>
+<%@page import="java.util.ArrayList"%>
+<%@page import="entidad.Provincia"%>
+<%@page import="entidad.Localidad"%>
+<%@page import="entidad.Pais"%>
+<%@page import="entidad.Sexo"%>
+<%@page import="entidad.Paciente"%>
+<%@page import="servlets.servletNuevoPaciente"%>
+
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -14,6 +23,13 @@
 <title>Nuevo Paciente</title>
 </head>
 <body>
+
+<%!ArrayList<Provincia> listaProvincias = null;%>
+<%!ArrayList<Localidad> listaLocalidades = null;%>
+<%!ArrayList<Sexo> listasexos = null;%>
+<%!ArrayList<Pais> listapaises = null;%>
+<%!Paciente paci = null;%>
+
 <div class="container-fluid">
 	<jsp:include page="Menu.html"></jsp:include>
 	<div class="row mh-2 mb-2 justify-content-center p-2">
@@ -44,44 +60,94 @@
   		</div>
   		<div class="col col-md-3 mh-2 justify-content-center p-2">
   			<label class="p-1">Nacionalidad</label>
-	  		<select name="slcNacionalidad" class="w-100">
-  				<option value="1">Seleccione opción</option>
-  				<option value="2">Aregentina</option>
-  				<option value="3">Bolivia</option>
-  				<option value="3">Uruguay</option>
-  				<option value="3">Ecuador</option>
-  				<option value="3">Brasil</option>
-  			</select>
+		  	<select name="slcPaisPersona" class="w-100" required>
+				<option value="0" disabled>Seleccione opción</option>
+				<%
+				if(request.getAttribute("listaPaises")!=null){
+					listapaises = (ArrayList<Pais>)request.getAttribute("listaPaises");
+					if(!listapaises.isEmpty()){
+						for(Pais pa : listapaises){
+						%>
+						<option value="<%=pa.getIdNacionalidad()%>" 
+						<%
+			  			if(paci!=null && paci.getNacionalidad().getIdNacionalidad() == pa.getIdNacionalidad()){%>selected<%;}
+						%>
+						><%=pa.getNombre() %></option>
+						<%
+						}
+					}
+				}
+				%>
+			</select>
   		</div>
   		<div class="col col-md-3 mh-2 justify-content-center p-2">
   			<label class="p-1">Sexo</label> 
-  			<select name="slcSexo" class="w-100">
-  				<option value="1">Seleccione opción</option>
-  				<option value="2">Masculino</option>
-  				<option value="3">Femenino</option>
-  			</select>
+	  			<select name="slcSexoPersona" id="slcSexoPersona" class="w-100" required>
+				<option value="0" disabled>Seleccione opción</option>
+				<%
+				if(request.getAttribute("listasexos")!=null){
+					listasexos = (ArrayList<Sexo>)request.getAttribute("listasexos");
+					if(!listasexos.isEmpty()){
+						for(Sexo sex : listasexos){
+						%>
+						<option value="<%=sex.getIdSexo()%>" 
+						<%
+			  			if(paci!=null && paci.getSexo().getIdSexo() == sex.getIdSexo()){%>selected<%;}
+						%>
+						><%=sex.getNombre()%></option>
+						<%
+						}
+					}
+				}
+				%>
+			</select>
   		</div>
   	</div>
   	<div class="row justify-content-center">
   		<div class="col col-md-3 mh-2 justify-content-center p-2">
   			<label class="p-1">Provincia</label> 
-  			<select name="slcEsp" class="w-100">
-  				<option value="1">Seleccione opción</option>
-  				<option value="2">Provincia 1</option>
-  				<option value="3">Provincia 2</option>
-  				<option value="4">Provincia 3</option>
-  				<option value="5">Provincia 4</option>
-  			</select>
+  			<select name="slcProvPersona" id="slcProvPersona" class="w-100" required>
+				<option value="0" disabled>Seleccione opción</option>
+				<%
+				if(request.getAttribute("listaProvincias")!=null){
+					listaProvincias = (ArrayList<Provincia>)request.getAttribute("listaProvincias");
+					if(!listaProvincias.isEmpty()){
+						for(Provincia prov : listaProvincias){
+						%>
+						<option value="<%=prov.getIdProv() %>" 
+						<%
+			  			if(paci!=null && paci.getDirecc().getLoc().getProvincia().getIdProv() == prov.getIdProv()){%>selected<%;}
+						%>
+						><%=prov.getNombre() %></option>
+							
+						<%
+						}
+					}
+				}
+				%>
+			</select>
   		</div>
   		<div class="col col-md-3 mh-2 justify-content-center p-2">
   			<label class="p-1">Localidad</label> 
-  			<select name="slcEsp" class="w-100">
-  				<option value="1">Seleccione opción</option>
-  				<option value="2">Localidad 1</option>
-  				<option value="3">Localidad 2</option>
-  				<option value="4">Localidad 3</option>
-  				<option value="5">Localidad 4</option>
-  			</select>
+  			<select name="slcLocPersona" id="slcLocPersona" class="w-100" required>
+				<option value="0" disabled>Seleccione opción</option>
+				<%
+				if(request.getAttribute("listaLocalidades")!=null){
+					listaLocalidades = (ArrayList<Localidad>)request.getAttribute("listaLocalidades");
+					if(!listaLocalidades.isEmpty()){
+						for(Localidad loc : listaLocalidades){
+							%>
+							<option value="<%=loc.getIdLocalidad()%>" 
+							<%
+				  			if(paci!=null && paci.getDirecc().getLoc().getIdLocalidad() == loc.getIdLocalidad()){%>selected<%;}
+							%>
+							><%=loc.getNombre() %></option>	
+							<%
+						}
+					}
+				}
+				%>
+			</select>
   		</div>
   		<div class="col col-md-3 mh-2 justify-content-center p-2">
   			<label class="p-1">Dirección</label>

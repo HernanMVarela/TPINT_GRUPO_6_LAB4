@@ -27,7 +27,8 @@ public class PacienteDaoImpl implements PacienteDao{
 	private String modificar = "UPDATE bdtp_integrador.pacientes SET DNI = ?, Estado = ? WHERE IDPaciente = ?";
 	private String buscar = "SELECT * FROM bdtp_integrador.pacientes WHERE IDPaciente = ?";
 	private String eliminar = "DELETE FROM bdtp_integrador.pacientes WHERE IDPaciente = ?";
-	private String proxid = "SELECT MAX(m.IDPaciente) FROM bdtp_integrador.pacientes m order by m.IDPaciente";
+	private String proxid = "SELECT MAX(m.IDPaciente) FROM bdtp_integrador.pacientes m order by m.IDPaciente"; 
+	private String contarpac = "SELECT COUNT(DNI) FROM bdtp_integrador.pacientes WHERE ESTADO = 1";
 	
 	@Override
 	public ArrayList<Paciente> ListarTodo() {
@@ -219,7 +220,7 @@ public class PacienteDaoImpl implements PacienteDao{
 		}
 		return last;
 	}
-	
+
 	@Override
 	public Paciente Buscar(int idPaciente) {
 		try {
@@ -266,6 +267,31 @@ public class PacienteDaoImpl implements PacienteDao{
 		
 		return result;
 		
+	}
+
+	@Override
+	public int ContarPacientes() {
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+		
+		int last=0;
+		Conexion conexion = Conexion.getConexion();
+		PreparedStatement st;
+		ResultSet rs;
+		
+		try {
+			st = conexion.getSQLConexion().prepareStatement(contarpac);
+			rs = st.executeQuery();
+			while(rs.next()) {
+				last = rs.getInt(1);			
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return last;
 	}
 	
 }

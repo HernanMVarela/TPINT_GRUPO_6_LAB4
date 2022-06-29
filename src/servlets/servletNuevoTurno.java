@@ -60,6 +60,20 @@ public class servletNuevoTurno extends HttpServlet {
 			}
 		}
 		
+		if(request.getParameter("btnVerTurno")!=null) { 
+			if(request.getParameter("radSelect")!=null && Integer.parseInt(request.getParameter("radSelect"))!=0) {
+				
+				TurnoNegocio turneg = new TurnoNegocioImpl();
+				Turno mostrar = new Turno();
+				mostrar = turneg.Buscar(Integer.parseInt(request.getParameter("radSelect")));
+				request.setAttribute("turno", mostrar);
+				redirect = "VerTurno.jsp";
+			}else {
+				redirect = "servletTurnos";
+			}
+			flag=false;
+		}		
+		
 		if(request.getParameter("btnEliminarTurno")!=null) { 
 			if(request.getParameter("radSelect")!=null) {
 				if(liberar_turno(request, response)) {

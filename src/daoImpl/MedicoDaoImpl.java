@@ -43,6 +43,7 @@ public class MedicoDaoImpl implements MedicoDao{
 	private String buscarDNI = "SELECT * FROM bdtp_integrador.medicos M inner join personas P on M.DNI = P.DNI inner join usuarios u on u.idUsuario = m.IDUsuario where M.DNI = ?";
 	private String bajaMedic = "UPDATE bdtp_integrador.medicos SET Estado = 0 where IDMedico = ?";
 	private String obtenerObjeto = "SELECT * FROM bdtp_integrador.medicos WHERE IDMedico = ?";
+	private String contarpac = "SELECT COUNT(DNI) FROM bdtp_integrador.medicos WHERE ESTADO = 1";
 	
 	@Override
 	public ArrayList<Medico> ListarTodo() {
@@ -603,6 +604,31 @@ public class MedicoDaoImpl implements MedicoDao{
 		}finally{ }		
 		
 		return null;
+	}
+
+	@Override
+	public int ContarMedicos() {
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+		
+		int last=0;
+		Conexion conexion = Conexion.getConexion();
+		PreparedStatement st;
+		ResultSet rs;
+		
+		try {
+			st = conexion.getSQLConexion().prepareStatement(contarpac);
+			rs = st.executeQuery();
+			while(rs.next()) {
+				last = rs.getInt(1);			
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return last;
 	}
 	
 	

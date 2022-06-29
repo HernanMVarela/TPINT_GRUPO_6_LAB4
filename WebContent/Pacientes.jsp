@@ -1,3 +1,9 @@
+<%@page import="servlets.servletPacientes"%>
+<%@page import="servlets.servletNuevoPaciente"%>
+<%@page import="java.util.List"%>
+<%@page import="java.util.ArrayList"%>
+<%@page import="entidad.Paciente"%>
+
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -16,6 +22,7 @@
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
 	<script type="text/javascript" charset="utf8" src="//cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
 <script type="text/javascript">
+
 $(document).ready( function () {
     $('#tabla_pacientes').DataTable();
 } );
@@ -25,6 +32,8 @@ $(document).ready( function () {
 <title>Panel de pacientes</title>
 </head>
 <body>
+<%! List<Paciente> listaPacientes = null; %>
+
 <jsp:include page="Menu.html"></jsp:include>
 
 <div class="row mx-2 mb-2 justify-content-center w-auto p-2">
@@ -45,15 +54,28 @@ $(document).ready( function () {
 	  	<div class="col-md-10 table-responsive w-75">
 	  		<table id="tabla_pacientes" border=2 class="table align-middle table-info table-hover th-lg">
 	  		<thead>
-				<tr class="table-secondary"><th> ID Paciente </th><th> DNI </th><th> Nombre y apellido </th><th> Fecha de nacimiento </th><th> Dirección </th>
-				<th> Localidad </th><th> Nacionalidad </th><th width="5%"> Seleccionar </th></tr>
+				<tr class="table-secondary"><th width="10%"> ID Paciente </th><th> Nombre y apellido </th><th> DNI </th><th> Sexo </th>
+				<th> Fecha de nacimiento </th><th> Dirección </th><th> Nacionalidad </th><th width="5%"> Seleccionar </th></tr>
 			</thead>
-			<tbody>
-				<tr><td> 11000 </td><td> 111111111 </td><td> Julio Rodas </td><td> 01/01/2001 </td><td> Arturo Ilia 5532 </td><td> Ricardo Rojas </td><td> Argentino/a </td><td align="center"> <input type="radio" name="radSelect" value=""> </td></tr>
-				<tr><td> 11001 </td><td> 22222222 </td> <td> Teresa Pérez </td><td> 24/11/1999 </td><td> Roca 5532 </td><td> El Talar </td><td> Argentino/a </td><td align="center"> <input type="radio" name="radSelect" value=""> </td></tr>
-				<tr><td> 11002 </td><td> 33333333 </td> <td> Armando Sandrini </td><td> 07/10/1975  </td><td> Juan M. Rosas 4663 </td><td> Tortuguitas </td><td> Argentino/a </td><td align="center"> <input type="radio" name="radSelect" value=""> </td></tr>
-				<tr><td> 11003 </td><td> 44444444 </td> <td> Laura Ezpeleta </td><td> 18/06/1983 </td><td> Juana Azurduy 5532 </td><td> Grand Bourg </td><td> Argentino/a </td><td align="center"> <input type="radio" name="radSelect" value=""> </td></tr>
-			</tbody>
+			<% if(request.getAttribute("listaPacientes")!=null){
+					listaPacientes = (ArrayList<Paciente>)request.getAttribute("listaPacientes");
+  					if(!listaPacientes.isEmpty()) {
+  						for (Paciente x: listaPacientes){
+  							%>
+  								<tr <% if(!x.isEstado()){%> class="table-danger" <%} %>>
+  								<td> <%= x.getIdPaciente() %> </td>
+  								<td> <%= x.getNombre() + " " + x.getApellido() %> </td> 
+  								<td> <%= x.getDni() %>  </td>
+								<td> <%= x.getSexo().getNombre() %> </td>
+								<td> <%= x.getFecha_nacimiento().toString() %> </td>
+								<td> <%= x.getDirecc().getCalleYNum() %> </td>
+								<td> <%= x.getNacionalidad().getNombre() %> </td>
+								<td align="center"> <input type="radio" name="radSelect" value="<%=x.getIdPaciente() %>"></td>
+  							<%
+  						}   					
+  					}
+  				}
+	  		%>
 			</table>
 	  	</div> 
   	</div>
