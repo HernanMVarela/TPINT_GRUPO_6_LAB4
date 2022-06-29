@@ -20,9 +20,12 @@ import daoImpl.PaisDaoImpl;
 import daoImpl.ProvinciaDaoImpl;
 import daoImpl.SexoDaoImpl;
 import entidad.Localidad;
+import entidad.Paciente;
 import entidad.Pais;
 import entidad.Provincia;
 import entidad.Sexo;
+import negocio.PacienteNegocio;
+import negocioImpl.PacienteNegocioImpl;
 
 @WebServlet("/servletNuevoPaciente")
 public class servletNuevoPaciente extends HttpServlet {
@@ -35,13 +38,24 @@ public class servletNuevoPaciente extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		boolean aux = true;
 		String redirect = "/NuevoPaciente.jsp";
+		request.setAttribute("pacien", null);  ///////////
 		
 		if(request.getParameter("btnAceptar")!=null) {
 			agregar_paciente(request, response);
 		}
 		
 		if(request.getParameter("btnEliminar")!=null) {
-			eliminar_paciente(request, response);
+			if(request.getParameter("radSelect")!=null){
+			    if(eliminar_paciente(request, response)) {
+			        // 
+			    }else {
+			        // NO SE PUDO ELIMINAR
+			    }
+			    aux = false;
+			    redirect = "servletMedicos";
+			}else {
+			    // NO HAY NADA SELECCIONADO - DEVOLVER ATRIBUTO O MENSAJE DE ERROR
+			}
 		}
 		
 		if(aux) {
@@ -97,6 +111,13 @@ public class servletNuevoPaciente extends HttpServlet {
 	}
 	
 	private boolean eliminar_paciente(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		PacienteNegocio pacneg = new PacienteNegocioImpl();
+		Paciente pacien = new Paciente();
+		
+		pacien = pacneg.buscar_id(Integer.parseInt(request.getParameter("radSelect")));
+		if(pacien != null) {
+			return pacneg.bajaPaciente(pacien);
+		}
 		
 		return false;
 	}

@@ -15,4 +15,5 @@ public interface PacienteNegocio {
 	public ArrayList<Paciente> listar();
 	public void VerificarDniInvalido(String dni) throws DniException;
 	public int contarPacientes();
+	public Paciente buscar_id(int idPaciente);
 }

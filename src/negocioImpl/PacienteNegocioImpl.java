@@ -13,6 +13,12 @@ import negocio.PacienteNegocio;
 public class PacienteNegocioImpl implements PacienteNegocio{
 
 	@Override
+	public Paciente buscar_id(int idPaciente) {
+		PacienteDao pacdao = new PacienteDaoImpl();
+		return pacdao.ObtenerObjeto(idPaciente);
+	}
+	
+	@Override
 	public boolean agregarPaciente(Paciente agregar) {
 		PacienteDao padao = new PacienteDaoImpl();
 		return padao.Agregar(agregar);
