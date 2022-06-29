@@ -22,6 +22,7 @@ $(document).ready( function () {
 } );
 </script>
 
+
 <style type="text/css">
 	<jsp:include page="cssStyles/StyleSheet.css"></jsp:include>
 </style>
@@ -35,6 +36,7 @@ $(document).ready( function () {
 <title>Turnos</title>
 </head>
 <body>
+
 <%! List<Turno> listaTurnos = null; %>
 
 <!-- MENU DE NAVEGACION Y LOGIN -->

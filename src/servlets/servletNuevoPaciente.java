@@ -1,6 +1,7 @@
 package servlets;
 
 import java.io.IOException;
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,13 +20,23 @@ import daoImpl.LocalidadDaoImpl;
 import daoImpl.PaisDaoImpl;
 import daoImpl.ProvinciaDaoImpl;
 import daoImpl.SexoDaoImpl;
+import entidad.Direccion;
 import entidad.Localidad;
 import entidad.Paciente;
 import entidad.Pais;
+import entidad.Persona;
 import entidad.Provincia;
 import entidad.Sexo;
+import negocio.LocalidadNegocio;
 import negocio.PacienteNegocio;
+import negocio.PaisNegocio;
+import negocio.PersonaNegocio;
+import negocio.SexoNegocio;
+import negocioImpl.LocalidadNegocioImpl;
 import negocioImpl.PacienteNegocioImpl;
+import negocioImpl.PaisNegocioImpl;
+import negocioImpl.PersonaNegocioImpl;
+import negocioImpl.SexoNegocioImpl;
 
 @WebServlet("/servletNuevoPaciente")
 public class servletNuevoPaciente extends HttpServlet {
@@ -38,10 +49,33 @@ public class servletNuevoPaciente extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		boolean aux = true;
 		String redirect = "/NuevoPaciente.jsp";
-		request.setAttribute("pacien", null);  ///////////
+		request.setAttribute("paciente", null);
+		
+		
+		// EVENTO BOTON MODIFICAR USUARIO
+		if(request.getParameter("btnModificarPaciente")!=null) {
+			if(request.getParameter("radSelect")!=null){
+				if(carga_datos(request, response)) {
+					// DATOS DEL ELEMENTO SELECCIONADO OBTENIDOS
+				}else {
+					request.setAttribute("paciente", null);	
+					// NO SE PUEDEN CARGAR LOS DATOS
+				}
+			}else {
+				// NO HAY ELEMENTO SELECCIONADO
+				aux = false;
+				redirect = "servletPacientes"; 
+			}
+		}
 		
 		if(request.getParameter("btnAceptar")!=null) {
-			agregar_paciente(request, response);
+			if(request.getParameter("pacienteID")!=null) {
+				modificar_paciente(request, response);
+			}else {
+				agregar_paciente(request, response);
+			}
+			aux = false;
+			redirect = "servletPacientes"; 
 		}
 		
 		if(request.getParameter("btnEliminar")!=null) {
@@ -52,7 +86,7 @@ public class servletNuevoPaciente extends HttpServlet {
 			        // NO SE PUDO ELIMINAR
 			    }
 			    aux = false;
-			    redirect = "servletMedicos";
+			    redirect = "servletPacientes";
 			}else {
 			    // NO HAY NADA SELECCIONADO - DEVOLVER ATRIBUTO O MENSAJE DE ERROR
 			}
@@ -67,6 +101,26 @@ public class servletNuevoPaciente extends HttpServlet {
 		
 		RequestDispatcher rd = request.getRequestDispatcher(redirect);   
         rd.forward(request, response);
+	}
+
+	private boolean modificar_paciente(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		Persona modificar = new Persona();
+		Paciente paciente = new Paciente();
+		PacienteNegocio pacneg = new PacienteNegocioImpl();
+		
+		modificar = carga_datos_persona(request, response);
+		
+		paciente = pacneg.buscar_dni(modificar.getDni());
+		
+		if(paciente.getIdPaciente() != Integer.parseInt(request.getParameter("pacienteID"))) {
+			return false;
+		}
+		
+		paciente = nuevo_paciente(modificar);
+		paciente.setEstado(true);
+
+		return pacneg.modificarPaciente(paciente);
+		
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -105,16 +159,145 @@ public class servletNuevoPaciente extends HttpServlet {
 		return pais;
 	}
 
-	private boolean agregar_paciente(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	private boolean carga_datos(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-		return false;
+		Paciente modificar = new Paciente();
+		PacienteNegocio pacneg = new PacienteNegocioImpl();
+		
+		modificar = pacneg.buscar_paciente(Integer.parseInt(request.getParameter("radSelect")));
+		
+		if(modificar==null) {
+			return false;
+		}
+		request.setAttribute("paciente", modificar);
+		return true;
+	}
+	
+	private boolean agregar_paciente(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		PersonaNegocio perneg = new PersonaNegocioImpl();
+		Persona perso = new Persona();
+		perso = carga_datos_persona(request, response);
+		
+		// VALIDACION PERSONA EXISTENTE
+		if(perneg.existePersona(perso.getDni())) {
+			return false;
+		}
+		PacienteNegocio pacneg = new PacienteNegocioImpl();
+		Paciente nuevo = new Paciente();
+		nuevo = nuevo_paciente(perso);
+		
+		return pacneg.agregarPaciente(nuevo);
+	}
+	
+	private Paciente nuevo_paciente(Persona perso) {
+		Paciente nuevo = new Paciente();
+		
+		nuevo.setDni(perso.getDni());
+		nuevo.setNombre(perso.getNombre());
+		nuevo.setApellido(perso.getApellido());
+		nuevo.setEmail(perso.getEmail());
+		nuevo.setFecha_nacimiento(perso.getFecha_nacimiento());
+		nuevo.setDirecc(perso.getDirecc());
+		nuevo.setNacionalidad(perso.getNacionalidad());
+		nuevo.setSexo(perso.getSexo());
+		nuevo.setTelefono(perso.getTelefono());
+		nuevo.setEstado(true);
+		
+		return nuevo;
+	}
+	
+	private Persona carga_datos_persona(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		Persona Perso = new Persona();
+		Perso.setDirecc(new Direccion());
+		
+		LocalidadNegocio locneg = new LocalidadNegocioImpl();
+		PaisNegocio paineg = new PaisNegocioImpl();	
+		SexoNegocio sexneg = new SexoNegocioImpl();
+		
+		boolean flag=true;
+		try {
+			if(!request.getParameter("txfNombre").isEmpty()) {
+				Perso.setNombre(request.getParameter("txfNombre").toString());
+			}else {
+				flag = false;
+			}
+			// APELLIDO PERSONA
+			if(!request.getParameter("txfApellido").isEmpty()) {
+				Perso.setApellido(request.getParameter("txfApellido").toString());
+			}else {
+				flag = false;
+			}
+			
+			// DOCUMENTO PERSONA
+			if(request.getParameter("adminId")==null) {
+				if(!request.getParameter("txfDocumento").isEmpty()) {
+				{
+					Perso.setDni(Integer.parseInt(request.getParameter("txfDocumento")));
+				}
+				}else {
+					flag = false;
+				}
+			}
+			// PAIS PERSONA
+			if(Integer.parseInt(request.getParameter("slcPaisPersona"))!=0) {
+				Perso.setNacionalidad(paineg.ObtenerObjeto((Integer.parseInt(request.getParameter("slcPaisPersona")))));
+			}else {
+				flag = false;
+			}
+			
+			// DIRECCION PERSONA
+				// LOCALIDAD
+			if(Integer.parseInt(request.getParameter("slcLocPersona"))!=0) {
+				Perso.getDirecc().setLoc(locneg.ObtenerObjeto(Integer.parseInt(request.getParameter("slcLocPersona"))));
+			}else {
+				flag = false;
+			}
+				// DIRECCION
+			if(!request.getParameter("txfDireccion").isEmpty()) {
+				Perso.getDirecc().setCalleYNum(request.getParameter("txfDireccion").toString());
+			}else {
+				flag = false;
+			}
+			
+			// SEXO
+			if(Integer.parseInt(request.getParameter("slcSexoPersona"))!=0) {
+				Perso.setSexo(sexneg.ObtenerObjeto(Integer.parseInt(request.getParameter("slcSexoPersona"))));
+			}else {
+				flag = false;
+			}
+			
+			// EMAIL PERSONA
+			if(!request.getParameter("txfCorreo").isEmpty()) {
+				Perso.setEmail(request.getParameter("txfCorreo").toString());
+			}else {
+				flag = false;
+			}
+			// TELEFONO
+			if(!request.getParameter("txfTelefono").isEmpty()) {
+				Perso.setTelefono(request.getParameter("txfTelefono").toString());
+			}else {
+				flag = false;
+			}
+			
+			// FECHA DE NACIMIENTO
+			if(!request.getParameter("inpNacimiento").isEmpty()) {
+				Perso.setFecha_nacimiento(Date.valueOf(request.getParameter("inpNacimiento").toString()));
+			}else {
+				flag = false;
+			}
+		} catch (Exception e) {
+			return null;
+		}
+		
+		if(!flag) return null;
+		return Perso;
 	}
 	
 	private boolean eliminar_paciente(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		PacienteNegocio pacneg = new PacienteNegocioImpl();
 		Paciente pacien = new Paciente();
 		
-		pacien = pacneg.buscar_id(Integer.parseInt(request.getParameter("radSelect")));
+		pacien = pacneg.buscar_paciente(Integer.parseInt(request.getParameter("radSelect")));
 		if(pacien != null) {
 			return pacneg.bajaPaciente(pacien);
 		}

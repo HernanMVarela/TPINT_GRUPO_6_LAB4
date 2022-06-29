@@ -24,12 +24,12 @@ public class PacienteDaoImpl implements PacienteDao{
 
 	private String leerTodo = "SELECT * FROM bdtp_integrador.pacientes";
 	private String alinsertar = "INSERT INTO bdtp_integrador.pacientes (DNI,Estado) VALUES (?,?)";
-	private String modificar = "UPDATE bdtp_integrador.pacientes SET DNI = ?, Estado = ? WHERE IDPaciente = ?";
+	private String modificar = "UPDATE bdtp_integrador.pacientes SET Estado = ? WHERE IDPaciente = ?";
 	private String buscar = "SELECT * FROM bdtp_integrador.pacientes WHERE IDPaciente = ?";
 	private String eliminar = "DELETE FROM bdtp_integrador.pacientes WHERE IDPaciente = ?";
 	private String proxid = "SELECT MAX(m.IDPaciente) FROM bdtp_integrador.pacientes m order by m.IDPaciente"; 
 	private String contarpac = "SELECT COUNT(DNI) FROM bdtp_integrador.pacientes WHERE ESTADO = 1";
-	private String obtenerObjeto = "SELECT * FROM bdtp_integrador.pacientes WHERE IDPaciente = ?";
+	private String buscar_dni = "SELECT * FROM bdtp_integrador.pacientes WHERE DNI = ?";
 	
 	
 	@Override
@@ -89,18 +89,7 @@ public class PacienteDaoImpl implements PacienteDao{
 		try {
 			Stat = conex.prepareStatement(alinsertar);
 			Stat.setInt(1,paciente.getDni());
-			Stat.setString(2,paciente.getNombre());
-			Stat.setString(3,paciente.getApellido());
-			//Aca se guarda el ID
-			Stat.setInt(4,paciente.getNacionalidad().getIdNacionalidad());
-			Stat.setString(5,paciente.getDirecc().getCalleYNum());
-			Stat.setInt(6,paciente.getSexo().getIdSexo());
-			Stat.setInt(7,paciente.getDirecc().getLoc().getIdLocalidad());
-			Stat.setString(8,paciente.getEmail());
-			Stat.setString(9,paciente.getTelefono());
-			Stat.setDate(10,paciente.getFecha_nacimiento());
-			Stat.setBoolean(11,paciente.isEstado());
-			
+			Stat.setBoolean(2,paciente.isEstado());
 			
 			if(Stat.executeUpdate()>0) {
 				conex.commit();
@@ -135,18 +124,8 @@ public class PacienteDaoImpl implements PacienteDao{
 		try {
 			statement = conexion.getSQLConexion().prepareStatement(modificar);
 			
-			statement.setInt(1,paciente.getDni());
-			statement.setString(2,paciente.getNombre());
-			statement.setString(3,paciente.getApellido());
-			//Aca se guarda el ID
-			statement.setInt(4,paciente.getNacionalidad().getIdNacionalidad());
-			statement.setString(5,paciente.getDirecc().getCalleYNum());
-			statement.setInt(6,paciente.getSexo().getIdSexo());
-			statement.setInt(7,paciente.getDirecc().getLoc().getIdLocalidad());
-			statement.setString(8,paciente.getEmail());
-			statement.setString(9,paciente.getTelefono());
-			statement.setDate(10,paciente.getFecha_nacimiento());
-			statement.setBoolean(11,paciente.isEstado());
+			statement.setBoolean(1,paciente.isEstado());
+			statement.setInt(2,paciente.getIdPaciente());
 			
 			if(statement.executeUpdate() > 0) {
 				conexion.getSQLConexion().commit();
@@ -298,7 +277,7 @@ public class PacienteDaoImpl implements PacienteDao{
 	
 	
 	@Override
-	public Paciente ObtenerObjeto(int idPaciente) {
+	public Paciente buscar_dni(int dni) {
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");
 			} 
@@ -311,19 +290,17 @@ public class PacienteDaoImpl implements PacienteDao{
 		ResultSet resultSet;
 		
 		try{
-			
-			statement = conexion.getSQLConexion().prepareStatement(obtenerObjeto);
-			statement.setInt(1, idPaciente);
+			statement = conexion.getSQLConexion().prepareStatement(buscar_dni);
+			statement.setInt(1, dni);
 			resultSet = statement.executeQuery();
 			
 			while(resultSet.next()){				
-				
 				PersonaDao daoPersona = new PersonaDaoImpl();
 				Persona persona = new Persona();
-				persona = daoPersona.ObtenerObjeto(resultSet.getInt("DNI"));
+				persona = daoPersona.ObtenerObjeto(dni);
 								
 				Paciente result = new Paciente(
-						idPaciente, 
+						resultSet.getInt("idPaciente"), 
 						persona,
 						resultSet.getBoolean("Estado")		
 						);

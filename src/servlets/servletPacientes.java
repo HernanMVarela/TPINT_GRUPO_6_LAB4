@@ -44,9 +44,6 @@ public class servletPacientes extends HttpServlet {
 		List<Paciente> listaDePacientes = new ArrayList<Paciente>();
 		PacienteDao meDao = new PacienteDaoImpl();
 		listaDePacientes = meDao.ListarTodo();
-		for (Paciente x: listaDePacientes) {
-			System.out.println(x.toString()); 
-		}
 		return listaDePacientes;
 	}
 

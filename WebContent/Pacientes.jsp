@@ -65,7 +65,7 @@ $(document).ready( function () {
   	<label class="subtitle w-100">Pacientes</label>
 </div>	
 <div class="container-fluid w-auto">
-	
+<form action="servletNuevoPaciente" method="get">
    <div class="row mx-2 d-flex flex-wrap align-middle justify-content-evenly">
 	  	<div class="col-md-2 border-right">
 	  		<div class="row text-start p-2">
@@ -107,16 +107,16 @@ $(document).ready( function () {
  
   	 <div class="row mx-2 mb-2 justify-content-center p-2 border-bottom">
   		<div class="col-md-3 d-flex justify-content-center">
-  			<a href="NuevoPaciente.jsp" class="btn btn-info w-75 ">Agregar Paciente</a>
+  			<a href="servletNuevoPaciente" class="btn btn-info w-75 ">Agregar Paciente</a>
   		</div>
   		<div class="col-md-3 d-flex justify-content-center">
-  			<a href="NuevoPaciente.jsp" class="btn btn-info w-75 ">Modificar Seleccionado</a><!-- REEMPLAZAR POR INPUT CON RUTA A SERVLET -->
+  			<input type="submit" name="btnModificarPaciente" class="btn btn-info w-75 " value="Modificar Seleccionado">
   		</div>
   		<div class="col-md-3 d-flex justify-content-center">
   			<button type="button" class="btn btn-danger w-75" data-bs-toggle="modal" data-bs-target="#modalEliminarPaciente">Eliminar Seleccionado</button>
   		</div>
   	</div>
-  </div><!-- FIN DE CONTAINER -->
+
   
 	<div class="modal fade" id="modalEliminarPaciente" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
 		<div class="modal-dialog">
@@ -137,5 +137,7 @@ $(document).ready( function () {
 			</div>
 		</div>
 	</div>
+</form>
+</div><!-- FIN DE CONTAINER -->
 </body>
 </html>

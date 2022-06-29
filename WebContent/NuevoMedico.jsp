@@ -41,6 +41,8 @@
 <%
 	if(request.getAttribute("medic")!=null){
 		medic = (Medico)request.getAttribute("medic");
+	}else{
+		medic = null;
 	}
 %>
 
@@ -75,8 +77,6 @@
 		%>
 		<input type="hidden" name="medicId" value="<%=medic.getIdMedico()%>">
 		<%
-		}else{
-			
 		}
 	%>
 	<div class="row mh-2 mb-2 justify-content-center p-2">
@@ -89,33 +89,24 @@
   	<div class="row justify-content-center">
   		<div class="col col-md-3 mh-2 justify-content-center p-2">
   			<label class="p-1">Nombre</label>
-	  		<input type="text" name="txfNombre" class="w-100" required
-	  		<% 
-	  			if(medic!=null){%>value="<%=medic.getNombre()%>"<%;}
-		  	%>>
+	  		<input type="text" name="txfNombre" class="w-100" required <% if(medic!=null){%>value="<%=medic.getNombre()%>"<%;}%>>
   		</div>
   		<div class="col col-md-3 mh-2 justify-content-center p-2">
   			<label class="p-1">Apellido</label>
 	  		<input type="text" name="txfApellido" class="w-100" required
-	  		<% 
-	  			if(medic!=null){%>value="<%=medic.getApellido()%>"<%;}
-		  	%>>
+	  		<% 	if(medic!=null){%>value="<%=medic.getApellido()%>"<%;} 	%>>
   		</div>
   		<div class="col col-md-3 mh-2 justify-content-center p-2">
   			<label class="p-1">Documento</label>
 	  		<input type="number" name="txfDocumento" class="w-100" required
-	  		<% 
-	  			if(medic!=null){%>value="<%=medic.getDni()%>" readonly<%;}
-		  	%>>
+	  		<%if(medic!=null){%>value="<%=medic.getDni()%>" readonly<%;}%>>
   		</div>
   	</div>
   	<div class="row justify-content-center">
   		<div class="col col-md-3 mh-2 justify-content-center p-2">
   			<label class="p-1">Fecha de nacimiento</label>
   				<input type="date" name=txfFechaNacPersona class="w-100" required
-	  		<% 
-	  			if(medic!=null){%>value="<%=medic.getFecha_nacimiento()%>"<%;}
-		  	%>>
+	  		<% 	if(medic!=null){%>value="<%=medic.getFecha_nacimiento()%>"<%;} 	%>>
   		</div>
   		<div class="col col-md-3 mh-2 justify-content-center p-2">
   			<label class="p-1">Nacionalidad</label>

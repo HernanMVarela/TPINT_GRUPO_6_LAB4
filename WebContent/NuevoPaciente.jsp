@@ -32,6 +32,13 @@
 <%!ArrayList<Sexo> listasexos = null;%>
 <%!ArrayList<Pais> listapaises = null;%>
 <%!Paciente paci = null;%>
+<%
+	if(request.getAttribute("paciente")!=null){
+		paci = (Paciente)request.getAttribute("paciente");
+	}else{
+		paci = null;
+	}
+%>
 
 <!-- MENU DE NAVEGACION Y LOGIN -->
 <%! Usuario user = null; %>
@@ -39,6 +46,9 @@
 
 <% if(user==null){%><jsp:include page="Menu.html"></jsp:include> <%} else { %><jsp:include page="MenuLog.html"></jsp:include> <% } %>
 <% if(user!=null){%> 
+
+
+
 <div class="d-flex flex-row bd-highlight">
 
 	<div class="px-2 flex-grow-1 bd-highlight"></div>
@@ -57,8 +67,11 @@
 <%
 } %>
 
-
 <div class="container-fluid">
+<form action="servletNuevoPaciente" method="get">
+
+<%if(paci!=null){%><input type="hidden" name="pacienteID" value="<%= paci.getIdPaciente() %>"><%}%>
+
 	<div class="row mh-2 mb-2 justify-content-center p-2">
 	  	<label class="subtitle w-100">Nuevo paciente</label>
 	</div>	
@@ -69,21 +82,21 @@
   	<div class="row justify-content-center">
   		<div class="col col-md-3 mh-2 justify-content-center p-2">
   			<label class="p-1">Nombre</label>
-	  		<input type="text" name="txfNombre" class="w-100" required>
+	  		<input type="text" name="txfNombre" class="w-100" required <% if(paci!=null){%>value="<%=paci.getNombre()%>"<%;}%>>
   		</div>
   		<div class="col col-md-3 mh-2 justify-content-center p-2">
   			<label class="p-1">Apellido</label>
-	  		<input type="text" name="txfApellido" class="w-100" required>
+	  		<input type="text" name="txfApellido" class="w-100" required <% if(paci!=null){%>value="<%=paci.getApellido()%>"<%;}%>>
   		</div>
   		<div class="col col-md-3 mh-2 justify-content-center p-2">
   			<label class="p-1">Documento</label>
-	  		<input type="number" name="txfDocumento" class="w-100" required>
+	  		<input type="number" name="txfDocumento" class="w-100" required <% if(paci!=null){%>readonly value="<%=paci.getDni()%>"<%;}%>>
   		</div>
   	</div>
   	<div class="row justify-content-center">
   		<div class="col col-md-3 mh-2 justify-content-center p-2">
   			<label class="p-1">Fecha de nacimiento</label>
-  				<input type="date" name=inpNacimiento class="w-100" required>
+  				<input type="date" name=inpNacimiento class="w-100" required <% if(paci!=null){%>value="<%=paci.getFecha_nacimiento() %>"<%;}%>>
   		</div>
   		<div class="col col-md-3 mh-2 justify-content-center p-2">
   			<label class="p-1">Nacionalidad</label>
@@ -178,25 +191,28 @@
   		</div>
   		<div class="col col-md-3 mh-2 justify-content-center p-2">
   			<label class="p-1">Dirección</label>
-	  		<input type="text" name="txfDireccion" class="w-100" required>
+	  		<input type="text" name="txfDireccion" class="w-100" required <% if(paci!=null){%>value="<%=paci.getDirecc().getCalleYNum() %>"<%;}%>>
   		</div>
   	</div>
 	<div class="row justify-content-center border-bottom mb-3">
 		<div class="col col-md-3 mh-2 justify-content-center p-2">
   			<label class="p-1">Correo Electrónico</label>
-	  		<input type="email" name="txfCorreo" class="w-100" required>
+	  		<input type="email" name="txfCorreo" class="w-100" required <% if(paci!=null){%>value="<%=paci.getEmail() %>"<%;}%>>
   		</div>
 		<div class="col col-md-3 mh-2 justify-content-center p-2">
   			<label class="p-1">Telefono</label>
-	  		<input type="text" name="txfTelefono" class="w-100" required>
+	  		<input type="text" name="txfTelefono" class="w-100" required <% if(paci!=null){%>value="<%=paci.getTelefono() %>"<%;}%>>
   		</div>
 	</div>
   	
 	<div class="row mh-2 mb-2 justify-content-center p-2">
 		<div class="col col-md-3 justify-content-center mh-2 p-2">
+			
 	  		<input type="submit" name="btnAceptar" class="btn btn-success p-3 w-100" value="Aceptar">
+	  		
 	  	</div>	
-	</div>	
+	</div>
+	</form>	
 </div>	
 </body>
 </html>
