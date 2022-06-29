@@ -2,6 +2,9 @@ package negocioImpl;
 
 import java.util.ArrayList;
 
+import javax.servlet.http.HttpServletRequest;
+
+import Excepciones.DniException;
 import dao.PacienteDao;
 import daoImpl.PacienteDaoImpl;
 import entidad.Paciente;
@@ -38,5 +41,14 @@ public class PacienteNegocioImpl implements PacienteNegocio{
 	public ArrayList<Paciente> listar() {
 		PacienteDao padao = new PacienteDaoImpl();
 		return padao.ListarTodo();
+	}
+
+	@Override
+	public void VerificarDniInvalido(String dni) throws DniException {
+		if(!dni.matches("[0-9]+"))
+		{
+			throw new DniException();
+		}
+		
 	}
 }

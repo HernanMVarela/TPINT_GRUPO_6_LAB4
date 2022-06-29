@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import Excepciones.DniException;
 import dao.LocalidadDao;
 import dao.PaisDao;
 import dao.ProvinciaDao;
@@ -75,9 +76,19 @@ public class servletNuevoUsuario extends HttpServlet {
 		// EVENTO BOTON AGREGAR NUEVO USUARIO
 		if(request.getParameter("btnAgregarUsuario")!=null) {
 			if (request.getParameter("adminId")!=null){
-				modificar_usuario(request, response);
+				try {
+					modificar_usuario(request, response);
+				} catch (DniException e) {
+					request.getSession().setAttribute("dniException", "DNI Inválido");
+					e.printStackTrace();
+				}
 			}else {
-				agregar_nuevo_usuario(request, response);
+				try {
+					agregar_nuevo_usuario(request, response);
+				} catch (DniException e) {
+					request.getSession().setAttribute("dniException", "DNI Inválido");
+					e.printStackTrace();
+				}
 			}
 			redirect = "servletPanelAdministrador";
 			aux = false;
@@ -154,7 +165,7 @@ public class servletNuevoUsuario extends HttpServlet {
 		return pais;
 	}
 
-	private Persona carga_datos_persona(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	private Persona carga_datos_persona(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, NumberFormatException, DniException {
 		Persona Perso = new Persona();
 		Perso.setDirecc(new Direccion());
 		
@@ -179,11 +190,15 @@ public class servletNuevoUsuario extends HttpServlet {
 				
 				// DOCUMENTO PERSONA
 				if(request.getParameter("adminId")==null) {
-					if(!request.getParameter("txfDocumentoPersona").isEmpty()) {
+					if(!request.getParameter("txfDocumentoPersona").isEmpty()) 
 					{
-						Perso.setDni(Integer.parseInt(request.getParameter("txfDocumentoPersona")));
-					}
-					}else {
+						if(VerificarDniInvalido(request.getParameter("txfDocumentoPersona"))) {
+							request.getSession().setAttribute("dniException", "DNI Inválido");
+							flag = false;							
+						} else {
+							Perso.setDni(Integer.parseInt(request.getParameter("txfDocumentoPersona")));
+						}
+					} else {
 						flag = false;
 					}
 				}
@@ -237,6 +252,22 @@ public class servletNuevoUsuario extends HttpServlet {
 		if(!flag) return null;
 		return Perso;
 	}
+
+	public static boolean VerificarDniInvalido(String dni) throws DniException
+	{
+		boolean result = false;
+		if(!dni.matches("[0-9]+"))
+		{
+			result = true;
+		}
+		
+		if(result) {			
+			throw new DniException();
+		}
+		//si el DNI es válido, devuelve false
+		return result;
+		
+	}
 	
 	private Usuario carga_datos_usuario(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		Usuario User = new Usuario();
@@ -272,7 +303,7 @@ public class servletNuevoUsuario extends HttpServlet {
 	}
 	
 	// AGREGA NUEVO USUARIO
-	private boolean agregar_nuevo_usuario (HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	private boolean agregar_nuevo_usuario (HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, NumberFormatException, DniException {
 		
 		Administrador Admin = new Administrador();
 		Usuario User = null;
@@ -336,7 +367,7 @@ public class servletNuevoUsuario extends HttpServlet {
 	}
 
 	
-	private boolean modificar_usuario(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	private boolean modificar_usuario(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, NumberFormatException, DniException {
 		Administrador Admin = null;
 		Usuario User = null;
 		Persona Perso= null;
