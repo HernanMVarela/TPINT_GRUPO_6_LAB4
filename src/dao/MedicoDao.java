@@ -20,6 +20,7 @@ public interface MedicoDao {
 	public boolean bajaMedico(int idAdmin);
 	public boolean existeMedico(int DNI);
 	public Medico ObtenerObjeto(int idMedico);
+	public int ContarMedicos();
 	
 	
 }

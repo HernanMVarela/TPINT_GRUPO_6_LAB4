@@ -19,5 +19,6 @@ public interface PacienteDao {
 
 	public Paciente Buscar(int idPaciente);
 
+	public int ContarPacientes();
 	
 }

@@ -25,8 +25,8 @@
 				<div class="card-body">
 					<h4 class="card-title">Turnos</h4>
 					<p class="card-text">Vista de turnos</p>
-					<a href="servletTurnos" class="btn btn-primary w-100 my-2">Listado</a><!-- REEMPLAZAR RUTA POR SERVLET -->
-					<a href="servletNuevoTurno" class="btn btn-success w-100 my-2">Sacar turno</a><!-- REEMPLAZAR RUTA POR SERVLET -->
+					<a href="servletTurnos" class="btn btn-primary w-100 my-2">Listado</a>
+					<a href="servletNuevoTurno" class="btn btn-success w-100 my-2">Sacar turno</a>
 				</div>
 			</div>
 		
@@ -35,8 +35,8 @@
 				<div class="card-body">
 					<h4 class="card-title">Pacientes</h4>
 					<p class="card-text">Listado de pacientes</p>
-					<a href="Pacientes.jsp" class="btn btn-primary w-100 my-2">Listado</a><!-- REEMPLAZAR RUTA POR SERVLET -->
-					<a href="NuevoPaciente.jsp" class="btn btn-primary w-100 my-2">Agregar</a><!-- REEMPLAZAR RUTA POR SERVLET -->
+					<a href="servletPacientes" class="btn btn-primary w-100 my-2">Listado</a>
+					<a href="servletNuevoPaciente" class="btn btn-primary w-100 my-2">Agregar</a>
 				</div>
 			</div>
 		
@@ -46,7 +46,7 @@
 					<h4 class="card-title">Medicos</h4>
 					<p class="card-text">Listado de médicos</p>
 					<a href="servletMedicos" class="btn btn-primary w-100 my-2">Listado</a>
-					<a href="servletNuevoMedico" class="btn btn-primary w-100 my-2">Agregar</a><!-- REEMPLAZAR RUTA POR SERVLET -->
+					<a href="servletNuevoMedico" class="btn btn-primary w-100 my-2">Agregar</a>
 				</div>
 			</div>
 		

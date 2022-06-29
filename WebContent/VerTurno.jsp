@@ -1,3 +1,7 @@
+<%@page import="java.util.List"%>
+<%@page import="java.util.ArrayList"%>
+<%@page import="entidad.Turno"%>
+
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -15,64 +19,75 @@
 <title>Detalle de turnos</title>
 </head>
 <body>
+<%!Turno turno = null;%>
+
 <jsp:include page="Menu.html"></jsp:include>
 <div class="container-fluid">
+	<form action="servletNuevoTurno" method="get">
 	<div class="row mx-1 mb-2 justify-content-center p-2">
 	  	<label class="subtitle w-100">Detalle del turno</label>
 	</div>
+<%
+if(request.getAttribute("turno")!=null){
+	turno=(Turno)request.getAttribute("turno");
+	%><input type="hidden" name="turnoId" value="<%= turno.getIdTurno()%>"><%
+}
+%>
+	
+	<% if(turno!=null){ %>
+	
+	
 	<div class="row mx-2 mb-2 justify-content-center p-2">
 		<div class="col col-md-3 justify-content-center p-2 cuadro_uno btn-outline-info">
 			<label class="subtitle w-100">Datos del paciente</label>
-			<h5>Nombre completo: Jill Williams</h5><br>
-			<h5>DNI: 35251764</h5><br>
-			<h5>Nacionalidad: Bolivia</h5><br>
-			<h5>Sexo: Masculino</h5><br>
-			<h5>Fecha de nacimiento: 1981-09-14</h5><br>
-			<h5>Telefono: 510-555-0121</h5><br>
-			<h5>Correo: jill.williams@mail.com</h5><br>
-			<h5>Dirección: 80 Sunview Terrace</h5><br>
-			<h5>Localidad: Cariló</h5><br>
-			<h5>Provincia: Buenos Aires</h5><br>
+			<h5>Nombre completo: <%=turno.getPaciente().getNombre() + " " + turno.getPaciente().getApellido() %></h5><br>
+			<h5>DNI: <%= turno.getPaciente().getDni() %></h5><br>
+			<h5>Nacionalidad: B<%= turno.getPaciente().getNacionalidad().getNombre() %></h5><br>
+			<h5>Sexo: <%= turno.getPaciente().getSexo().getNombre() %></h5><br>
+			<h5>Fecha de nacimiento: <%=turno.getPaciente().getFecha_nacimiento().toString() %></h5><br>
+			<h5>Telefono: <%= turno.getPaciente().getTelefono() %></h5><br>
+			<h5>Correo: <%= turno.getPaciente().getEmail() %></h5><br>
+			<h5>Dirección: <%= turno.getPaciente().getDirecc().getCalleYNum() %></h5><br>
+			<h5>Localidad: <%= turno.getPaciente().getDirecc().getLoc().getNombre() %></h5><br>
+			<h5>Provincia: <%= turno.getPaciente().getDirecc().getLoc().getProvincia().getNombre() %></h5><br>
 		</div>
 		<div class="col mx-1 col-md-5 justify-content-center p-2 cuadro_uno btn-outline-info">
 			<label class="subtitle w-100">Datos del turno</label>
 			<div class="row mb-2 justify-content-center p-2">
 				<div class="col col-md-6 mh-2 d-flex justify-content-between p-2">
-					<h4>Medico: Ovidiu Cracium</h4>
+					<h4>Medico: <%= turno.getMedico().getNombre() + " " + turno.getMedico().getApellido() %></h4>
 				</div>
 				<div class="col col-md-6 mh-2 d-flex justify-content-between p-2">
-					<h4>Especialidad: Cardiología</h4><br>
-				</div>
-			</div>
-			<div class="row mb-2 justify-content-center p-2">
-				<div class="col col-md-6 mh-2 d-flex justify-content-between p-2">
-					<h4>Paciente: José Lopez</h4><br>
-				</div>
-				<div class="col col-md-6 mh-2 d-flex justify-content-between p-2">
-					<h4>Sexo: Masculino</h4><br>
+					<h4>Especialidad: <%= turno.getEspecialidad().getNombre() %> </h4><br>
 				</div>
 			</div>
 			<div class="row mb-2 justify-content-center p-2">
 				<div class="col col-md-6 mh-2 d-flex justify-content-between p-2">
-					<h5>Fecha: 10/07/2022 - Hora: 14:00hs</h5><br>
+					<h4>Paciente: <%=turno.getPaciente().getNombre() + " " + turno.getPaciente().getApellido() %></h4><br>
 				</div>
 				<div class="col col-md-6 mh-2 d-flex justify-content-between p-2">
-					<h5>Estado del turno: Ocupado</h5><br>
+					<h4>Sexo: <%= turno.getPaciente().getSexo().getNombre() %></h4><br>
+				</div>
+			</div>
+			<div class="row mb-2 justify-content-center p-2">
+				<div class="col col-md-6 mh-2 d-flex justify-content-between p-2">
+					<h5>Fecha: <%= turno.getDia().toString() %> - Hora: <%=turno.getHora() %>:00hs</h5><br>
+				</div>
+				<div class="col col-md-6 mh-2 d-flex justify-content-between p-2">
+					<h5>Estado del turno: <%= turno.getEstadoTurno().getNombre() %></h5><br>
 				</div>
 			</div>
 			<div class="row mb-2 justify-content-center p-2">
 				<div class="col col-md-12 mh-2 d-flex justify-content-between p-2">
-					<textarea rows="5" style="width: 100%; max-width: 100%;" disabled>Observación realizada del paciente</textarea>
+					<textarea rows="5" style="width: 100%; max-width: 100%;" disabled><%=turno.getObservacionConsulta() %></textarea>
 				</div>
 			</div>
 			<div class="row mb-2 justify-content-center p-2">
 				<div class="col col-md-3 mh-2 d-flex justify-content-between p-2">
-					<a href="NuevoTurno.jsp" class="btn btn-primary p-2 w-100">Nuevo turno</a>
+					<a href="servletNuevoTurno" class="btn btn-primary p-2 w-100">Nuevo turno</a>
 				</div>
 				<div class="col col-md-3 mh-2 d-flex justify-content-between p-2">
-					<form method="post" action="NuevoTurno.jsp" class="w-100"><!-- REEMPLAZAR POR INPUT CON RUTA A SERVLET -->
-						<input type="submit" name="btnModificarTurno" class="btn btn-primary p-2 w-100" value="Modificar turno">
-					</form>
+					<input type="submit" name="btnModificarTurno" class="btn btn-primary p-2 w-100" value="Modificar turno">
 				</div>
 				<div class="col col-md-3 mh-2 d-flex justify-content-between p-2">
 					<button type="button" class="btn btn-danger p-2 w-100" data-bs-toggle="modal" data-bs-target="#modalEliminarTurno">Eliminar turno</button>
@@ -82,22 +97,22 @@
 		</div>
 		<div class="col col-md-3 justify-content-center p-2 cuadro_uno btn-outline-info">
 			<label class="subtitle w-100">Datos del médico</label>
-			<h5>Nombre completo: Ovidiu Cracium</h5><br>
-			<h5>Especialidad: Cardiología Clínica</h5><br>
-			<h5>DNI: 40418871</h5><br>
-			<h5>Legajo: 0023</h5><br>
-			<h5>Fecha de nacimiento: 1990-04-27</h5><br>
-			<h5>Telefono: 719-555-0181</h5><br>
-			<h5>Correo: ovidiu.cracium@medic.com</h5><br>
-			<h5>Dirección: 1318 Lasalle Street</h5><br>
-			<h5>Localidad: Balcarce</h5><br>
-			<h5>Provincia: Buenos Aires</h5><br>
+			<h5>Nombre completo: <%= turno.getMedico().getNombre() + " " + turno.getMedico().getApellido() %></h5><br>
+			<h5>Especialidad: <%= turno.getMedico().getEspecialidad().getNombre() %></h5><br>
+			<h5>DNI: <%= turno.getMedico().getDni() %></h5><br>
+			<h5>Legajo: <%= turno.getMedico().getIdMedico() %></h5><br>
+			<h5>Fecha de nacimiento: <%= turno.getMedico().getFecha_nacimiento().toString() %> </h5><br>
+			<h5>Telefono: <%= turno.getMedico().getTelefono() %></h5><br>
+			<h5>Correo: <%= turno.getMedico().getEmail() %> </h5><br>
+			<h5>Dirección: <%= turno.getMedico().getDirecc().getCalleYNum() %> </h5><br>
+			<h5>Localidad: <%= turno.getMedico().getDirecc().getLoc().getNombre() %> </h5><br>
+			<h5>Provincia: <%= turno.getMedico().getDirecc().getLoc().getProvincia().getNombre() %></h5><br>
 		</div>
 	</div>		
 	<div class="row mx-1 mb-2 justify-content-center p-2">
-	  	<a href="Turnos.jsp" name="btnVolver" class="btn btn-outline-primary p-2 w-25">Volver</a>
+	  	<a href="servletTurnos" name="btnVolver" class="btn btn-outline-primary p-2 w-25">Volver</a>
 	</div>
-</div>	
+	
 
   	<div class="modal fade" id="modalEliminarTurno" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
 		<div class="modal-dialog">
@@ -111,13 +126,19 @@
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-      				<form method="post" action=""><!-- REEMPLAZAR POR INPUT CON RUTA A SERVLET -->
-      					<input type="submit" name="btnEliminarTurno" class="btn btn-outline-danger w-100" value="Eliminar">
-      				</form>
+      				<input type="submit" name="btnEliminarTurno" class="btn btn-outline-danger w-25" value="Eliminar">
 				</div>
 			</div>
 		</div>
 	</div>
+</form>
 
+	<% } else { %>
+	<div class="row mx-1 mb-2 justify-content-center p-2">
+	  	<label class="subtitle w-100">NO HAY UN TURNO SELECCIONADO</label>
+	</div>
+			
+	<%}%>
+</div>
 </body>
 </html>
