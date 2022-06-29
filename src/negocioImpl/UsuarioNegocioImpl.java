@@ -30,7 +30,15 @@ public class UsuarioNegocioImpl implements UsuarioNegocio {
 		UsuarioDao userdao = new UsuarioDaoImpl();
 		return userdao.Modificar(usuario);
 	}
-	
+
+	@Override
+	public boolean Eliminar(int id) {
+		UsuarioDao userdao = new UsuarioDaoImpl();
+		if (userdao.ObtenerObjeto(id)!=null) {
+			return userdao.Eliminar(id);
+		}
+		return false;
+	}
 	
 
 }

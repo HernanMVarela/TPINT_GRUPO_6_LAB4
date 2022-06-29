@@ -63,6 +63,7 @@ $(document).ready( function () {
 <%
 } %>
 
+<%if(user!=null){ %>
 <div class="container-fluid">
 <form action="servletNuevoTurno" method="get">
 <div class="row mx-2 mb-2 justify-content-center p-2">
@@ -133,9 +134,7 @@ $(document).ready( function () {
 		
 	</div>
 	<div class="col-md-3 d-flex justify-content-center">
-		<%	if(user.getTipo().getIdTipo()==3){%> <button type="button" class="btn btn-danger w-75" data-bs-toggle="modal" data-bs-target="#modalEliminarTurno" disabled>Eliminar turno</button> <%} 
-		else {%><button type="button" class="btn btn-danger w-75" data-bs-toggle="modal" data-bs-target="#modalEliminarTurno">Eliminar turno</button><%}%>
-		
+		<button type="button" class="btn btn-danger w-75" data-bs-toggle="modal" data-bs-target="#modalEliminarTurno" <%if(user.getTipo().getIdTipo()!=1){%> disabled<%}%>>Eliminar turno</button>  
 	</div>
 </div>
  
@@ -158,5 +157,10 @@ $(document).ready( function () {
 	</div>
  </form>
 </div> <!-- Fin del container -->
+<%}else{ %>
+	<div class="row mh-2 mb-2 justify-content-center p-2">
+		<a href="servletHome" class="btn btn-outline-danger w-25 my-2">No hay usuario logueado - Volver a Home.</a>
+	</div>
+<%}%>	
 </body>
 </html>

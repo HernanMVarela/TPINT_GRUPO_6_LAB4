@@ -66,7 +66,7 @@
 <%
 } %>
 
-
+<%if(user!=null){ %>
 <div class="container-fluid">
 
 <%
@@ -170,7 +170,9 @@ if(request.getAttribute("fullturno")!=null){
 	  				</select>
 				</div>
 				<div class="col col-md-4 justify-content-center p-2">
-					<a href="servletNuevoMedico" class="btn btn-info w-100 px-2">Agregar nuevo médico</a>
+					<%if(user.getTipo().getIdTipo()!=1){%><button class="btn btn-info w-100 px-2" disabled>Agregar nuevo médico</button> 
+					<% }else { %> <a href="servletNuevoMedico" class="btn btn-info w-100 px-2">Agregar nuevo médico</a>  <% } %>
+					
 				</div>
 			</div>
 			<div class="row justify-content-center align-items-center">
@@ -248,5 +250,12 @@ if(request.getAttribute("fullturno")!=null){
 	
 </form>
 </div>	
+
+<%}else{ %>
+	<div class="row mh-2 mb-2 justify-content-center p-2">
+		<a href="servletHome" class="btn btn-outline-danger w-25 my-2">No hay usuario logueado - Volver a Home.</a>
+	</div>
+<%}%>	
+
 </body>
 </html>

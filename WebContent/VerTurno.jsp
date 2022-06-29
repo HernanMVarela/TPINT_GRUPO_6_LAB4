@@ -61,9 +61,9 @@ if(request.getAttribute("turno")!=null){
 }
 %>
 	
-	<% if(turno!=null){ %>
+<% if(turno!=null){ %>
 	
-	
+<%if(user!=null){ if(user.getIdUsuario() == turno.getIdTurno()){ %>	
 	<div class="row mx-2 mb-2 justify-content-center p-2">
 		<div class="col col-md-3 justify-content-center p-2 cuadro_uno btn-outline-info">
 			<label class="subtitle w-100">Datos del paciente</label>
@@ -118,9 +118,7 @@ if(request.getAttribute("turno")!=null){
 					else {%><input type="submit" name="btnModificarTurno" class="btn btn-primary p-2 w-100" value="Modificar turno"><%}%>
 				</div>
 				<div class="col col-md-3 mh-2 d-flex justify-content-between p-2">
-				<%	if(user.getTipo().getIdTipo()==3){%> <button type="button" class="btn btn-danger p-2 w-100" data-bs-toggle="modal" data-bs-target="#modalEliminarTurno" disabled>Eliminar turno</button> <%} 
-					else {%><button type="button" class="btn btn-danger p-2 w-100" data-bs-toggle="modal" data-bs-target="#modalEliminarTurno">Eliminar turno</button><%}%>
-					
+					<button type="button" class="btn btn-danger p-2 w-100" data-bs-toggle="modal" data-bs-target="#modalEliminarTurno"<%if(user.getTipo().getIdTipo()!=1){%> disabled <%}%>>Eliminar turno</button>
 				</div>
 			</div>
 			
@@ -148,11 +146,11 @@ if(request.getAttribute("turno")!=null){
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<div class="modal-header">
-					<h5 class="modal-title" id="exampleModalLabel">Eliminar Médico</h5>
+					<h5 class="modal-title" id="exampleModalLabel">Eliminar turno</h5>
 					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 				</div>
 				<div class="modal-body">
-					<p>¿Desea eliminar este médico?</p>
+					<p>¿Desea eliminar este turno?</p>
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -161,14 +159,27 @@ if(request.getAttribute("turno")!=null){
 			</div>
 		</div>
 	</div>
-</form>
-
-	<% } else { %>
+<% } else { %>
 	<div class="row mx-1 mb-2 justify-content-center p-2">
 	  	<label class="subtitle w-100">NO HAY UN TURNO SELECCIONADO</label>
 	</div>
 			
 	<%}%>
+
+<%}else{ %>
+	<div class="row mh-2 mb-2 justify-content-center p-2">
+		<a href="servletHome" class="btn btn-outline-danger w-25 my-2">Permisos insuficientes - Volver a Home.</a>
+	</div>
+<%} 
+}else{%>
+	<div class="row mh-2 mb-2 justify-content-center p-2">
+		<a href="servletHome" class="btn btn-outline-danger w-25 my-2">No hay usuario logueado - Volver a Home.</a>
+	</div>
+<%}%>	
+	
+</form>
 </div>
+
+	
 </body>
 </html>

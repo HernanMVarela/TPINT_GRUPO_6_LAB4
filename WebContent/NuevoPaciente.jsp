@@ -67,6 +67,7 @@
 <%
 } %>
 
+<%if(user!=null){ %>
 <div class="container-fluid">
 <form action="servletNuevoPaciente" method="get">
 
@@ -214,5 +215,12 @@
 	</div>
 	</form>	
 </div>	
+
+<%}else{ %>
+	<div class="row mh-2 mb-2 justify-content-center p-2">
+		<a href="servletHome" class="btn btn-outline-danger w-25 my-2">No hay usuario logueado - Volver a Home.</a>
+	</div>
+<%}%>	
+	
 </body>
 </html>

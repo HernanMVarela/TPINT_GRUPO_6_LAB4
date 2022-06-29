@@ -53,10 +53,6 @@ public class servletNuevoUsuario extends HttpServlet {
 		String redirect = "/NuevoUsuario.jsp";
 		boolean aux = true;
 		request.setAttribute("admin", null);
-		//INICIALIZACION DE ATRIBUTOS
-		request.setAttribute("existeAdmin", false);
-		request.setAttribute("existePersona", false);
-		request.setAttribute("existeUsuario", false);
 		
 		// EVENTO BOTON MODIFICAR USUARIO
 		if(request.getParameter("btnModificarUsuario")!=null) {

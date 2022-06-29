@@ -39,6 +39,7 @@ $(document).ready( function () {
 
 <%! List<Medico> listaDeMedicos = null; %>
 <%! List<Especialidad> listaEsp = null; %>
+<%! String mensaje = null; %>
 
 <!-- MENU DE NAVEGACION Y LOGIN -->
 <%! Usuario user = null; %>
@@ -46,6 +47,19 @@ $(document).ready( function () {
 
 <% if(user==null){%><jsp:include page="Menu.html"></jsp:include> <%} else { %><jsp:include page="MenuLog.html"></jsp:include> <% } %>
 <% if(user!=null){%> 
+
+<% if(request.getAttribute("Mensaje")!=null){
+	mensaje = (String)request.getAttribute("Mensaje");
+
+%>
+<script type="text/javascript">
+      alert(mensaje);
+</script>
+
+<script type="text/javascript">
+      alert("OTRO DE PRUEBA");
+</script>
+<% }%>
 <div class="d-flex flex-row bd-highlight">
 
 	<div class="px-2 flex-grow-1 bd-highlight"></div>
@@ -69,6 +83,7 @@ $(document).ready( function () {
   <div class="row mx-2 mb-2 justify-content-center p-2">
   		<label class="subtitle w-100">Médico</label>
 	</div>
+<%if(user!=null){ %>
 <form method="get" action="servletNuevoMedico"><!-- REEMPLAZAR POR INPUT CON RUTA A SERVLET -->
   <div class="container-fluid">
   <div class="row mx-2 d-flex flex-wrap align-middle justify-content-evenly">
@@ -124,13 +139,17 @@ $(document).ready( function () {
   	</div>
   	<div class="row mx-2 mb-2 justify-content-center p-2 border-bottom">
   		<div class="col-md-3 d-flex justify-content-center">
-  		<a href="servletNuevoMedico" name="btnAgregar" class="btn btn-info w-75">Agregar</a>
+  		<%if(user.getTipo().getIdTipo()!=1){%>
+		 <a href="servletMedicos" name="btnAgregar" class="btn btn-secondary w-75" >Agregar</a>
+		 <%}else{%> 
+		 <a href="servletNuevoMedico" name="btnAgregar" class="btn btn-info w-75" >Agregar</a>
+		 <%}%>
 		</div>
   		<div class="col-md-3 d-flex justify-content-center">
-  			<input type="submit" class="btn btn-info w-75" name="btnModificarMedico" value="Modificar">
+  			<input type="submit" class="btn btn-info w-75" name="btnModificarMedico" value="Modificar" <%if(user.getTipo().getIdTipo()!=1){%>disabled <%}%>>
   		</div>
   		<div class="col-md-3 d-flex justify-content-center">
-  			<button type="button" class="btn btn-danger w-75" data-bs-toggle="modal" data-bs-target="#modalEliminar">Eliminar Seleccionado</button>
+  			<button type="button" class="btn btn-danger w-75" data-bs-toggle="modal" data-bs-target="#modalEliminar" <%if(user.getTipo().getIdTipo()!=1){%>disabled <%}%>>Eliminar Seleccionado</button>
   		</div>
   	</div>
   	
@@ -147,11 +166,18 @@ $(document).ready( function () {
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-      				<input type="submit" name="btnEliminarMedico" class="btn btn-outline-danger w-25" value="Eliminar">
+      				<input type="submit" name="btnEliminarMedico" class="btn btn-outline-danger w-25" value="Eliminar" <%if(user.getTipo().getIdTipo()!=1){%>disabled <%}%>>
 				</div>
 			</div>
 		</div>
 	</div>
 	</form>
+
+<%}else{ %>
+	<div class="row mh-2 mb-2 justify-content-center p-2">
+		<a href="servletHome" class="btn btn-outline-danger w-25 my-2">No hay usuario logueado - Volver a Home.</a>
+	</div>
+<%} %>	
+	
 </body>
 </html>

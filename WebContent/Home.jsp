@@ -19,6 +19,9 @@
 </head>
 <body>
 <!-- MENU DE NAVEGACION Y LOGIN -->
+
+
+
 <%! Usuario user = null; %>
 <% if(session.getAttribute("login")!=null){ user= (Usuario)session.getAttribute("login");}else{user=null;} %>
 
@@ -41,7 +44,6 @@
 </div>
 <%
 } %>
-
 
 <div class="container-fluid">
 	<div class="row mx-2 mb-2 justify-content-center p-2">
@@ -169,5 +171,6 @@
 	</div>
 	<%} %>
 </div><!-- FIN DEL CONTAINER -->
+
 </body>
 </html>

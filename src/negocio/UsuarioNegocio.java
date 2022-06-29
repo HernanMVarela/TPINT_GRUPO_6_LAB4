@@ -9,4 +9,5 @@ public interface UsuarioNegocio {
 	public int existeUsuario(String User);
 	public Usuario ObtenerObjeto(int idUsuario);
 	public boolean Modificar(Usuario usuario);
+	public boolean Eliminar(int id);
 }

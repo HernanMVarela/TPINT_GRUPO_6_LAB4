@@ -8,4 +8,5 @@ public interface PersonaNegocio {
 	public boolean existePersona(int dni);
 	public Persona buscarPersona(int dni);
 	public boolean Modificar(Persona perso);
+	public boolean Eliminar(int dni);
 }

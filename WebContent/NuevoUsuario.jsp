@@ -67,6 +67,8 @@
 <div class="row mh-2 mb-2 justify-content-center p-2">
   		<label class="subtitle w-100">Nuevo Usuario</label>
 </div>
+
+<%if(user!=null){ if(user.getTipo().getIdTipo() == 1){ %>
 <div class="container-fluid">
 	<form action="servletNuevoUsuario" method="get" ><!-- REEMPLAZAR POR INPUT CON RUTA A SERVLET -->
 	<%
@@ -307,10 +309,17 @@
 	</form>
   </div><!-- FIN DE CONTAINER -->
   
-  
+<%}else{ %>
+	<div class="row mh-2 mb-2 justify-content-center p-2">
+		<a href="servletHome" class="btn btn-outline-danger w-25 my-2">Permisos insuficientes - Volver a Home.</a>
+	</div>
+<%} 
+}else{%>
+	<div class="row mh-2 mb-2 justify-content-center p-2">
+		<a href="servletHome" class="btn btn-outline-danger w-25 my-2">No hay usuario logueado - Volver a Home.</a>
+	</div>
+<%}%>	
  
 </body>
-
-
 </html>
 

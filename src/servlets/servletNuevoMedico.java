@@ -381,15 +381,23 @@ public class servletNuevoMedico extends HttpServlet {
 		
 		// CARGO DATOS DE PERSONA
 		Perso = carga_datos_persona(request, response);
-		if(Perso == null) flag = false;
+		if(Perso == null) {
+			request.setAttribute("Mensaje", "ERROR: No se pudo agregar este Medico.");
+			return false;
+		}
 		
 		// CARGO DATOS DEL USUARIO
 		User = carga_datos_usuario(request, response);
-		if(User == null) flag = false;
+		if(User == null) {
+			request.setAttribute("Mensaje", "ERROR: No se pudo agregar este Medico.");
+			return false;
+		}
+		
+		
 		
 		// VALIDA QUE MEDICO NO EXISTA
 		if(medneg.existe_medico(Perso.getDni())) { // SI MEDICO EXISTE - REGRESA SIN AGREGAR NADA
-			request.setAttribute("existeAdmin", true);
+			request.setAttribute("Mensaje", "ERROR: Ese médico ya existe.");
 			return false;
 		}
 		
@@ -405,17 +413,18 @@ public class servletNuevoMedico extends HttpServlet {
 		// VALIDA QUE PERSONA Y USUARIO NO EXISTAN
 		if(perneg.existePersona(Perso.getDni()) || userneg.existeUsuario(User.getUser())!=-1) {
 			if(perneg.existePersona(Perso.getDni())) {
-				request.setAttribute("existePersona", true);
+				request.setAttribute("Mensaje", "ERROR: Esa persona ya existe.");
 			}
 			if (userneg.existeUsuario(User.getUser())!=-1) {
-				request.setAttribute("existeUsuario", true);
+				request.setAttribute("Mensaje", "ERROR: Ese nombre de usuario ya existe.");
 			}
 			return false;
 		} else if (!perneg.agregarPersona(Perso)) {
-			
+			request.setAttribute("Mensaje", "ERROR: No se pudo agregar esa persona.");
 			return false;
 		} else if (!userneg.agregarUsuario(User)) {
-			//perneg.eliminarPersona(Perso.getDni()); // SI NO SE PUEDE AGREGAR EL USUARIO, SE ELIMINA LA PERSONA - A REVISAR COMPORTAMIENTO ADECUADO
+			perneg.Eliminar(Perso.getDni());
+			request.setAttribute("Mensaje", "ERROR: No se pudo agregar este usuario.");
 			return false;
 		}
 		
@@ -445,6 +454,9 @@ public class servletNuevoMedico extends HttpServlet {
 		
 		// CARGA MEDICO A DB
 		if(!medneg.agregarMedico(Medic)) {
+			perneg.Eliminar(Perso.getDni());
+			userneg.Eliminar(User.getIdUsuario());
+			request.setAttribute("Mensaje", "ERROR: No se pudo agregar este Medico.");
 			return false;
 		}
 		
@@ -456,10 +468,11 @@ public class servletNuevoMedico extends HttpServlet {
 		// CARGA HORAS DE ATENCION DEL MEDICO (NECESITA IDMEDICO)
 		for (Horario horario : horas) {
 			if(!horasneg.Agregar(Aux.getIdMedico(), horario)){
+				request.setAttribute("Mensaje", "No se pudo carga los horarios, modifique este médico para cargarlos nuevamente");
 				return false;
 			}
 		}
-		
+		request.setAttribute("Mensaje", "Nuevo médico agregado: " + Aux.getNombre() + " " + Aux.getApellido());
 		return flag;
 	}
 

@@ -31,4 +31,13 @@ public class PersonaNegocioImpl implements PersonaNegocio {
 		return perdao.Modificar(perso);
 	}
 
+	@Override
+	public boolean Eliminar(int dni) {
+		PersonaDao perdao = new PersonaDaoImpl();
+		if(perdao.existedni(dni)) {
+			return perdao.Eliminar(dni);
+		}
+		return false;
+	}
+
 }

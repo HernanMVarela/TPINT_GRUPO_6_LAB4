@@ -36,6 +36,7 @@ $(document).ready( function () {
 </head>
 <body>
 <%! List<Paciente> listaPacientes = null; %>
+<%! String mensaje = null; %>
 
 <!-- MENU DE NAVEGACION Y LOGIN -->
 <%! Usuario user = null; %>
@@ -43,6 +44,8 @@ $(document).ready( function () {
 
 <% if(user==null){%><jsp:include page="Menu.html"></jsp:include> <%} else { %><jsp:include page="MenuLog.html"></jsp:include> <% } %>
 <% if(user!=null){%> 
+
+
 <div class="d-flex flex-row bd-highlight">
 
 	<div class="px-2 flex-grow-1 bd-highlight"></div>
@@ -64,6 +67,8 @@ $(document).ready( function () {
 <div class="row mx-2 mb-2 justify-content-center w-auto p-2">
   	<label class="subtitle w-100">Pacientes</label>
 </div>	
+
+<%if(user!=null){ %>
 <div class="container-fluid w-auto">
 <form action="servletNuevoPaciente" method="get">
    <div class="row mx-2 d-flex flex-wrap align-middle justify-content-evenly">
@@ -113,31 +118,35 @@ $(document).ready( function () {
   			<input type="submit" name="btnModificarPaciente" class="btn btn-info w-75 " value="Modificar Seleccionado">
   		</div>
   		<div class="col-md-3 d-flex justify-content-center">
-  			<button type="button" class="btn btn-danger w-75" data-bs-toggle="modal" data-bs-target="#modalEliminarPaciente">Eliminar Seleccionado</button>
+  			<button type="button" class="btn btn-danger w-75" data-bs-toggle="modal" data-bs-target="#modalEliminarUsuario"
+  			<%if(user.getTipo().getIdTipo()!=1){%> disabled<%} %>>Eliminar Seleccionado</button>
   		</div>
   	</div>
 
-  
-	<div class="modal fade" id="modalEliminarPaciente" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal fade" id="modalEliminarUsuario" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<div class="modal-header">
-					<h5 class="modal-title" id="exampleModalLabel">Eliminar Paciente</h5>
+					<h5 class="modal-title" id="exampleModalLabel">Eliminar Usuario</h5>
 					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 				</div>
 				<div class="modal-body">
-					<p>¿Desea eliminar este paciente?</p>
+					<p>¿Desea eliminar este usuario?</p>
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-      				<form method="post" action=""><!-- REEMPLAZAR POR INPUT CON RUTA A SERVLET -->
-      					<input type="submit" name="btnEliminarPaciente" class="btn btn-outline-danger w-100" value="Eliminar">
-      				</form>
+      				<input type="submit" name="btnEliminarUsuario" class="btn btn-outline-danger w-100" value="Eliminar">
 				</div>
 			</div>
 		</div>
 	</div>
 </form>
 </div><!-- FIN DE CONTAINER -->
+<%}else{ %>
+	<div class="row mh-2 mb-2 justify-content-center p-2">
+		<a href="servletHome" class="btn btn-outline-danger w-25 my-2">No hay usuario logueado - Volver a Home.</a>
+	</div>
+<%} %>	
+
 </body>
 </html>
