@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import dao.TurnoDao;
+import dao.UsuarioDao;
 import dao.PacienteDao;
 import dao.MedicoDao;
 import dao.EspecialidadDao;
@@ -13,6 +14,7 @@ import dao.EstadoDao;
 import dao.SexoDao;
 
 import entidad.Turno;
+import entidad.Usuario;
 import entidad.Paciente;
 import entidad.Medico;
 import entidad.Especialidad;
@@ -28,9 +30,9 @@ public class TurnoDaoImpl implements TurnoDao{
 	private String buscar = "SELECT * FROM bdtp_integrador.turnos WHERE IDTurno = ?";
     private String eliminar = "DELETE FROM bdtp_integrador.turnos WHERE IDTurno = ?";
     private String proxid = "SELECT MAX(m.IDTurno) FROM bdtp_integrador.turnos m order by m.IDTurno";
-	private String bajaturno = "UPDATE bdtp_integrador.turnos SET Estado = 0 where IDTurno = ?";
-	
-	
+	private String contarturnostotal = "SELECT COUNT(idTurno) FROM bdtp_integrador.turnos";
+	private String contarturnosporestado = "SELECT COUNT(idTurno) FROM bdtp_integrador.turnos WHERE idEstado = ?";
+
 	@Override
 	public ArrayList<Turno> ListarTodo() {
 		
@@ -159,9 +161,7 @@ public class TurnoDaoImpl implements TurnoDao{
             statement.setString(7,turno.getObservacionConsulta());
             statement.setBoolean(8,turno.isEstado());
             statement.setInt(9,turno.getIdTurno());
-			
-            System.out.println(turno.getIdTurno()+" "+turno.getMedico().getNombre()+" "+turno.getDia()+" "+turno.getHora()+" "+turno.getEstadoTurno().getNombre());
-            
+			            
 			if(statement.executeUpdate() > 0) {
 				conexion.getSQLConexion().commit();
 				result = true;
@@ -298,9 +298,59 @@ public class TurnoDaoImpl implements TurnoDao{
 
 
 	@Override
-	public Turno ObtenerObjeto(int idEstado) {
-		// TODO Auto-generated method stub
-		return null;
+	public Turno ObtenerObjeto(int idTurno) {
+		return Buscar(idTurno);
+	}
+
+	@Override
+	public int ContarTurnosTotales() {
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+		
+		int total=0;
+		Conexion conexion = Conexion.getConexion();
+		PreparedStatement st;
+		ResultSet rs;
+		
+		try {
+			st = conexion.getSQLConexion().prepareStatement(contarturnostotal);
+			rs = st.executeQuery();
+			while(rs.next()) {
+				total = rs.getInt(1);			
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return total;
+	}
+	
+	@Override
+	public int ContarTurnosPorEstado(int idEstado) {
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+		
+		int total=0;
+		Conexion conexion = Conexion.getConexion();
+		PreparedStatement st;
+		ResultSet rs;
+		
+		try {
+			st = conexion.getSQLConexion().prepareStatement(contarturnosporestado);
+			st.setInt(1, idEstado);
+			rs = st.executeQuery();
+			while(rs.next()) {
+				total = rs.getInt(1);			
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return total;
 	}
 	
 

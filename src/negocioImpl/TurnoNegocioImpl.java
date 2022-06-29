@@ -102,5 +102,17 @@ public class TurnoNegocioImpl implements TurnoNegocio{
 							} else return false;
 
 	}
+
+	@Override
+	public int ContarTurnosTotales() {
+		TurnoDao tdao = new TurnoDaoImpl();
+		return tdao.ContarTurnosTotales();
+	}
+
+	@Override
+	public int ContarTurnosPorEstado(int idEstado) {
+		TurnoDao tdao = new TurnoDaoImpl();
+		return tdao.ContarTurnosPorEstado(idEstado);
+	}
 	
 }

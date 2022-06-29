@@ -114,10 +114,13 @@ if(request.getAttribute("turno")!=null){
 					<a href="servletNuevoTurno" class="btn btn-primary p-2 w-100">Nuevo turno</a>
 				</div>
 				<div class="col col-md-3 mh-2 d-flex justify-content-between p-2">
-					<input type="submit" name="btnModificarTurno" class="btn btn-primary p-2 w-100" value="Modificar turno">
+				<%	if(user.getTipo().getIdTipo()==3){%> <input type="submit" name="btnModificarTurno" class="btn btn-secondary p-2 w-100" value="Modificar turno" disabled> <%} 
+					else {%><input type="submit" name="btnModificarTurno" class="btn btn-primary p-2 w-100" value="Modificar turno"><%}%>
 				</div>
 				<div class="col col-md-3 mh-2 d-flex justify-content-between p-2">
-					<button type="button" class="btn btn-danger p-2 w-100" data-bs-toggle="modal" data-bs-target="#modalEliminarTurno">Eliminar turno</button>
+				<%	if(user.getTipo().getIdTipo()==3){%> <button type="button" class="btn btn-danger p-2 w-100" data-bs-toggle="modal" data-bs-target="#modalEliminarTurno" disabled>Eliminar turno</button> <%} 
+					else {%><button type="button" class="btn btn-danger p-2 w-100" data-bs-toggle="modal" data-bs-target="#modalEliminarTurno">Eliminar turno</button><%}%>
+					
 				</div>
 			</div>
 			

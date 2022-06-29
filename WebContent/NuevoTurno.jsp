@@ -110,10 +110,12 @@ if(request.getAttribute("fullturno")!=null){
 	  					listaPacientes = (ArrayList<Paciente>)request.getAttribute("listaPacientes");
 	  					if(!listaPacientes.isEmpty()) {
 	  						for (Paciente x: listaPacientes){
+	  							if(x.isEstado()){
 	  							%><option value="<%= x.getIdPaciente() %>"<%
 	  								if(turno!=null){if(x.getIdPaciente()==turno.getPaciente().getIdPaciente()){ %> selected <%}}%>>
 	  							<%= x.getNombre() + " " + x.getApellido() %></option><%
-	  						} 
+	  							}
+	  						}
 	  					}
 	  				}%>
 	  				</select>
@@ -158,8 +160,10 @@ if(request.getAttribute("fullturno")!=null){
 	  					listaMedicos = (ArrayList<Medico>)request.getAttribute("listaMedicos");
 	  					if(!listaMedicos.isEmpty()) {
 	  						for (Medico x: listaMedicos){
+	  							if(x.isEstado()){
 	  							%><option value="<%= x.getIdMedico() %>"<%
 	  								if(turno!=null){if(x.getIdMedico()==turno.getMedico().getIdMedico()){ %> selected <%}}%>><%= x.getNombre() + " " + x.getApellido() %></option><%
+	  							}
 	  						} 
 	  					}
 	  				}%>

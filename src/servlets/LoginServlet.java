@@ -28,7 +28,7 @@ public class LoginServlet extends HttpServlet {
 
 		String username = "";
 		String password = "";
-		String redirect = "/Home.jsp";
+		String redirect = "servletHome";
 		
 		Usuario log = new Usuario();
 		if(request.getParameter("btnLogin")!=null) {
@@ -71,23 +71,18 @@ public class LoginServlet extends HttpServlet {
 	private Usuario verificar_usuario(String username, String password) {
 		UsuarioNegocio userneg = new UsuarioNegocioImpl();
 		Usuario log = new Usuario();
-		System.out.println("DATOS RECIBIDOS: " + username + " " + password);
-		System.out.println("USER ID ENCONTRADO: " +userneg.existeUsuario(username));
 		
 		log = userneg.ObtenerObjeto(userneg.existeUsuario(username));
 		
 		if(log == null || log.getIdUsuario()<=0) {
 			return null;
 		}
-		System.out.println("USUARIO CARGADO: " + log.getIdUsuario() +" "+ log.getUser() );
 		if(!log.getUser().equals(username)) {
 			return null;
 		}
-		System.out.println("SEGUNDA VALIDACION: " + log.getUser() + " " + username);
 		if(!log.getPassword().equals(password)) {
 			return null;
 		}		
-		System.out.println("VALIDACION PASSWORD: " + log.getPassword() +" "+ password );
 		
 		return log;
 	}

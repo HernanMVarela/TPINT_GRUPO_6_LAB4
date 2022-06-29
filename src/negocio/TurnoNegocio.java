@@ -13,5 +13,7 @@ public interface TurnoNegocio {
 	public ArrayList<Turno> Listar();
 	public int ObtenerDiaSemana (String dia);
 	public boolean ValidarDia(String fecha);
+	public int ContarTurnosTotales();
+	public int ContarTurnosPorEstado(int idEstado);
 
 }

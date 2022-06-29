@@ -11,5 +11,6 @@ public interface EspecialidadDao {
 	public Especialidad ObtenerObjeto(int idEspecialidad);
 	public boolean Eliminar(int idEspecialidad);
 	public boolean Modificar(Especialidad especialidad);
+	public int ContarEspecialidades();
 
 }

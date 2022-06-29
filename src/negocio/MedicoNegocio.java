@@ -14,4 +14,7 @@ public interface MedicoNegocio {
 	public boolean existe_medico(int DNI);
 	public Medico buscar_id(int idMedico);
 	public ArrayList<Medico> listar();
+	public int contarMedicos();
+	public int mejorMedico();
+	public int turnosMejorMedico();
 }

@@ -14,6 +14,7 @@ public class EspecialidadDaoImpl implements EspecialidadDao {
 	private String eliminar = "DELETE FROM bdtp_integrador.Especialidades WHERE IDEspecialidad = ?";
 	private String modificar = "UPDATE bdtp_integrador.Especialidades SET Nombre = ? WHERE IDEspecialidad = ?";
 	private String agregar = "INSERT INTO bdtp_integrador.Especialidades (Nombre) VALUES (?)";
+	private String contaresp = "SELECT COUNT(idEspecialidad) FROM bdtp_integrador.Especialidades";
 
 	@Override
 	public boolean Agregar(Especialidad especialidad) {
@@ -187,6 +188,31 @@ public class EspecialidadDaoImpl implements EspecialidadDao {
 		}
 		
 		return result;
+	}
+
+	@Override
+	public int ContarEspecialidades() {
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+		
+		int last=0;
+		Conexion conexion = Conexion.getConexion();
+		PreparedStatement st;
+		ResultSet rs;
+		
+		try {
+			st = conexion.getSQLConexion().prepareStatement(contaresp);
+			rs = st.executeQuery();
+			while(rs.next()) {
+				last = rs.getInt(1);			
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return last;
 	}
 
 }

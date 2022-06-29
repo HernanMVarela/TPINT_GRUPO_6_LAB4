@@ -44,6 +44,7 @@ public class MedicoDaoImpl implements MedicoDao{
 	private String bajaMedic = "UPDATE bdtp_integrador.medicos SET Estado = 0 where IDMedico = ?";
 	private String obtenerObjeto = "SELECT * FROM bdtp_integrador.medicos WHERE IDMedico = ?";
 	private String contarpac = "SELECT COUNT(DNI) FROM bdtp_integrador.medicos WHERE ESTADO = 1";
+	private String mejormedico = "select count(idMedico) as c, idMedico from bdtp_integrador.turnos where IDEstado=4 group by idMedico ORDER BY c DESC LIMIT 1;";
 	
 	@Override
 	public ArrayList<Medico> ListarTodo() {
@@ -621,6 +622,56 @@ public class MedicoDaoImpl implements MedicoDao{
 		
 		try {
 			st = conexion.getSQLConexion().prepareStatement(contarpac);
+			rs = st.executeQuery();
+			while(rs.next()) {
+				last = rs.getInt(1);			
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return last;
+	}
+
+	@Override
+	public int MejorMedico() {
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+		
+		int last=0;
+		Conexion conexion = Conexion.getConexion();
+		PreparedStatement st;
+		ResultSet rs;
+		
+		try {
+			st = conexion.getSQLConexion().prepareStatement(mejormedico);
+			rs = st.executeQuery();
+			while(rs.next()) {
+				last = rs.getInt(2);			
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return last;
+	}
+
+	@Override
+	public int TurnosMejorMedico() {
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+		
+		int last=0;
+		Conexion conexion = Conexion.getConexion();
+		PreparedStatement st;
+		ResultSet rs;
+		
+		try {
+			st = conexion.getSQLConexion().prepareStatement(mejormedico);
 			rs = st.executeQuery();
 			while(rs.next()) {
 				last = rs.getInt(1);			

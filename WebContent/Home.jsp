@@ -78,7 +78,7 @@
 			<div class="cuadro_uno btn-outline-secondary mx-2" style="width: 18rem;">
 				<img src="image/LogoMedicoFB.png" class="card-img-top" alt="S/I">
 				<div class="card-body">
-					<h4 class="card-title">Medicos</h4>
+					<h4 class="card-title">Médicos</h4>
 					<p class="card-text">Listado de médicos</p>
 					<% if(user!=null){%> 
 						<a href="servletMedicos" class="btn btn-primary w-100 my-2">Listado</a>
@@ -117,26 +117,54 @@
 	</div>
 	<%if(user!=null) { %> 
 	<div class="row mh-2 mb-2 justify-content-center p-2">
+		<%! int pacientes = 0; %>
+		<%! String turnosporpac = "0"; %>
+		<%! int consultasrealizadas = 0; %>
+		<%! int consultastotales = 0; %>
+		
+		<%! int turnosocupados = 0; %>
+		<%! int turnosatendidos = 0;%>
+		<%! int turnoscancelados = 0;%>
+		
+		<%! int medicostotales = 0; %>
+		<%! int especialidades = 0;%>
+		<%! String mejormedico = "";%>
+		<%! int turnosmejormedico = 0;%>
+		
+		<%	if(request.getAttribute("totalpacientes")!=null){pacientes=(int)request.getAttribute("totalpacientes");}
+			if(request.getAttribute("consultas")!=null){consultasrealizadas=(int)request.getAttribute("consultas");}
+			if(request.getAttribute("turnosporpac")!=null){turnosporpac=request.getAttribute("turnosporpac").toString() ;}
+			if(request.getAttribute("totalturnos")!=null){consultastotales=(int)request.getAttribute("totalturnos");}
+			if(request.getAttribute("turnosocupados")!=null){turnosocupados=(int)request.getAttribute("turnosocupados");}
+			if(request.getAttribute("turnosatendidos")!=null){turnosatendidos=(int)request.getAttribute("turnosatendidos");}
+			if(request.getAttribute("turnoscancelados")!=null){turnoscancelados=(int)request.getAttribute("turnoscancelados");}
+			if(request.getAttribute("medicostotales")!=null){medicostotales=(int)request.getAttribute("medicostotales");}
+			if(request.getAttribute("especialidades")!=null){especialidades=(int)request.getAttribute("especialidades");}
+			if(request.getAttribute("mejormedico")!=null){mejormedico=request.getAttribute("mejormedico").toString();}
+			if(request.getAttribute("turnosmejormedico")!=null){turnosmejormedico=(int)request.getAttribute("turnosmejormedico");}
+		%>
+		
 		<div class="col col-md-3 mx-2 btn-outline-info justify-content-center p-2 cuadro_uno">
 	  		<label class="subtitle w-100">Pacientes</label><br>
-	  		<h4 class="p-2">Pacientes totales: 543</h4>
-	  		<h4 class="p-2">Total de consultas: 927</h4>
-	  		<h4 class="p-2">Otro dato: ---</h4>
-	  		<h4 class="p-2">Otro dato mas: ---</h4>
+	  		
+	  		<h4 class="p-2">Pacientes totales:<%=pacientes %> </h4>
+	  		<h4 class="p-2">Total de consultas: <%=consultastotales %></h4>
+	  		<h4 class="p-2">Pacientes atendidos: <%=consultasrealizadas %></h4>
+	  		<h4 class="p-2">Turnos por paciente: <%=turnosporpac %></h4>
 	  	</div>
 	  	<div class="col col-md-3 mx-2 btn-outline-info justify-content-center p-2 cuadro_uno">
 	  		<label class="subtitle w-100">Medicos</label>
-	  		<h4 class="p-2">Médicos: 64</h4>
-	  		<h4 class="p-2">Especialidades: 15</h4>
-	  		<h4 class="p-2">Otro dato: ---</h4>
-	  		<h4 class="p-2">Otro dato mas: ---</h4>
+	  		<h4 class="p-2">Médicos: <%=medicostotales %></h4>
+	  		<h4 class="p-2">Especialidades: <%=especialidades %></h4>
+	  		<h4 class="p-2">Mejor médico: <%=mejormedico %></h4>
+	  		<h4 class="p-2">Con <%=turnosmejormedico %> turnos atendidos</h4>
 	  	</div>
 	  	<div class="col col-md-3 mx-2 btn-outline-info justify-content-center p-2 cuadro_uno">
 	  		<label class="subtitle w-100">Turnos</label>
-	  		<h4 class="p-2">Totales totales: 1203</h4>
-	  		<h4 class="p-2">Turnos atendidos: 927</h4>
-	  		<h4 class="p-2">Turnos cancelados: 130</h4>
-	  		<h4 class="p-2">Turnos pendientes: 146</h4>
+	  		<h4 class="p-2">Totales totales: <%=consultastotales %></h4>
+	  		<h4 class="p-2">Turnos atendidos: <%=turnosatendidos %></h4>
+	  		<h4 class="p-2">Turnos cancelados: <%=turnoscancelados %></h4>
+	  		<h4 class="p-2">Turnos pendientes: <%=turnosocupados %></h4>
 	  	</div>
 	</div>
 	<%} %>

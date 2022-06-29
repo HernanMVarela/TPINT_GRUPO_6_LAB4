@@ -34,5 +34,10 @@ public class EspecialidadNegocioImpl implements EspecialidadNegocio{
 	public boolean Modificar(Especialidad especialidad) {
 		return dao.Modificar(especialidad);
 	}
+
+	@Override
+	public int ContarEspecialidades() {
+		return dao.ContarEspecialidades();
+	}
 	
 }

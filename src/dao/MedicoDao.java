@@ -21,6 +21,7 @@ public interface MedicoDao {
 	public boolean existeMedico(int DNI);
 	public Medico ObtenerObjeto(int idMedico);
 	public int ContarMedicos();
-	
+	public int MejorMedico();
+	public int TurnosMejorMedico();
 	
 }

@@ -17,6 +17,9 @@ public interface TurnoDao {
 	public Turno Buscar(int idTurno);
 
 	public int UltimoID();
-
+	
+	public int ContarTurnosTotales();
+	
+	public int ContarTurnosPorEstado(int idEstado);
 	
 }

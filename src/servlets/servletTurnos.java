@@ -41,15 +41,9 @@ public class servletTurnos extends HttpServlet {
 	private List<Turno> listarTurnos() {
 		List<Turno> listaturnos = new ArrayList<Turno>();
 		TurnoNegocio turneg = new TurnoNegocioImpl();
-
-		Calendar date = new GregorianCalendar();
-		
-		for (Turno turno : listaturnos) {
-			date.setTime(turno.getDia());
-			date.get(Calendar.DAY_OF_WEEK);
-		}
 		
 		listaturnos = turneg.Listar();
+		
 		return listaturnos;
 	}
 }

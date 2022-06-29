@@ -57,4 +57,23 @@ public class MedicoNegocioImpl implements MedicoNegocio{
 		return meddao.ListarTodo();
 	}
 
+	@Override
+	public int contarMedicos() {
+		MedicoDao meddao = new MedicoDaoImpl();
+		return meddao.ContarMedicos();
+	}
+
+	@Override
+	public int mejorMedico() {
+		MedicoDao meddao = new MedicoDaoImpl();
+		return meddao.MejorMedico();
+	}
+
+	@Override
+	public int turnosMejorMedico() {
+		MedicoDao meddao = new MedicoDaoImpl();
+		return meddao.TurnosMejorMedico();
+	}
+
+
 }

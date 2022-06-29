@@ -79,6 +79,26 @@ $(document).ready( function () {
   					if(!listaTurnos.isEmpty()) {
   						for (Turno x: listaTurnos){
   							%>
+  							<%	if(user.getTipo().getIdTipo()==3){
+  								if(user.getIdUsuario()== x.getMedico().getUsuario().getIdUsuario())	 {
+  									%>
+  								<tr <% if(!x.isEstado()){%> class="table-danger" <%} %>>
+  								<td> <%= x.getIdTurno() %> </td>
+  								<td> <%= x.getMedico().getNombre() + " " + x.getMedico().getApellido() %> </td> 
+  								<td> <%= x.getEspecialidad().getNombre() %>  </td>
+								<td> <%= x.getPaciente().getNombre() + " " + x.getPaciente().getApellido() %> </td>
+								<td> <%= x.getPaciente().getDni() %>  </td>
+								<td> <%= x.getPaciente().getSexo().getNombre() %>  </td>
+								<td> <%= x.getDia() + " " + x.getHora()+":00hs" %>  </td>
+								<td <% if(x.getEstadoTurno().getIdEstado()==1){%> class="table-info" <%}%>
+									<% if(x.getEstadoTurno().getIdEstado()==2){%> class="table-warning" <%}%>
+									<% if(x.getEstadoTurno().getIdEstado()==3){%> class="table-danger" <%}%>
+									<% if(x.getEstadoTurno().getIdEstado()==4){%> class="table-success" <%}%>
+								> <%= x.getEstadoTurno().getNombre() %> </td>
+								<td align="center"> <input type="radio" name="radSelect" value="<%=x.getIdTurno() %>"></td> <%
+  								}
+  							}else {
+  								%> 
   								<tr <% if(!x.isEstado()){%> class="table-danger" <%} %>>
   								<td> <%= x.getIdTurno() %> </td>
   								<td> <%= x.getMedico().getNombre() + " " + x.getMedico().getApellido() %> </td> 
@@ -93,13 +113,9 @@ $(document).ready( function () {
 									<% if(x.getEstadoTurno().getIdEstado()==4){%> class="table-success" <%}%>
 								> <%= x.getEstadoTurno().getNombre() %> </td>
 								<td align="center"> <input type="radio" name="radSelect" value="<%=x.getIdTurno() %>"></td>
-  							<%
-  						}   					
-  					}
-  				}
-	  		%>
-			</tbody>
-		</table>
+  							<%}}}}%>
+					</tbody>
+				</table>
  	</div> 
 </div>
 <div class="row mx-2 mb-2 justify-content-center p-2">
@@ -110,10 +126,14 @@ $(document).ready( function () {
 		<a href="servletNuevoTurno" class="btn btn-info w-75">Agregar nuevo turno</a>
 	</div>
 	<div class="col-md-3 d-flex justify-content-center">
-		<input type="submit" class="btn btn-info w-75" name="btnModificarTurno" value="Modificar">
+	<%	if(user.getTipo().getIdTipo()==3){%> <input type="submit" class="btn btn-secondary w-75" name="btnModificarTurno" value="Modificar" disabled> <%} 
+	else {%><input type="submit" class="btn btn-info w-75" name="btnModificarTurno" value="Modificar"><%}%>
+		
 	</div>
 	<div class="col-md-3 d-flex justify-content-center">
-		<button type="button" class="btn btn-danger w-75" data-bs-toggle="modal" data-bs-target="#modalEliminarTurno">Eliminar turno</button>
+		<%	if(user.getTipo().getIdTipo()==3){%> <button type="button" class="btn btn-danger w-75" data-bs-toggle="modal" data-bs-target="#modalEliminarTurno" disabled>Eliminar turno</button> <%} 
+		else {%><button type="button" class="btn btn-danger w-75" data-bs-toggle="modal" data-bs-target="#modalEliminarTurno">Eliminar turno</button><%}%>
+		
 	</div>
 </div>
  

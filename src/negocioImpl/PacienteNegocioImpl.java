@@ -51,4 +51,10 @@ public class PacienteNegocioImpl implements PacienteNegocio{
 		}
 		
 	}
+
+	@Override
+	public int contarPacientes() {
+		PacienteDao padao = new PacienteDaoImpl();
+		return padao.ContarPacientes();
+	}
 }
