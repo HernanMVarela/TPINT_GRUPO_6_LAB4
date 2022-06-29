@@ -6,6 +6,9 @@
 <%@page import="entidad.Sexo"%>
 <%@page import="entidad.Paciente"%>
 <%@page import="servlets.servletNuevoPaciente"%>
+<%@page import="entidad.Usuario"%>
+<%@page import="servlets.LoginServlet"%>
+<%@page import="servlets.servletHome"%>
 
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
@@ -30,8 +33,32 @@
 <%!ArrayList<Pais> listapaises = null;%>
 <%!Paciente paci = null;%>
 
+<!-- MENU DE NAVEGACION Y LOGIN -->
+<%! Usuario user = null; %>
+<% if(session.getAttribute("login")!=null){ user= (Usuario)session.getAttribute("login");}else{user=null;} %>
+
+<% if(user==null){%><jsp:include page="Menu.html"></jsp:include> <%} else { %><jsp:include page="MenuLog.html"></jsp:include> <% } %>
+<% if(user!=null){%> 
+<div class="d-flex flex-row bd-highlight">
+
+	<div class="px-2 flex-grow-1 bd-highlight"></div>
+ 	 <div class="px-6 mx-4 bd-highlight">
+ 		<h5>Usuario actual: <%=user.getUser() %></h5>
+ 	</div>
+</div>
+<% } else {
+%> 
+<div class="d-flex flex-row bd-highlight">
+	<div class="px-2 flex-grow-1 bd-highlight"></div>
+	<div class="px-6 mx-4 bd-highlight">
+		<h5>Inicie sesión para navegar</h5>
+	</div>
+</div>
+<%
+} %>
+
+
 <div class="container-fluid">
-	<jsp:include page="Menu.html"></jsp:include>
 	<div class="row mh-2 mb-2 justify-content-center p-2">
 	  	<label class="subtitle w-100">Nuevo paciente</label>
 	</div>	

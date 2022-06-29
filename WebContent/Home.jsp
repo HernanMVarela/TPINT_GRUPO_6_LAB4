@@ -1,4 +1,7 @@
 <%@page import="servlets.servletNuevoUsuario"%>
+<%@page import="entidad.Usuario"%>
+<%@page import="servlets.LoginServlet"%>
+<%@page import="servlets.servletHome"%>
 <%@page import="servlets.servletPanelAdministrador"%>
 <%@page import="servlets.servletMedicos"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
@@ -16,7 +19,29 @@
 </head>
 <body>
 <!-- MENU DE NAVEGACION Y LOGIN -->
-<jsp:include page="Menu.html"></jsp:include>
+<%! Usuario user = null; %>
+<% if(session.getAttribute("login")!=null){ user= (Usuario)session.getAttribute("login");}else{user=null;} %>
+
+<% if(user==null){%><jsp:include page="Menu.html"></jsp:include> <%} else { %><jsp:include page="MenuLog.html"></jsp:include> <% } %>
+<% if(user!=null){%> 
+<div class="d-flex flex-row bd-highlight">
+
+	<div class="px-2 flex-grow-1 bd-highlight"></div>
+ 	 <div class="px-6 mx-4 bd-highlight">
+ 		<h5>Usuario actual: <%=user.getUser() %></h5>
+ 	</div>
+</div>
+<% } else {
+%> 
+<div class="d-flex flex-row bd-highlight">
+	<div class="px-2 flex-grow-1 bd-highlight"></div>
+	<div class="px-6 mx-4 bd-highlight">
+		<h5>Inicie sesión para navegar</h5>
+	</div>
+</div>
+<%
+} %>
+
 
 <div class="container-fluid">
 	<div class="row mx-2 mb-2 justify-content-center p-2">
@@ -25,8 +50,13 @@
 				<div class="card-body">
 					<h4 class="card-title">Turnos</h4>
 					<p class="card-text">Vista de turnos</p>
-					<a href="servletTurnos" class="btn btn-primary w-100 my-2">Listado</a>
-					<a href="servletNuevoTurno" class="btn btn-success w-100 my-2">Sacar turno</a>
+					<% if(user!=null){%> 
+						<a href="servletTurnos" class="btn btn-primary w-100 my-2">Listado</a>
+						<a href="servletNuevoTurno" class="btn btn-success w-100 my-2">Sacar turno</a>
+					<% } else { %> 	
+						<a href="servletHome" class="btn btn-secondary w-100 my-2">Listado</a>
+						<a href="servletHome" class="btn btn-secondary w-100 my-2">Sacar turno</a>
+					<% } %>
 				</div>
 			</div>
 		
@@ -35,8 +65,13 @@
 				<div class="card-body">
 					<h4 class="card-title">Pacientes</h4>
 					<p class="card-text">Listado de pacientes</p>
-					<a href="servletPacientes" class="btn btn-primary w-100 my-2">Listado</a>
-					<a href="servletNuevoPaciente" class="btn btn-primary w-100 my-2">Agregar</a>
+					<% if(user!=null){%> 
+						<a href="servletPacientes" class="btn btn-primary w-100 my-2">Listado</a>
+						<a href="servletNuevoPaciente" class="btn btn-primary w-100 my-2">Agregar</a>
+					<% } else { %> 	
+						<a href="servletHome" class="btn btn-secondary w-100 my-2">Listado</a>
+						<a href="servletHome" class="btn btn-secondary w-100 my-2">Agregar</a>
+					<% } %>
 				</div>
 			</div>
 		
@@ -45,8 +80,18 @@
 				<div class="card-body">
 					<h4 class="card-title">Medicos</h4>
 					<p class="card-text">Listado de médicos</p>
-					<a href="servletMedicos" class="btn btn-primary w-100 my-2">Listado</a>
-					<a href="servletNuevoMedico" class="btn btn-primary w-100 my-2">Agregar</a>
+					<% if(user!=null){%> 
+						<a href="servletMedicos" class="btn btn-primary w-100 my-2">Listado</a>
+						<% if(user.getTipo().getIdTipo()==1){ %> 
+							<a href="servletNuevoMedico" class="btn btn-primary w-100 my-2">Agregar</a>
+						<% }else{ %>
+							<a href="servletHome" class="btn btn-secondary w-100 my-2">Agregar</a>
+						<% } %>				
+					<% } else { %> 	
+						<a href="servletHome" class="btn btn-secondary w-100 my-2">Listado</a>
+						<a href="servletHome" class="btn btn-secondary w-100 my-2">Agregar</a>
+					<% } %>
+
 				</div>
 			</div>
 		
@@ -55,11 +100,22 @@
 				<div class="card-body">
 					<h4 class="card-title">Administración</h4>
 					<p class="card-text">Panel de administración del sitio.</p>
-					<a href="servletPanelAdministrador" class="btn btn-primary w-100 my-2">Administración</a>
-					<a href="servletNuevoUsuario" class="btn btn-primary w-100 my-2">Nuevo usuario</a>
+					<% if(user!=null){%> 
+						<% if(user.getTipo().getIdTipo()==1){ %> 
+							<a href="servletPanelAdministrador" class="btn btn-primary w-100 my-2">Administración</a>
+							<a href="servletNuevoUsuario" class="btn btn-primary w-100 my-2">Nuevo usuario</a>
+						<% }else{ %>
+							<a href="servletHome" class="btn btn-secondary w-100 my-2">Administración</a>
+							<a href="servletHome" class="btn btn-secondary w-100 my-2">Nuevo usuario</a>
+						<% } %>				
+					<% } else { %> 	
+						<a href="servletHome" class="btn btn-secondary w-100 my-2">Administración</a>
+						<a href="servletHome" class="btn btn-secondary w-100 my-2">Nuevo usuario</a>
+					<% } %>
 				</div>
 			</div>
 	</div>
+	<%if(user!=null) { %> 
 	<div class="row mh-2 mb-2 justify-content-center p-2">
 		<div class="col col-md-3 mx-2 btn-outline-info justify-content-center p-2 cuadro_uno">
 	  		<label class="subtitle w-100">Pacientes</label><br>
@@ -83,7 +139,7 @@
 	  		<h4 class="p-2">Turnos pendientes: 146</h4>
 	  	</div>
 	</div>
-	
+	<%} %>
 </div><!-- FIN DEL CONTAINER -->
 </body>
 </html>

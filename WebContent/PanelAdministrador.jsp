@@ -3,9 +3,11 @@
 <%@page import="java.util.List"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="entidad.Administrador"%>
-<%@page import="entidad.Usuario"%>
 <%@page import="entidad.Medico"%>
 <%@page import="entidad.Tipo"%>
+<%@page import="entidad.Usuario"%>
+<%@page import="servlets.LoginServlet"%>
+<%@page import="servlets.servletHome"%>
 
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
@@ -38,7 +40,29 @@ $(document).ready( function () {
 <body>
 <%!ArrayList<Administrador> listaadmin = null;%>
 
-<jsp:include page="Menu.html"></jsp:include>
+<!-- MENU DE NAVEGACION Y LOGIN -->
+<%! Usuario user = null; %>
+<% if(session.getAttribute("login")!=null){ user= (Usuario)session.getAttribute("login");}else{user=null;} %>
+
+<% if(user==null){%><jsp:include page="Menu.html"></jsp:include> <%} else { %><jsp:include page="MenuLog.html"></jsp:include> <% } %>
+<% if(user!=null){%> 
+<div class="d-flex flex-row bd-highlight">
+
+	<div class="px-2 flex-grow-1 bd-highlight"></div>
+ 	 <div class="px-6 mx-4 bd-highlight">
+ 		<h5>Usuario actual: <%=user.getUser() %></h5>
+ 	</div>
+</div>
+<% } else {
+%> 
+<div class="d-flex flex-row bd-highlight">
+	<div class="px-2 flex-grow-1 bd-highlight"></div>
+	<div class="px-6 mx-4 bd-highlight">
+		<h5>Inicie sesión para navegar</h5>
+	</div>
+</div>
+<%
+} %>
 
 <div class="row mx-2 mb-2 justify-content-center p-2">
   		<label class="subtitle w-100">Panel de control - Usuarios</label>

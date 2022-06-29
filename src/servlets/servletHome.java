@@ -9,6 +9,11 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import negocio.PacienteNegocio;
+import negocio.TurnoNegocio;
+import negocioImpl.PacienteNegocioImpl;
+import negocioImpl.TurnoNegocioImpl;
+
 
 @WebServlet("/servletHome")
 public class servletHome extends HttpServlet {
@@ -37,6 +42,11 @@ public class servletHome extends HttpServlet {
 	}
 	
 	private boolean cargaEstadisitcasPacientes(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		
+		PacienteNegocio pacneg = new PacienteNegocioImpl();
+		TurnoNegocio turneg = new TurnoNegocioImpl();
+		
+		
 		
 		return false;
 	}

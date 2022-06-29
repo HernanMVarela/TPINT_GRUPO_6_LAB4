@@ -1,6 +1,9 @@
 <%@page import="java.util.List"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="entidad.Turno"%>
+<%@page import="entidad.Usuario"%>
+<%@page import="servlets.LoginServlet"%>
+<%@page import="servlets.servletHome"%>
 
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
@@ -21,7 +24,31 @@
 <body>
 <%!Turno turno = null;%>
 
-<jsp:include page="Menu.html"></jsp:include>
+<!-- MENU DE NAVEGACION Y LOGIN -->
+<%! Usuario user = null; %>
+<% if(session.getAttribute("login")!=null){ user= (Usuario)session.getAttribute("login");}else{user=null;} %>
+
+<% if(user==null){%><jsp:include page="Menu.html"></jsp:include> <%} else { %><jsp:include page="MenuLog.html"></jsp:include> <% } %>
+<% if(user!=null){%> 
+<div class="d-flex flex-row bd-highlight">
+
+	<div class="px-2 flex-grow-1 bd-highlight"></div>
+ 	 <div class="px-6 mx-4 bd-highlight">
+ 		<h5>Usuario actual: <%=user.getUser() %></h5>
+ 	</div>
+</div>
+<% } else {
+%> 
+<div class="d-flex flex-row bd-highlight">
+	<div class="px-2 flex-grow-1 bd-highlight"></div>
+	<div class="px-6 mx-4 bd-highlight">
+		<h5>Inicie sesión para navegar</h5>
+	</div>
+</div>
+<%
+} %>
+
+
 <div class="container-fluid">
 	<form action="servletNuevoTurno" method="get">
 	<div class="row mx-1 mb-2 justify-content-center p-2">

@@ -5,6 +5,9 @@
 <%@page import="entidad.Turno"%>
 <%@page import="entidad.Paciente"%>
 <%@page import="entidad.Especialidad"%>
+<%@page import="entidad.Usuario"%>
+<%@page import="servlets.LoginServlet"%>
+<%@page import="servlets.servletHome"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -34,7 +37,29 @@ $(document).ready( function () {
 <body>
 <%! List<Turno> listaTurnos = null; %>
 
-<jsp:include page="Menu.html"></jsp:include>
+<!-- MENU DE NAVEGACION Y LOGIN -->
+<%! Usuario user = null; %>
+<% if(session.getAttribute("login")!=null){ user= (Usuario)session.getAttribute("login");}else{user=null;} %>
+
+<% if(user==null){%><jsp:include page="Menu.html"></jsp:include> <%} else { %><jsp:include page="MenuLog.html"></jsp:include> <% } %>
+<% if(user!=null){%> 
+<div class="d-flex flex-row bd-highlight">
+
+	<div class="px-2 flex-grow-1 bd-highlight"></div>
+ 	 <div class="px-6 mx-4 bd-highlight">
+ 		<h5>Usuario actual: <%=user.getUser() %></h5>
+ 	</div>
+</div>
+<% } else {
+%> 
+<div class="d-flex flex-row bd-highlight">
+	<div class="px-2 flex-grow-1 bd-highlight"></div>
+	<div class="px-6 mx-4 bd-highlight">
+		<h5>Inicie sesión para navegar</h5>
+	</div>
+</div>
+<%
+} %>
 
 <div class="container-fluid">
 <form action="servletNuevoTurno" method="get">

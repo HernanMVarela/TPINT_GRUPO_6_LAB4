@@ -4,6 +4,10 @@
 <%@page import="java.util.ArrayList"%>
 <%@page import="entidad.Medico"%>
 <%@page import="entidad.Especialidad"%>
+<%@page import="entidad.Usuario"%>
+<%@page import="servlets.LoginServlet"%>
+<%@page import="servlets.servletHome"%>
+
 <%@page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
     
@@ -36,7 +40,32 @@ $(document).ready( function () {
 <%! List<Medico> listaDeMedicos = null; %>
 <%! List<Especialidad> listaEsp = null; %>
 
-<jsp:include page="Menu.html"></jsp:include>
+<!-- MENU DE NAVEGACION Y LOGIN -->
+<%! Usuario user = null; %>
+<% if(session.getAttribute("login")!=null){ user= (Usuario)session.getAttribute("login");}else{user=null;} %>
+
+<% if(user==null){%><jsp:include page="Menu.html"></jsp:include> <%} else { %><jsp:include page="MenuLog.html"></jsp:include> <% } %>
+<% if(user!=null){%> 
+<div class="d-flex flex-row bd-highlight">
+
+	<div class="px-2 flex-grow-1 bd-highlight"></div>
+ 	 <div class="px-6 mx-4 bd-highlight">
+ 		<h5>Usuario actual: <%=user.getUser() %></h5>
+ 	</div>
+</div>
+<% } else {
+%> 
+<div class="d-flex flex-row bd-highlight">
+	<div class="px-2 flex-grow-1 bd-highlight"></div>
+	<div class="px-6 mx-4 bd-highlight">
+		<h5>Inicie sesión para navegar</h5>
+	</div>
+</div>
+<%
+} %>
+
+
+
   <div class="row mx-2 mb-2 justify-content-center p-2">
   		<label class="subtitle w-100">Médico</label>
 	</div>
@@ -98,7 +127,7 @@ $(document).ready( function () {
   		<a href="servletNuevoMedico" name="btnAgregar" class="btn btn-info w-75">Agregar</a>
 		</div>
   		<div class="col-md-3 d-flex justify-content-center">
-  			<input type="submit" class="btn btn-info w-100" name="btnModificarMedico" value="Modificar">
+  			<input type="submit" class="btn btn-info w-75" name="btnModificarMedico" value="Modificar">
   		</div>
   		<div class="col-md-3 d-flex justify-content-center">
   			<button type="button" class="btn btn-danger w-75" data-bs-toggle="modal" data-bs-target="#modalEliminar">Eliminar Seleccionado</button>
