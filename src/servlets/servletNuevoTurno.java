@@ -177,7 +177,6 @@ public class servletNuevoTurno extends HttpServlet {
 		Paciente paci = new Paciente();
 		
 		if(!validacion_campos_iniciales(request, response)) {return false;}
-		System.out.println("");
 		// SETEA MEDICO ELEGIDO
 		medico=cargar_datos_medico(request, response);
 		
