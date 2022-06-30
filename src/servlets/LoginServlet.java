@@ -9,8 +9,14 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import entidad.Administrador;
+import entidad.Medico;
 import entidad.Usuario;
+import negocio.AdministradorNegocio;
+import negocio.MedicoNegocio;
 import negocio.UsuarioNegocio;
+import negocioImpl.AdministradorNegocioImpl;
+import negocioImpl.MedicoNegocioImpl;
 import negocioImpl.UsuarioNegocioImpl;
 
 @WebServlet("/LoginServlet")
@@ -28,6 +34,7 @@ public class LoginServlet extends HttpServlet {
 		String password = "";
 		String redirect = "servletHome";
 		
+		
 		Usuario log = new Usuario();
 		if(request.getParameter("btnLogin")!=null) {
 			if(validar_campos(request, response)) {
@@ -35,6 +42,7 @@ public class LoginServlet extends HttpServlet {
 				password = request.getParameter("txfPassword").toString();
 				log=verificar_usuario(username, password);
 				request.getSession().setAttribute("login", log);
+				
 			}else{
 				request.getSession().setAttribute("login", null);
 			}
@@ -55,6 +63,7 @@ public class LoginServlet extends HttpServlet {
 
 	private boolean validar_campos(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		boolean flag = true;
+		
 		if(request.getParameter("txfUsername")==null || request.getParameter("txfUsername").toString().isEmpty()) {
 			flag=false;
 		}
@@ -69,6 +78,10 @@ public class LoginServlet extends HttpServlet {
 	private Usuario verificar_usuario(String username, String password) {
 		UsuarioNegocio userneg = new UsuarioNegocioImpl();
 		Usuario log = new Usuario();
+		AdministradorNegocio admneg = new AdministradorNegocioImpl();
+		MedicoNegocio medneg = new MedicoNegocioImpl();
+		Administrador admin = new Administrador();
+		Medico medic = new Medico();
 		
 		log = userneg.ObtenerObjeto(userneg.existeUsuario(username));
 		
@@ -81,8 +94,15 @@ public class LoginServlet extends HttpServlet {
 		if(!log.getPassword().equals(password)) {
 			return null;
 		}		
+		// VALIDA SI EL USUARIO ES ADMIN ACTIVO
+		admin = admneg.buscar_usuario(log.getIdUsuario());
+		if(admin!=null) {if(admin.isEstado()) {return log;}else {return null;} }
 		
-		return log;
+		// VALIDA SI EL USUARIO ES MEDICO ACTIVO
+		medic = medneg.buscar_usuario(log.getIdUsuario());
+		if(medic!=null) {if(medic.isEstado()) {return log;}else {return null;} }
+		
+		return null;
 	}
 	
 }

@@ -318,7 +318,6 @@ public class servletNuevoTurno extends HttpServlet {
 		}else {
 			request.setAttribute("elegirestado", true);
 		}
-		System.out.println("VALIDACIONES: " + flag);
 		return flag;
 	}
 

@@ -250,7 +250,7 @@ public class servletNuevoUsuario extends HttpServlet {
 		if(result) {			
 			throw new DniException();
 		}
-		//si el DNI es válido, devuelve false
+
 		return result;
 		
 	}
@@ -372,6 +372,15 @@ public class servletNuevoUsuario extends HttpServlet {
 		User = carga_datos_usuario(request, response);
 		if(User == null) {return false;}
 		User.setIdUsuario(Admin.getUsuario().getIdUsuario());
+		
+		// ESTADO DE ADMIN
+		if(Integer.parseInt(request.getParameter("slcEstadoCuenta"))!=0) {
+			if(Integer.parseInt(request.getParameter("slcEstadoCuenta"))==1) {
+				Admin.setEstado(true);
+			}else {
+				Admin.setEstado(false);
+			}
+		}
 		
 		if(!perneg.Modificar(Perso)) {return false;}
 		if(!userneg.Modificar(User)) {return false;}

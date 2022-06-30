@@ -21,7 +21,6 @@ public class servletTurnos extends HttpServlet {
        
     public servletTurnos() {
         super();
-        
     }
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

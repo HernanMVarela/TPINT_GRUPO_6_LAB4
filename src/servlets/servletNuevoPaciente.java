@@ -114,8 +114,8 @@ public class servletNuevoPaciente extends HttpServlet {
 		if(paciente.getIdPaciente() != Integer.parseInt(request.getParameter("pacienteID"))) {
 			return false;
 		}
-		
 		paciente = nuevo_paciente(modificar);
+		paciente.setIdPaciente(Integer.parseInt(request.getParameter("pacienteID")));
 		paciente.setEstado(true);
 
 		return pacneg.modificarPaciente(paciente);
