@@ -9,8 +9,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import dao.UsuarioDao;
-import daoImpl.UsuarioDaoImpl;
 import entidad.Usuario;
 import negocio.UsuarioNegocio;
 import negocioImpl.UsuarioNegocioImpl;

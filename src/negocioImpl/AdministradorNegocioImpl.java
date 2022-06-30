@@ -1,5 +1,7 @@
 package negocioImpl;
 
+import java.util.ArrayList;
+
 import dao.AdministradorDao;
 import daoImpl.AdministradorDaoImpl;
 import entidad.Administrador;
@@ -41,6 +43,12 @@ public class AdministradorNegocioImpl implements AdministradorNegocio {
 	public boolean Modificar(Administrador admin) {
 		AdministradorDao admindao = new AdministradorDaoImpl();
 		return admindao.Modificar(admin);
+	}
+
+	@Override
+	public ArrayList<Administrador> Listar() {
+		AdministradorDao admindao = new AdministradorDaoImpl();
+		return admindao.ListarTodo();
 	}
 	
 	

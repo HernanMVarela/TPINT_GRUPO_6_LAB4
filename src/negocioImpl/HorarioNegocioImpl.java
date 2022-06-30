@@ -22,10 +22,10 @@ public class HorarioNegocioImpl implements HorarioNegocio{
 
 	@Override
 	public boolean Modificar(int idMedico, ArrayList<Horario> horas) {
-		if(dao.Eliminar(idMedico)) {System.out.println("HORARIOS ELIMINADOS");}
+		if(!dao.Eliminar(idMedico)) {return false;}
 	
 		for (Horario horario : horas) {
-			System.out.println("HORARIOS A CARGAR: " + horario.getDia() +" | "+ horario.getHoraDesde()+" - "+ horario.getHoraHasta());
+
 			if(!dao.Agregar(idMedico, horario)) {return false;}
 		}
 		

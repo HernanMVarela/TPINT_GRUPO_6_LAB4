@@ -1,7 +1,6 @@
 package servlets;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.RequestDispatcher;
@@ -11,12 +10,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import dao.AdministradorDao;
-import dao.MedicoDao;
-import daoImpl.AdministradorDaoImpl;
-import daoImpl.MedicoDaoImpl;
 import entidad.Administrador;
-import entidad.Medico;
+import negocio.AdministradorNegocio;
+import negocioImpl.AdministradorNegocioImpl;
 
 @WebServlet("/servletPanelAdministrador")
 public class servletPanelAdministrador extends HttpServlet {
@@ -40,11 +36,8 @@ public class servletPanelAdministrador extends HttpServlet {
 	}
 	
 	private List<Administrador> create_admin_list(){
-		List<Administrador> ladmin = new ArrayList<Administrador>();
-		AdministradorDao admindao = new AdministradorDaoImpl();
-		
-		ladmin = admindao.ListarTodo();
-		return ladmin;
+		AdministradorNegocio adminneg = new AdministradorNegocioImpl();
+		return adminneg.Listar();
 	}
 
 }

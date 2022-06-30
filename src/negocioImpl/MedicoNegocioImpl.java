@@ -88,7 +88,6 @@ public class MedicoNegocioImpl implements MedicoNegocio{
 		PersonaNegocio perneg = new PersonaNegocioImpl();
 		UsuarioNegocio userneg = new UsuarioNegocioImpl();
 		HorarioNegocio horasneg = new HorarioNegocioImpl();
-		
 		if(!perneg.Modificar(new Persona(
 				medic.getDni(),
 				medic.getNombre(),
@@ -101,10 +100,10 @@ public class MedicoNegocioImpl implements MedicoNegocio{
 				medic.getFecha_nacimiento()))) {
 			return false;
 		}
-		
+
 		// AGREGA NUEVO USUARIO
 		int userid = userneg.existeUsuario(medic.getUsuario().getUser());
-		if(userneg.Modificar(new Usuario(userid, medic.getUsuario().getUser(), medic.getUsuario().getPassword(), medic.getUsuario().getTipo()))) {
+		if(!userneg.Modificar(new Usuario(userid, medic.getUsuario().getUser(), medic.getUsuario().getPassword(), medic.getUsuario().getTipo()))) {
 			return false;
 		}
 		medic.getUsuario().setIdUsuario(userid);
@@ -115,8 +114,7 @@ public class MedicoNegocioImpl implements MedicoNegocio{
 		// MODIFICAR HORAS DEL MEDICO
 		horasneg.Modificar(medic.getIdMedico(),medic.getHorarios());
 
-		
-		return meddao.Modificar(medic);
+		return true;
 	}
 
 	@Override

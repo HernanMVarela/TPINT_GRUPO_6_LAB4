@@ -12,12 +12,12 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import Excepciones.UsernameException;
 import entidad.Direccion;
 import entidad.Especialidad;
 import entidad.Horario;
 import entidad.Localidad;
 import entidad.Medico;
-import entidad.Paciente;
 import entidad.Pais;
 import entidad.Persona;
 import entidad.Provincia;
@@ -25,25 +25,19 @@ import entidad.Sexo;
 import entidad.Tipo;
 import entidad.Usuario;
 import negocio.EspecialidadNegocio;
-import negocio.HorarioNegocio;
 import negocio.LocalidadNegocio;
 import negocio.MedicoNegocio;
 import negocio.PaisNegocio;
-import negocio.PersonaNegocio;
 import negocio.ProvinciaNegocio;
 import negocio.SexoNegocio;
 import negocio.TipoNegocio;
-import negocio.UsuarioNegocio;
 import negocioImpl.EspecialidadNegocioImpl;
-import negocioImpl.HorarioNegocioImpl;
 import negocioImpl.LocalidadNegocioImpl;
 import negocioImpl.MedicoNegocioImpl;
 import negocioImpl.PaisNegocioImpl;
-import negocioImpl.PersonaNegocioImpl;
 import negocioImpl.ProvinciaNegocioImpl;
 import negocioImpl.SexoNegocioImpl;
 import negocioImpl.TipoNegocioImpl;
-import negocioImpl.UsuarioNegocioImpl;
 
 @WebServlet("/servletNuevoMedico")
 public class servletNuevoMedico extends HttpServlet {
@@ -58,7 +52,8 @@ public class servletNuevoMedico extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String redirect = "/NuevoMedico.jsp";
 		boolean aux = true;
-		request.setAttribute("medic", null);		
+		request.setAttribute("medic", null);
+		request.setAttribute("Mensaje", null);		
 		
 		// EVENTO BOTON MODIFICAR USUARIO
 		if(request.getParameter("btnModificarMedico")!=null) {
@@ -193,7 +188,7 @@ public class servletNuevoMedico extends HttpServlet {
 				}
 				
 				// DOCUMENTO PERSONA
-				if(request.getParameter("adminId")==null) {
+				if(request.getParameter("medicId")==null) {
 					if(!request.getParameter("txfDocumento").isEmpty()) {
 					{
 						Perso.setDni(Integer.parseInt(request.getParameter("txfDocumento")));
@@ -260,10 +255,18 @@ public class servletNuevoMedico extends HttpServlet {
 		
 		boolean flag=true;
 		if(!request.getParameter("txfUsername").isEmpty()) {
+			try {
+				Usuario.VerificarDniInvalido(request.getParameter("txfUsername").toString());
+			} catch (UsernameException e) {
+				System.out.println(e.getMessage());
+				return null;
+			}
 			User.setUser(request.getParameter("txfUsername").toString());
 		}else {
 			flag = false;
 		}
+		
+		
 		
 		// PASSWORD
 		if(!request.getParameter("txfPassword1").isEmpty() && !request.getParameter("txfPassword2").isEmpty()) {
@@ -379,9 +382,7 @@ public class servletNuevoMedico extends HttpServlet {
 		Medico Medic = new Medico();
 		Usuario User = null;
 		Persona Perso= null;
-		
-		PersonaNegocio perneg = new PersonaNegocioImpl();
-		UsuarioNegocio userneg = new UsuarioNegocioImpl();
+
 		MedicoNegocio medneg = new MedicoNegocioImpl();
 		
 		boolean flag = true;
@@ -425,6 +426,7 @@ public class servletNuevoMedico extends HttpServlet {
 		}else {
 			flag = false;
 		}
+		if(!flag) {return false;}
 		
 		return medneg.agregarMedico(Medic);
 	}
@@ -489,9 +491,9 @@ public class servletNuevoMedico extends HttpServlet {
 		Perso = carga_datos_persona(request, response);
 		if(Perso == null) {return false;}
 		Perso.setDni(Medic.getDni());
-		
 		User = carga_datos_usuario(request, response);
 		if(User == null) {return false;}
+		
 		User.setIdUsuario(Medic.getUsuario().getIdUsuario());	
 		
 		Medic = nuevo_medico_datos(Perso, User, horas);		

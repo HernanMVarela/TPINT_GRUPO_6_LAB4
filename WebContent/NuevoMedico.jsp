@@ -367,7 +367,7 @@
 	  			<label class="p-1">Nombre de usuario</label>
 	  			<input type="text" name="txfUsername" class="w-100" required
 		  		<% 
-	  			if(medic!=null){%>value="<%=medic.getUsuario().getUser() %>"<%;}
+	  			if(medic!=null){%>value="<%=medic.getUsuario().getUser() %>" readonly<%;}
 		  		%>>	
 	  		</div>
 	  		<div class="row justify-content-center mx-2">

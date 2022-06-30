@@ -39,6 +39,7 @@ $(document).ready( function () {
 
 <body>
 <%!ArrayList<Administrador> listaadmin = null;%>
+<%!String mensaje = null; %>
 
 <!-- MENU DE NAVEGACION Y LOGIN -->
 <%! Usuario user = null; %>
@@ -46,6 +47,15 @@ $(document).ready( function () {
 
 <% if(user==null){%><jsp:include page="Menu.html"></jsp:include> <%} else { %><jsp:include page="MenuLog.html"></jsp:include> <% } %>
 <% if(user!=null){%> 
+
+<%if(request.getAttribute("Mensaje")!=null){ mensaje = (String)request.getAttribute("Mensaje");
+	if(mensaje.equals("SELECT")){%><script>alert("No hay elemento seleccionado");</script><%}
+	if(mensaje.equals("AGROK")){%><script>alert("Administrador agregado correctamente");</script><%}
+	if(mensaje.equals("MODIOK")){%><script>alert("Administrador modificado correctamente");</script><%}
+	if(mensaje.equals("ELIMOK")){%><script>alert("Administrador eliminado correctamente");</script><%}
+	if(mensaje.equals("ERROR")){%><script>alert("No se pudo completar la operación");</script><%}
+}%>
+
 <div class="d-flex flex-row bd-highlight">
 
 	<div class="px-2 flex-grow-1 bd-highlight"></div>
@@ -74,28 +84,12 @@ $(document).ready( function () {
   <div class="container-fluid">
 
    <div class="row mx-2 d-flex flex-wrap align-middle justify-content-evenly">
-	  	<div class="col-md-2 border-right">
-	  		<div class="row text-start p-2">
-	  			<label class="p-1">Filtra por estado</label> 
-	  			<select name="slcFiltoEsp" class="w-100">
-	  				<option value="1">Seleccione opción</option>
-	  				<option value="2">Activo</option>
-	  				<option value="3">Inactivo</option>
-	  			</select>
-	  		</div>
-	  		<div class="row text-start p-2">
-	  			<label class="p-1">Buscar por nombre</label>
-	  			<input type="text" name="txfBuscar" class="w-100">
-	  		</div>
-	  		<div class="row text-start p-2">
-	  			<input type="submit" class="btn btn-info w-100" name="btnAceptar" value="Aceptar">
-	  		</div>
-	  	</div>
 	  	<!-- TERMINA FILTROS -->
-	  	<div class="col-md-10 table-responsive w-75">
+	  	<div class="col-md-auto table-responsive w-100">
 	  		<table id="tabla_admins" border=2 class="display table align-middle table-info table-hover th-lg">
 	  			<thead>
-				<tr class="table-secondary"><th> ID Usuario </th><th> Nombre y apellido</th><th> Usuario </th> <th> Tipo Usuario </th><th> Estado </th><th width="5%"> Seleccionar </th></tr>
+				<tr class="table-secondary"><th> ID Usuario </th><th> Nombre y apellido</th><th> DNI</th><th> Email</th>
+				<th> Usuario </th> <th> Tipo Usuario </th><th> Estado </th><th width="5%"> Seleccionar </th></tr>
 				</thead>
 				<tbody>
 				<%
@@ -107,6 +101,8 @@ $(document).ready( function () {
 						<tr <% if(!admin.isEstado()){%> class="table-danger" <%} %>>
 						<td> <%=admin.getUsuario().getIdUsuario() %> </td>
 						<td> <%=admin.getNombre() +" "+ admin.getApellido()%> </td>
+						<td> <%=admin.getDni()%> </td>
+						<td> <%=admin.getEmail() %> </td>
 						<td> <%=admin.getUsuario().getUser() %> </td>
 						<td> <%=admin.getUsuario().getTipo().getNombre() %> </td>
 						<td> <%=admin.isEstado()? "Activo":"Inactivo"%> </td>
@@ -127,7 +123,7 @@ $(document).ready( function () {
   			<a href="servletNuevoUsuario" class="btn btn-info w-75">Agregar</a>
   		</div>
   		<div class="col-md-4 d-flex justify-content-center">
-  			<input type="submit" class="btn btn-info w-100" name="btnModificarUsuario" value="Modificar">
+  			<input type="submit" class="btn btn-info w-75" name="btnModificarUsuario" value="Modificar">
   		</div>
   		<div class="col-md-4 d-flex justify-content-center">
   			<button type="button" class="btn btn-danger w-75" data-bs-toggle="modal" data-bs-target="#modalEliminarUsuario">Eliminar</button>

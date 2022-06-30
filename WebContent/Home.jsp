@@ -56,8 +56,8 @@
 						<a href="servletTurnos" class="btn btn-primary w-100 my-2">Listado</a>
 						<a href="servletNuevoTurno" class="btn btn-success w-100 my-2">Sacar turno</a>
 					<% } else { %> 	
-						<a href="servletHome" class="btn btn-secondary w-100 my-2">Listado</a>
-						<a href="servletHome" class="btn btn-secondary w-100 my-2">Sacar turno</a>
+						<button class="btn btn-primary w-100 my-2" disabled>Listado</button>
+						<button class="btn btn-primary w-100 my-2" disabled>Sacar turno</button>
 					<% } %>
 				</div>
 			</div>
@@ -71,8 +71,8 @@
 						<a href="servletPacientes" class="btn btn-primary w-100 my-2">Listado</a>
 						<a href="servletNuevoPaciente" class="btn btn-primary w-100 my-2">Agregar</a>
 					<% } else { %> 	
-						<a href="servletHome" class="btn btn-secondary w-100 my-2">Listado</a>
-						<a href="servletHome" class="btn btn-secondary w-100 my-2">Agregar</a>
+						<button class="btn btn-primary w-100 my-2" disabled>Listado</button>
+						<button class="btn btn-primary w-100 my-2" disabled>Agregar</button>
 					<% } %>
 				</div>
 			</div>
@@ -87,11 +87,11 @@
 						<% if(user.getTipo().getIdTipo()==1){ %> 
 							<a href="servletNuevoMedico" class="btn btn-primary w-100 my-2">Agregar</a>
 						<% }else{ %>
-							<a href="servletHome" class="btn btn-secondary w-100 my-2">Agregar</a>
+							<button class="btn btn-primary w-100 my-2" disabled>Agregar</button>
 						<% } %>				
 					<% } else { %> 	
-						<a href="servletHome" class="btn btn-secondary w-100 my-2">Listado</a>
-						<a href="servletHome" class="btn btn-secondary w-100 my-2">Agregar</a>
+						<button class="btn btn-primary w-100 my-2" disabled>Listado</button>
+						<button class="btn btn-primary w-100 my-2" disabled>Agregar</button>
 					<% } %>
 
 				</div>
@@ -107,12 +107,12 @@
 							<a href="servletPanelAdministrador" class="btn btn-primary w-100 my-2">Administración</a>
 							<a href="servletNuevoUsuario" class="btn btn-primary w-100 my-2">Nuevo usuario</a>
 						<% }else{ %>
-							<a href="servletHome" class="btn btn-secondary w-100 my-2">Administración</a>
-							<a href="servletHome" class="btn btn-secondary w-100 my-2">Nuevo usuario</a>
+							<button class="btn btn-primary w-100 my-2" disabled>Administración</button>
+							<button class="btn btn-primary w-100 my-2" disabled>Nuevo usuario</button>
 						<% } %>				
 					<% } else { %> 	
-						<a href="servletHome" class="btn btn-secondary w-100 my-2">Administración</a>
-						<a href="servletHome" class="btn btn-secondary w-100 my-2">Nuevo usuario</a>
+						<button class="btn btn-primary w-100 my-2" disabled>Administración</button>
+						<button class="btn btn-primary w-100 my-2" disabled>Nuevo usuario</button>
 					<% } %>
 				</div>
 			</div>

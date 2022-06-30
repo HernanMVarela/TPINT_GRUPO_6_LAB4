@@ -38,6 +38,7 @@ $(document).ready( function () {
 <body>
 
 <%! List<Turno> listaTurnos = null; %>
+<%! String mensaje = null; %>
 
 <!-- MENU DE NAVEGACION Y LOGIN -->
 <%! Usuario user = null; %>
@@ -45,6 +46,16 @@ $(document).ready( function () {
 
 <% if(user==null){%><jsp:include page="Menu.html"></jsp:include> <%} else { %><jsp:include page="MenuLog.html"></jsp:include> <% } %>
 <% if(user!=null){%> 
+
+
+<%if(request.getAttribute("Mensaje")!=null){ mensaje = (String)request.getAttribute("Mensaje");
+	if(mensaje.equals("SELECT")){%><script>alert("No hay elemento seleccionado");</script><%}
+	if(mensaje.equals("AGROK")){%><script>alert("Turno agregado correctamente");</script><%}
+	if(mensaje.equals("MODIOK")){%><script>alert("Turno modificado correctamente");</script><%}
+	if(mensaje.equals("LIBRE")){%><script>alert("Turno liberado correctamente");</script><%}
+	if(mensaje.equals("ERROR")){%><script>alert("No se pudo completar la operación");</script><%}
+}%>
+
 <div class="d-flex flex-row bd-highlight">
 
 	<div class="px-2 flex-grow-1 bd-highlight"></div>
@@ -129,10 +140,8 @@ $(document).ready( function () {
 		<a href="servletNuevoTurno" class="btn btn-info w-75">Agregar nuevo turno</a>
 	</div>
 	<div class="col-md-3 d-flex justify-content-center">
-	<%	if(user.getTipo().getIdTipo()==3){%> <input type="submit" class="btn btn-secondary w-75" name="btnModificarTurno" value="Modificar" disabled> <%} 
-	else {%><input type="submit" class="btn btn-info w-75" name="btnModificarTurno" value="Modificar"><%}%>
-		
-	</div>
+	 <input type="submit" class="btn btn-info w-75" name="btnModificarTurno" value="Modificar" <%if(user.getTipo().getIdTipo()==3){%>disabled<%}%>>
+			</div>
 	<div class="col-md-3 d-flex justify-content-center">
 		<button type="button" class="btn btn-danger w-75" data-bs-toggle="modal" data-bs-target="#modalEliminarTurno" <%if(user.getTipo().getIdTipo()!=1){%> disabled<%}%>>Eliminar turno</button>  
 	</div>

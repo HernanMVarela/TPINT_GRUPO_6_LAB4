@@ -1,5 +1,7 @@
 package negocio;
 
+import java.util.ArrayList;
+
 import entidad.Administrador;
 
 public interface AdministradorNegocio {
@@ -10,4 +12,5 @@ public interface AdministradorNegocio {
 	public boolean bajaAdmin(Administrador baja);
 	public Administrador ObtenerObjeto(int idAdmin);
 	public boolean Modificar(Administrador admin);
+	public ArrayList<Administrador> Listar();
 }

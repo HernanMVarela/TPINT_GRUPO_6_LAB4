@@ -1,5 +1,7 @@
 package entidad;
 
+import Excepciones.UsernameException;
+
 public class Usuario {
 	
 	private int idUsuario;
@@ -56,6 +58,14 @@ public class Usuario {
 	@Override
 	public String toString() {
 		return "Usuario [idUsuario=" + idUsuario + ", user=" + user + ", password=" + password + ", tipo=" + tipo + "]";
+	}
+	
+	public static void VerificarDniInvalido(String user) throws UsernameException
+	{
+		if(!user.matches("[a-zA-Z0-9]*"))
+		{
+			throw new UsernameException();
+		}
 	}
 	
 }

@@ -81,16 +81,8 @@ $(document).ready( function () {
 <div class="container-fluid w-auto">
 <form action="servletNuevoPaciente" method="get">
    <div class="row mx-2 d-flex flex-wrap align-middle justify-content-evenly">
-	  	<div class="col-md-2 border-right">
-	  		<div class="row text-start p-2">
-	  			<label class="p-1">Buscar por nombre</label>
-	  			<input type="text" name="txfBuscar" class="w-100">
-	  		</div>
-	  		<div class="row text-start p-2">
-	  			<input type="submit" class="btn btn-info w-100" name="btnAceptar" value="Aceptar">
-	  		</div>
-	  	</div>
-	  	<div class="col-md-10 table-responsive w-75">
+	  	
+	  	<div class="col-md-auto table-responsive w-100">
 	  		<table id="tabla_pacientes" border=2 class="table align-middle table-info table-hover th-lg">
 	  		<thead>
 				<tr class="table-secondary"><th width="10%"> ID Paciente </th><th> Nombre y apellido </th><th> DNI </th><th> Sexo </th>

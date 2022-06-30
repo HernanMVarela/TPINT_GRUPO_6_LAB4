@@ -60,10 +60,11 @@ if(request.getAttribute("turno")!=null){
 	%><input type="hidden" name="turnoId" value="<%= turno.getIdTurno()%>"><%
 }
 %>
-	
-<% if(turno!=null){ %>
-	
-<%if(user!=null){ if(user.getIdUsuario() == turno.getIdTurno()){ %>	
+
+<%if(user!=null){ 
+	if(turno!=null){
+		if(user.getIdUsuario() == turno.getMedico().getUsuario().getIdUsuario() || user.getTipo().getIdTipo()==1){
+		 %>
 	<div class="row mx-2 mb-2 justify-content-center p-2">
 		<div class="col col-md-3 justify-content-center p-2 cuadro_uno btn-outline-info">
 			<label class="subtitle w-100">Datos del paciente</label>
@@ -159,27 +160,20 @@ if(request.getAttribute("turno")!=null){
 			</div>
 		</div>
 	</div>
-<% } else { %>
-	<div class="row mx-1 mb-2 justify-content-center p-2">
-	  	<label class="subtitle w-100">NO HAY UN TURNO SELECCIONADO</label>
-	</div>
-			
-	<%}%>
 
-<%}else{ %>
-	<div class="row mh-2 mb-2 justify-content-center p-2">
-		<a href="servletHome" class="btn btn-outline-danger w-25 my-2">Permisos insuficientes - Volver a Home.</a>
-	</div>
-<%} 
-}else{%>
-	<div class="row mh-2 mb-2 justify-content-center p-2">
-		<a href="servletHome" class="btn btn-outline-danger w-25 my-2">No hay usuario logueado - Volver a Home.</a>
-	</div>
-<%}%>	
 	
 </form>
 </div>
-
+			<!-- PASA OK - CODIGO DE PAGINA  -->
+		<% } else { %>
+			<div class="row mh-2 mb-2 justify-content-center p-2"><a href="servletHome" class="btn btn-outline-danger w-25 my-2">Permisos insuficientes - Volver a Home.</a></div>
+		<% }	
+	}else{ %>
+		<div class="row mx-1 mb-2 justify-content-center p-2"><label class="subtitle w-100">NO HAY UN TURNO SELECCIONADO</label></div>
+	<%} 
+}else{%>
+	<div class="row mh-2 mb-2 justify-content-center p-2"><a href="servletHome" class="btn btn-outline-danger w-25 my-2">No hay usuario logueado - Volver a Home.</a></div>
+<%}%>	
 	
 </body>
 </html>

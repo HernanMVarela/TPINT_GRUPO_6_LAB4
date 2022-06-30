@@ -2,7 +2,6 @@ package servlets;
 
 import java.io.IOException;
 import java.sql.Date;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.RequestDispatcher;
@@ -13,16 +12,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import Excepciones.DniException;
-import dao.LocalidadDao;
-import dao.PaisDao;
-import dao.ProvinciaDao;
-import dao.SexoDao;
-import dao.TipoDao;
-import daoImpl.LocalidadDaoImpl;
-import daoImpl.PaisDaoImpl;
-import daoImpl.ProvinciaDaoImpl;
-import daoImpl.SexoDaoImpl;
-import daoImpl.TipoDaoImpl;
 import entidad.Administrador;
 import entidad.Direccion;
 import entidad.Localidad;
@@ -33,10 +22,20 @@ import entidad.Sexo;
 import entidad.Tipo;
 import entidad.Usuario;
 import negocio.AdministradorNegocio;
+import negocio.LocalidadNegocio;
+import negocio.PaisNegocio;
 import negocio.PersonaNegocio;
+import negocio.ProvinciaNegocio;
+import negocio.SexoNegocio;
+import negocio.TipoNegocio;
 import negocio.UsuarioNegocio;
 import negocioImpl.AdministradorNegocioImpl;
+import negocioImpl.LocalidadNegocioImpl;
+import negocioImpl.PaisNegocioImpl;
 import negocioImpl.PersonaNegocioImpl;
+import negocioImpl.ProvinciaNegocioImpl;
+import negocioImpl.SexoNegocioImpl;
+import negocioImpl.TipoNegocioImpl;
 import negocioImpl.UsuarioNegocioImpl;
 
 @WebServlet("/servletNuevoUsuario")
@@ -57,13 +56,11 @@ public class servletNuevoUsuario extends HttpServlet {
 		// EVENTO BOTON MODIFICAR USUARIO
 		if(request.getParameter("btnModificarUsuario")!=null) {
 			if(request.getParameter("radSelect")!=null){
-				if(carga_datos(request, response)) {
-					// DATOS DEL ELEMENTO SELECCIONADO OBTENIDOS
-				}else {
-					// NO SE PUDO MODIFICAR
+				if(!carga_datos(request, response)) {
+					request.setAttribute("Mensaje", "ERROR");
 				}
 			}else {
-				// NO HAY ELEMENTO SELECCIONADO
+				request.setAttribute("Mensaje", "SELECT");
 				redirect = "servletPanelAdministrador"; 
 				aux = false;
 			}
@@ -73,14 +70,22 @@ public class servletNuevoUsuario extends HttpServlet {
 		if(request.getParameter("btnAgregarUsuario")!=null) {
 			if (request.getParameter("adminId")!=null){
 				try {
-					modificar_usuario(request, response);
+					if(modificar_usuario(request, response)) {
+						request.setAttribute("Mensaje", "MODIOK");
+					}else {
+						request.setAttribute("Mensaje", "ERROR");
+					}
 				} catch (DniException e) {
 					request.getSession().setAttribute("dniException", "DNI Inválido");
 					e.printStackTrace();
 				}
 			}else {
 				try {
-					agregar_nuevo_usuario(request, response);
+					if(agregar_nuevo_usuario(request, response)) {
+						request.setAttribute("Mensaje", "AGROK");
+					}else {
+						request.setAttribute("Mensaje", "ERROR");
+					}
 				} catch (DniException e) {
 					request.getSession().setAttribute("dniException", "DNI Inválido");
 					e.printStackTrace();
@@ -93,14 +98,14 @@ public class servletNuevoUsuario extends HttpServlet {
 		if(request.getParameter("btnEliminarUsuario")!=null) {
 			if(request.getParameter("radSelect")!=null){
 				if(eliminar_usuario(request, response)) {
-					// 
+					request.setAttribute("Mensaje", "ELIMOK");
 				}else {
-					// NO SE PUDO ELIMINAR
+					request.setAttribute("Mensaje", "ERROR");
 				}
 				redirect = "servletPanelAdministrador";
 				aux = false;
 			}else {
-				// NO HAY NADA SELECCIONADO - DEVOLVER ATRIBUTO O MENSAJE DE ERROR
+				request.setAttribute("Mensaje", "SELECT");
 			}
 		}
 		
@@ -122,52 +127,37 @@ public class servletNuevoUsuario extends HttpServlet {
 	}
 	
 	private List<Provincia> create_provincia_list(){
-		List<Provincia> prov = new ArrayList<Provincia>();
-		ProvinciaDao provdao = new ProvinciaDaoImpl();
-		
-		prov = provdao.ListarTodo();
-		return prov;
+		ProvinciaNegocio provneg = new ProvinciaNegocioImpl();
+		return provneg.ListarTodo();
 	}
 	
 	private List<Localidad> create_localidad_list(){
-		List<Localidad> loc = new ArrayList<Localidad>();
-		LocalidadDao locdao = new LocalidadDaoImpl();
-		
-		loc = locdao.ListarTodo();
-		return loc;
+		LocalidadNegocio locneg = new LocalidadNegocioImpl();
+		return locneg.ListarTodo();
 	}
 	
 	private List<Sexo> create_sexo_list(){
-		List<Sexo> sex = new ArrayList<Sexo>();
-		SexoDao sexdao = new SexoDaoImpl();
-		
-		sex = sexdao.ListarTodo();
-		return sex;
+		SexoNegocio sexneg = new SexoNegocioImpl();
+		return sexneg.ListarTodo();
 	}
 	
 	private List<Tipo> create_tipo_list(){
-		List<Tipo> tipo = new ArrayList<Tipo>();
-		TipoDao tipodao = new TipoDaoImpl();
-		
-		tipo = tipodao.ListarTodo();
-		return tipo;
+		TipoNegocio tipneg = new TipoNegocioImpl();
+		return tipneg.ListarTodo();
 	}
 	
 	private List<Pais> create_pais_list(){
-		List<Pais> pais = new ArrayList<Pais>();
-		PaisDao paisdao = new PaisDaoImpl();
-		
-		pais = paisdao.ListarTodo();
-		return pais;
+		PaisNegocio paisneg = new PaisNegocioImpl();
+		return paisneg.ListarTodo();
 	}
 
 	private Persona carga_datos_persona(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, NumberFormatException, DniException {
 		Persona Perso = new Persona();
 		Perso.setDirecc(new Direccion());
 		
-		LocalidadDao locdao = new LocalidadDaoImpl(); // REEMPLAZAR POR NEGOCIO
-		PaisDao paisdao = new PaisDaoImpl(); // REEMPLAZAR POR NEGOCIO
-		SexoDao sexdao = new SexoDaoImpl(); // REEMPLAZAR POR NEGOCIO
+		LocalidadNegocio locdao = new LocalidadNegocioImpl();
+		PaisNegocio paisdao = new PaisNegocioImpl();
+		SexoNegocio sexdao = new SexoNegocioImpl();
 		
 		boolean flag=true;
 		
@@ -267,7 +257,7 @@ public class servletNuevoUsuario extends HttpServlet {
 	
 	private Usuario carga_datos_usuario(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		Usuario User = new Usuario();
-		TipoDao tipodao = new TipoDaoImpl(); // REEMPLAZAR POR NEGOCIO
+		TipoNegocio tipneg = new TipoNegocioImpl(); // REEMPLAZAR POR NEGOCIO
 		
 		boolean flag=true;
 		if(!request.getParameter("txfUsername").isEmpty()) {
@@ -289,7 +279,7 @@ public class servletNuevoUsuario extends HttpServlet {
 		
 		// TIPO DE USUARIO
 		if(Integer.parseInt(request.getParameter("slcTipoUsuario"))!=0) {
-			User.setTipo(tipodao.ObtenerObjeto(Integer.parseInt(request.getParameter("slcTipoUsuario"))));
+			User.setTipo(tipneg.ObtenerObjeto(Integer.parseInt(request.getParameter("slcTipoUsuario"))));
 		}else {
 			flag = false;
 		}
@@ -374,25 +364,19 @@ public class servletNuevoUsuario extends HttpServlet {
 
 		Admin = adminneg.ObtenerObjeto(Integer.parseInt(request.getParameter("adminId").toString()));
 		if(Admin == null) {return false;}
-		System.out.println("OBTIENE ADMIN POR ID OK");
 		
 		Perso = carga_datos_persona(request, response);
 		if(Perso == null) {return false;}
 		Perso.setDni(Admin.getDni());
-		System.out.println("CARGA DATOS DE PERSONA OK");
 		
 		User = carga_datos_usuario(request, response);
 		if(User == null) {return false;}
 		User.setIdUsuario(Admin.getUsuario().getIdUsuario());
-		System.out.println("CARGA DATOS DE USUARIO OK");
 		
 		if(!perneg.Modificar(Perso)) {return false;}
-		System.out.println("MODIFICA DATOS DE PERSONA EN DB OK");
 		if(!userneg.Modificar(User)) {return false;}
-		System.out.println("MODIFICA DATOS DE USUARIO EN DB OK");
 		if(!adminneg.Modificar(Admin)) {return false;}
 		else {
-		System.out.println("MODIFICA DATOS DE ADMIN EN DB OK");	
 		return true;}
 		
 	}

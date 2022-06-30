@@ -26,7 +26,7 @@ public class AdministradorDaoImpl implements AdministradorDao {
 	private String modificar = "UPDATE bdtp_integrador.Administradores SET IDUsuario = ?, Estado = ? WHERE idAdmin = ?";
 	private String eliminar = "DELETE FROM bdtp_integrador.Administradores WHERE idAdmin = ?";
 	private String obtenerObjeto = "select a.idAdmin, a.dni, a.estado, a.idUsuario from bdtp_integrador.Administradores a where a.idAdmin = ?";
-	private String listarTodo = "select a.idAdmin, a.dni, a.estado, a.idUsuario, u.user, u.password, u.idTipo, t.nombre tipoNombre, p.nombre, p.apellido from administradores a left join usuarios u on a.idUsuario = u.idUsuario left join tipos t on u.idTipo = t.idTipo inner join personas p on p.dni = a.dni";
+	private String listarTodo ="SELECT * FROM bdtp_integrador.Administradores";
 	private String buscardni = "SELECT * FROM bdtp_integrador.Administradores where DNI = ?";
 	private String buscaruserid = "SELECT * FROM bdtp_integrador.Administradores where idUsuario = ?";
 	private String bajaAdmin = "UPDATE bdtp_integrador.Administradores SET Estado = 0 where idAdmin = ?";
@@ -213,12 +213,23 @@ public class AdministradorDaoImpl implements AdministradorDao {
                 UsuarioDao daoUser = new UsuarioDaoImpl();
 				usuario = new Usuario();
 				usuario = daoUser.ObtenerObjeto(resultSet.getInt("idUsuario"));
-
+				
+				PersonaDao perdao = new PersonaDaoImpl();
+				Persona perso = new Persona();
+				perso = perdao.ObtenerObjeto(resultSet.getInt("DNI"));				
+				
 				admin = new Administrador();
 
 				admin.setIdAdmin(resultSet.getInt("idAdmin"));
-				admin.setNombre(resultSet.getString("Nombre"));
-				admin.setApellido(resultSet.getString("Apellido"));
+				admin.setNombre(perso.getNombre());
+				admin.setApellido(perso.getApellido());
+				admin.setDirecc(perso.getDirecc());
+				admin.setDni(perso.getDni());
+				admin.setEmail(perso.getEmail());
+				admin.setFecha_nacimiento(perso.getFecha_nacimiento());
+				admin.setNacionalidad(perso.getNacionalidad());
+				admin.setSexo(perso.getSexo());
+				admin.setTelefono(perso.getTelefono());
 				admin.setUsuario(usuario);
 				admin.setEstado(resultSet.getInt("Estado") == 1 ? true : false);
 

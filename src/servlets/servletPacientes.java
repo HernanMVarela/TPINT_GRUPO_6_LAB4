@@ -1,7 +1,6 @@
 package servlets;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.RequestDispatcher;
@@ -11,9 +10,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import dao.PacienteDao;
-import daoImpl.PacienteDaoImpl;
 import entidad.Paciente;
+import negocio.PacienteNegocio;
+import negocioImpl.PacienteNegocioImpl;
 
 
 
@@ -41,10 +40,8 @@ public class servletPacientes extends HttpServlet {
 	}
 	
 	private List<Paciente> listarPacientes() {
-		List<Paciente> listaDePacientes = new ArrayList<Paciente>();
-		PacienteDao meDao = new PacienteDaoImpl();
-		listaDePacientes = meDao.ListarTodo();
-		return listaDePacientes;
+		PacienteNegocio pacneg = new PacienteNegocioImpl();
+		return pacneg.listar();
 	}
 
 }

@@ -38,7 +38,6 @@ $(document).ready( function () {
 <body>
 
 <%! List<Medico> listaDeMedicos = null; %>
-<%! List<Especialidad> listaEsp = null; %>
 <%! String mensaje = null; %>
 
 <!-- MENU DE NAVEGACION Y LOGIN -->
@@ -83,33 +82,13 @@ $(document).ready( function () {
 <form method="get" action="servletNuevoMedico"><!-- REEMPLAZAR POR INPUT CON RUTA A SERVLET -->
   <div class="container-fluid">
   <div class="row mx-2 d-flex flex-wrap align-middle justify-content-evenly">
-	  	<div class="col-md-2 border-right">
-	  		<div class="row text-start p-2">
-	  			<label class="p-1">Filtra por especialidad</label> 
-	  			<select name="slcFiltoEsp" class="w-100">
-	  				<option value="0">Seleccione opción</option>
-	  				<% if(request.getAttribute("listaDeEsp")!=null){
-	  					listaEsp = (ArrayList<Especialidad>)request.getAttribute("listaDeEsp");
-	  					if(!listaEsp.isEmpty()) {
-	  						for (Especialidad x: listaEsp){
-	  							%><option value="<%= x.getIdEspecialidad() %>"><%= x.getNombre() %></option><%
-	  						} 
-	  					}
-	  				}%>
-	  				</select>
-	  		</div>
-	  		<div class="row text-start p-2">
-	  			<label class="p-1">Buscar por nombre</label>
-	  			<input type="text" name="txfBuscar" class="w-100">
-	  		</div>
-	  		<div class="row text-start p-2">
-	  			<input type="submit" class="btn btn-info w-100" name="btnAceptar" value="Aceptar">
-	  		</div>
-	  	</div>
-	  	<div class="col-md-10 table-responsive w-75">
+	  
+	  	<div class="col-md-auto table-responsive w-100">
 	  		<table id="tabla_medicos" border=2 class="table align-middle table-info table-hover th-lg">
 	  		<thead>
-				<tr class="table-secondary"><th> ID Medico </th><th> Nombre y apellido</th><th> DNI </th> <th> Especialidad </th><th> Estado </th><th width="5%"> Seleccionar </th></tr>
+				<tr class="table-secondary"><th> ID Medico </th><th> Nombre y apellido</th>
+				<th> DNI </th> <th> Fecha nacimiento </th> <th> Especialidad </th> <th> Usuario </th>
+				<th> Estado </th><th width="5%"> Seleccionar </th></tr>
 			</thead>
 			<tbody>
 			<% if(request.getAttribute("listaMedicos")!=null){
@@ -121,7 +100,9 @@ $(document).ready( function () {
   								<td> <%= x.getIdMedico() %> </td>
   								<td> <%= x.getNombre() + " " + x.getApellido() %> </td> 
   								<td> <%= x.getDni() %>  </td>
+  								<td> <%= x.getFecha_nacimiento().toString()%>  </td>
 								<td> <%= x.getEspecialidad().getNombre() %> </td>
+								<td> <%= x.getUsuario().getUser() %> </td>
 								<td> <%= x.isEstado()? "Activo":"Inactivo"%> </td>
 								<td align="center"> <input type="radio" name="radSelect" value="<%=x.getIdMedico()%>"></td>
   							<%
@@ -136,7 +117,7 @@ $(document).ready( function () {
   	<div class="row mx-2 mb-2 justify-content-center p-2 border-bottom">
   		<div class="col-md-3 d-flex justify-content-center">
   		<%if(user.getTipo().getIdTipo()!=1){%>
-		 <a href="servletMedicos" name="btnAgregar" class="btn btn-secondary w-75" >Agregar</a>
+		 <button class="btn btn-info w-75" disabled >Agregar</button>
 		 <%}else{%> 
 		 <a href="servletNuevoMedico" name="btnAgregar" class="btn btn-info w-75" >Agregar</a>
 		 <%}%>

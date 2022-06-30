@@ -44,6 +44,7 @@ public class servletNuevoTurno extends HttpServlet {
 		
 		String redirect = "/NuevoTurno.jsp";
 		boolean flag = true;
+		request.setAttribute("Mensaje", null);
 		
 		if(request.getParameter("btnFiltrarDatos")!=null) {
 			filtar_horarios(request, response);
@@ -69,6 +70,7 @@ public class servletNuevoTurno extends HttpServlet {
 				request.setAttribute("turno", mostrar);
 				redirect = "VerTurno.jsp";
 			}else {
+				request.setAttribute("Mensaje", "SELECT");
 				redirect = "servletTurnos";
 			}
 			flag=false;
@@ -77,11 +79,12 @@ public class servletNuevoTurno extends HttpServlet {
 		if(request.getParameter("btnEliminarTurno")!=null) { 
 			if(request.getParameter("radSelect")!=null) {
 				if(liberar_turno(request, response)) {
-					// TURNO LIBERADO
+					request.setAttribute("Mensaje", "LIBRE");
 					redirect = "servletTurnos";
 					flag = false;
 				}
 			}else {
+				request.setAttribute("Mensaje", "SELECT");
 				redirect = "servletTurnos";
 				flag = false;
 			}
@@ -90,11 +93,12 @@ public class servletNuevoTurno extends HttpServlet {
 		if(request.getParameter("btnModificarTurno")!=null) { 
 			if(request.getParameter("radSelect")!=null) { 
 				if(cargar_turno_a_modificar(request, response)) {
-					// TURNO MODIFICADO
+					request.setAttribute("Mensaje", "ERROR");
 					redirect = "servletTurnos";
 					flag = false;
 				}
 			}else {
+				request.setAttribute("Mensaje", "SELECT");
 				redirect = "servletTurnos";
 				flag = false;
 			}
@@ -178,11 +182,6 @@ public class servletNuevoTurno extends HttpServlet {
 		
 		// SETEA PACIENTE ELEGIDO
 		paci=cargar_datos_paciente(request, response);
-		
-		// CARGA LISTA DE TURNOS
-		TurnoNegocio turneg = new TurnoNegocioImpl();
-		ArrayList<Turno> turnos = new ArrayList<Turno>();
-		turnos = turneg.Listar();
 		
 		// HORARIOS DISPONIBLES DEL MEDICO POR DIA DE LA SEMANA
 		ArrayList<Integer> horas = new ArrayList<Integer>();		
@@ -350,9 +349,21 @@ public class servletNuevoTurno extends HttpServlet {
 		
 		if(request.getParameter("turnoId")!=null && Integer.parseInt(request.getParameter("turnoId"))!=0) {
 			nuevo.setIdTurno(Integer.parseInt(request.getParameter("turnoId")));
-			return turneg.Modificar(nuevo);
+			if(turneg.Modificar(nuevo)) {
+				request.setAttribute("Mensaje", "MODIOK");
+				return true;
+			}else {
+				request.setAttribute("Mensaje", "ERROR");
+				return false;
+			}
 		}else {
-			return turneg.agregarTurno(nuevo);
+			if(turneg.agregarTurno(nuevo)) {
+				request.setAttribute("Mensaje", "AGROK");
+				return true;
+			}else {
+				request.setAttribute("Mensaje", "ERROR");
+				return false;
+			}
 		}	
 	}
 

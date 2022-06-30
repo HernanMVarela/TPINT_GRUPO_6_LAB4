@@ -2,7 +2,6 @@ package servlets;
 
 import java.io.IOException;
 import java.sql.Date;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.RequestDispatcher;
@@ -11,16 +10,6 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.xml.bind.helpers.ParseConversionEventImpl;
-
-import dao.LocalidadDao;
-import dao.PaisDao;
-import dao.ProvinciaDao;
-import dao.SexoDao;
-import daoImpl.LocalidadDaoImpl;
-import daoImpl.PaisDaoImpl;
-import daoImpl.ProvinciaDaoImpl;
-import daoImpl.SexoDaoImpl;
 import entidad.Direccion;
 import entidad.Localidad;
 import entidad.Paciente;
@@ -31,12 +20,12 @@ import entidad.Sexo;
 import negocio.LocalidadNegocio;
 import negocio.PacienteNegocio;
 import negocio.PaisNegocio;
-import negocio.PersonaNegocio;
+import negocio.ProvinciaNegocio;
 import negocio.SexoNegocio;
 import negocioImpl.LocalidadNegocioImpl;
 import negocioImpl.PacienteNegocioImpl;
 import negocioImpl.PaisNegocioImpl;
-import negocioImpl.PersonaNegocioImpl;
+import negocioImpl.ProvinciaNegocioImpl;
 import negocioImpl.SexoNegocioImpl;
 
 @WebServlet("/servletNuevoPaciente")
@@ -51,7 +40,7 @@ public class servletNuevoPaciente extends HttpServlet {
 		boolean aux = true;
 		String redirect = "/NuevoPaciente.jsp";
 		request.setAttribute("paciente", null);
-		
+		request.setAttribute("Mensaje", null);
 		
 		// EVENTO BOTON MODIFICAR USUARIO
 		if(request.getParameter("btnModificarPaciente")!=null) {
@@ -138,35 +127,23 @@ public class servletNuevoPaciente extends HttpServlet {
 	}
 	
 	private List<Provincia> create_provincia_list(){
-		List<Provincia> prov = new ArrayList<Provincia>();
-		ProvinciaDao provdao = new ProvinciaDaoImpl();
-		
-		prov = provdao.ListarTodo();
-		return prov;
+		ProvinciaNegocio provneg = new ProvinciaNegocioImpl();
+		return provneg.ListarTodo();
 	}
 	
 	private List<Localidad> create_localidad_list(){
-		List<Localidad> loc = new ArrayList<Localidad>();
-		LocalidadDao locdao = new LocalidadDaoImpl();
-		
-		loc = locdao.ListarTodo();
-		return loc;
+		LocalidadNegocio locneg = new LocalidadNegocioImpl();
+		return locneg.ListarTodo();
 	}
 	
 	private List<Sexo> create_sexo_list(){
-		List<Sexo> sex = new ArrayList<Sexo>();
-		SexoDao sexdao = new SexoDaoImpl();
-		
-		sex = sexdao.ListarTodo();
-		return sex;
+		SexoNegocio sexneg = new SexoNegocioImpl();
+		return sexneg.ListarTodo();
 	}
 	
 	private List<Pais> create_pais_list(){
-		List<Pais> pais = new ArrayList<Pais>();
-		PaisDao paisdao = new PaisDaoImpl();
-		
-		pais = paisdao.ListarTodo();
-		return pais;
+		PaisNegocio paisneg = new PaisNegocioImpl();
+		return paisneg.ListarTodo();
 	}
 
 	private boolean carga_datos(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
