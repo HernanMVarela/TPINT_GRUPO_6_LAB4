@@ -13,18 +13,21 @@ import negocio.PacienteNegocio;
 
 public class PacienteNegocioImpl implements PacienteNegocio{
 
-	PacienteDao dao = new PacienteDaoImpl();
+	PacienteDao pacdao = new PacienteDaoImpl();
 	
 	@Override
 	public Paciente buscar_dni(int dni) {
-		PacienteDao pacdao = new PacienteDaoImpl();
 		return pacdao.buscar_dni(dni);
 	}
 	
 	@Override
 	public boolean agregarPaciente(Paciente agregar) {
-		PacienteDao padao = new PacienteDaoImpl();
+		PersonaNegocioImpl perneg = new PersonaNegocioImpl();
 		
+		// VALIDACION PERSONA EXISTENTE
+		if(perneg.existePersona(agregar.getDni())) {
+			return false;
+		}
 		try {
 			VerificarDniInvalido(Integer.toString(agregar.getDni()));
 		} catch (DniException e) {
@@ -40,16 +43,15 @@ public class PacienteNegocioImpl implements PacienteNegocio{
 		nueva.setNacionalidad(agregar.getNacionalidad());
 		nueva.setSexo(agregar.getSexo());
 		nueva.setTelefono(agregar.getTelefono());
-		PersonaNegocioImpl perneg = new PersonaNegocioImpl();
 		if(!perneg.agregarPersona(nueva)) {
 			return false;
 		}
-		return padao.Agregar(agregar);
+		return pacdao.Agregar(agregar);
 	}
 
 	@Override
 	public boolean modificarPaciente(Paciente modificar) {
-		PacienteDao padao = new PacienteDaoImpl();
+
 		PersonaNegocioImpl perneg = new PersonaNegocioImpl();
 		Persona modif = new Persona();
 		
@@ -65,25 +67,25 @@ public class PacienteNegocioImpl implements PacienteNegocio{
 		if(!perneg.Modificar(modif)) {
 			return false;
 		}
-		return padao.Modificar(modificar);
+		return pacdao.Modificar(modificar);
 	}
 
 	@Override
 	public Paciente buscar_paciente(int idPaciente) {
-		PacienteDao padao = new PacienteDaoImpl();
-		return padao.Buscar(idPaciente);
+		return pacdao.Buscar(idPaciente);
 	}
 
 	@Override
 	public boolean bajaPaciente(Paciente baja) {
-		PacienteDao padao = new PacienteDaoImpl();
-		return padao.Eliminar(baja.getIdPaciente());
+		if(buscar_dni(baja.getDni()) == null) {
+			return false;
+		}
+		return pacdao.Eliminar(baja.getIdPaciente());
 	}		
 
 	@Override
 	public ArrayList<Paciente> listar() {
-		PacienteDao padao = new PacienteDaoImpl();
-		return padao.ListarTodo();
+		return pacdao.ListarTodo();
 	}
 
 	@Override
@@ -96,12 +98,14 @@ public class PacienteNegocioImpl implements PacienteNegocio{
 
 	@Override
 	public int contarPacientes() {
-		PacienteDao padao = new PacienteDaoImpl();
-		return padao.ContarPacientes();
+		return pacdao.ContarPacientes();
 	}
 
 	@Override
 	public boolean BajaLogica(int idPaciente) {
-		return dao.BajaLogica(idPaciente);
+		if(buscar_paciente(idPaciente) == null) {
+			return false;
+		}
+		return pacdao.BajaLogica(idPaciente);
 	}
 }

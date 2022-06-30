@@ -48,18 +48,14 @@ $(document).ready( function () {
 <% if(user==null){%><jsp:include page="Menu.html"></jsp:include> <%} else { %><jsp:include page="MenuLog.html"></jsp:include> <% } %>
 <% if(user!=null){%> 
 
-<% if(request.getAttribute("Mensaje")!=null){
-	mensaje = (String)request.getAttribute("Mensaje");
+<%if(request.getAttribute("Mensaje")!=null){ mensaje = (String)request.getAttribute("Mensaje");
+	if(mensaje.equals("SELECT")){%><script>alert("No hay elemento seleccionado");</script><%}
+	if(mensaje.equals("AGROK")){%><script>alert("Medico agregado correctamente");</script><%}
+	if(mensaje.equals("MODIOK")){%><script>alert("Medico modificado correctamente");</script><%}
+	if(mensaje.equals("ELIMOK")){%><script>alert("Medico eliminado correctamente");</script><%}
+	if(mensaje.equals("ERROR")){%><script>alert("No se pudo completar la operación");</script><%}
+}%>
 
-%>
-<script type="text/javascript">
-      alert(mensaje);
-</script>
-
-<script type="text/javascript">
-      alert("OTRO DE PRUEBA");
-</script>
-<% }%>
 <div class="d-flex flex-row bd-highlight">
 
 	<div class="px-2 flex-grow-1 bd-highlight"></div>

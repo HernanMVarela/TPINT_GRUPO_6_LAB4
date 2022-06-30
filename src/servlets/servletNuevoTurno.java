@@ -356,7 +356,6 @@ public class servletNuevoTurno extends HttpServlet {
 		}	
 	}
 
-	// CAMBIA ESTADO A 0 DEL ADMINISTRADOR
 	private boolean liberar_turno(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		TurnoNegocio turneg = new TurnoNegocioImpl();
 		Turno turno = new Turno();

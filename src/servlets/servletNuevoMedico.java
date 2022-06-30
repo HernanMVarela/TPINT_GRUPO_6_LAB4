@@ -17,6 +17,7 @@ import entidad.Especialidad;
 import entidad.Horario;
 import entidad.Localidad;
 import entidad.Medico;
+import entidad.Paciente;
 import entidad.Pais;
 import entidad.Persona;
 import entidad.Provincia;
@@ -66,10 +67,10 @@ public class servletNuevoMedico extends HttpServlet {
 					// DATOS DEL ELEMENTO SELECCIONADO OBTENIDOS
 				}else {
 					request.setAttribute("medic", null);	
-					// NO SE PUEDEN CARGAR LOS DATOS
+					request.setAttribute("Mensaje", "ERROR");
 				}
 			}else {
-				// NO HAY ELEMENTO SELECCIONADO
+				request.setAttribute("Mensaje", "SELECT");
 				aux = false;
 				redirect = "servletMedicos"; 
 			}
@@ -79,24 +80,31 @@ public class servletNuevoMedico extends HttpServlet {
 		if(request.getParameter("btnEliminarMedico")!=null) {
 			if(request.getParameter("radSelect")!=null){
 				if(eliminar_medico(request, response)) {
-					// 
+					request.setAttribute("Mensaje", "ELIMOK");
 				}else {
-					// NO SE PUDO ELIMINAR
+					request.setAttribute("Mensaje", "ERROR");
 				}
 				aux = false;
 				redirect = "servletMedicos";
 			}else {
-				// NO HAY NADA SELECCIONADO - DEVOLVER ATRIBUTO O MENSAJE DE ERROR
+				request.setAttribute("Mensaje", "SELECT");
 			}
 		}
 		
 		// EVENTO BOTON AGREGAR NUEVO USUARIO
 		if(request.getParameter("btnAceptar")!=null) {
 			if (request.getParameter("medicId")!=null){
-				System.out.println("LLEGA A MODIFICAR: " + Integer.parseInt(request.getParameter("medicId")));
-				modificar_medico(request, response);
+				if(modificar_medico(request, response)) {
+					request.setAttribute("Mensaje", "MODIOK");
+				}else {
+					request.setAttribute("Mensaje", "ERROR");
+				}		
 			}else {
-				agregar_medico(request, response);
+				if(agregar_medico(request, response)){
+					request.setAttribute("Mensaje", "AGROK");
+				}else {
+					request.setAttribute("Mensaje", "ERROR");
+				}
 			}
 			redirect = "servletMedicos";
 			aux = false;
@@ -369,7 +377,6 @@ public class servletNuevoMedico extends HttpServlet {
 	private boolean agregar_medico(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		Medico Medic = new Medico();
-		Medic.setEspecialidad(new Especialidad());
 		Usuario User = null;
 		Persona Perso= null;
 		
@@ -382,58 +389,24 @@ public class servletNuevoMedico extends HttpServlet {
 		// CARGO DATOS DE PERSONA
 		Perso = carga_datos_persona(request, response);
 		if(Perso == null) {
-			request.setAttribute("Mensaje", "ERROR: No se pudo agregar este Medico.");
 			return false;
 		}
-		
 		// CARGO DATOS DEL USUARIO
 		User = carga_datos_usuario(request, response);
 		if(User == null) {
-			request.setAttribute("Mensaje", "ERROR: No se pudo agregar este Medico.");
 			return false;
 		}
-		
-		
-		
-		// VALIDA QUE MEDICO NO EXISTA
-		if(medneg.existe_medico(Perso.getDni())) { // SI MEDICO EXISTE - REGRESA SIN AGREGAR NADA
-			request.setAttribute("Mensaje", "ERROR: Ese médico ya existe.");
-			return false;
-		}
-		
+
 		// HORARIOS DEL MEDICO
 		ArrayList<Horario> horas = carga_horarios_medico(request, response);
-		HorarioNegocio horasneg = new HorarioNegocioImpl();
-		
+
 		// VALIDACION DE HORARIO CARGADO CORRECTAMENTE
 		if(horas==null) {
 			return false;
 		}
 		
-		// VALIDA QUE PERSONA Y USUARIO NO EXISTAN
-		if(perneg.existePersona(Perso.getDni()) || userneg.existeUsuario(User.getUser())!=-1) {
-			if(perneg.existePersona(Perso.getDni())) {
-				request.setAttribute("Mensaje", "ERROR: Esa persona ya existe.");
-			}
-			if (userneg.existeUsuario(User.getUser())!=-1) {
-				request.setAttribute("Mensaje", "ERROR: Ese nombre de usuario ya existe.");
-			}
-			return false;
-		} else if (!perneg.agregarPersona(Perso)) {
-			request.setAttribute("Mensaje", "ERROR: No se pudo agregar esa persona.");
-			return false;
-		} else if (!userneg.agregarUsuario(User)) {
-			perneg.Eliminar(Perso.getDni());
-			request.setAttribute("Mensaje", "ERROR: No se pudo agregar este usuario.");
-			return false;
-		}
-		
-		User.setIdUsuario(userneg.existeUsuario(User.getUser()));
-		
-		Medic.setDni(Perso.getDni());
-		Medic.setUsuario(User);
-		Medic.setEstado(true);
-		
+		Medic = nuevo_medico_datos(Perso, User, horas);
+
 		// ESTADO DE CUENTA
 		if(Integer.parseInt(request.getParameter("slcEstadoCuenta"))!=0) {
 			if(Integer.parseInt(request.getParameter("slcEstadoCuenta"))==1) {
@@ -446,34 +419,33 @@ public class servletNuevoMedico extends HttpServlet {
 		}
 
 		// ESPECIALIDAD DEL MEDICO
+		Medic.setEspecialidad(new Especialidad());
 		if(Integer.parseInt(request.getParameter("slcEsp"))!=0) {
 			Medic.getEspecialidad().setIdEspecialidad(Integer.parseInt(request.getParameter("slcEsp")));
 		}else {
 			flag = false;
 		}
 		
-		// CARGA MEDICO A DB
-		if(!medneg.agregarMedico(Medic)) {
-			perneg.Eliminar(Perso.getDni());
-			userneg.Eliminar(User.getIdUsuario());
-			request.setAttribute("Mensaje", "ERROR: No se pudo agregar este Medico.");
-			return false;
-		}
+		return medneg.agregarMedico(Medic);
+	}
 		
-		// OBTIENE ID DE MEDICO AGREGADO
-		Medico Aux = new Medico();
-		Aux = medneg.buscar_dni(Medic.getDni());
+	private Medico nuevo_medico_datos(Persona perso, Usuario user, ArrayList<Horario> horas) {
+		Medico nuevo = new Medico();
 		
+		nuevo.setDni(perso.getDni());
+		nuevo.setNombre(perso.getNombre());
+		nuevo.setApellido(perso.getApellido());
+		nuevo.setEmail(perso.getEmail());
+		nuevo.setFecha_nacimiento(perso.getFecha_nacimiento());
+		nuevo.setDirecc(perso.getDirecc());
+		nuevo.setNacionalidad(perso.getNacionalidad());
+		nuevo.setSexo(perso.getSexo());
+		nuevo.setTelefono(perso.getTelefono());
+		nuevo.setEstado(true);
+		nuevo.setUsuario(user);
+		nuevo.setHorarios(horas);
 		
-		// CARGA HORAS DE ATENCION DEL MEDICO (NECESITA IDMEDICO)
-		for (Horario horario : horas) {
-			if(!horasneg.Agregar(Aux.getIdMedico(), horario)){
-				request.setAttribute("Mensaje", "No se pudo carga los horarios, modifique este médico para cargarlos nuevamente");
-				return false;
-			}
-		}
-		request.setAttribute("Mensaje", "Nuevo médico agregado: " + Aux.getNombre() + " " + Aux.getApellido());
-		return flag;
+		return nuevo;
 	}
 
 	// CAMBIA ESTADO A 0 DEL MEDICO
@@ -505,14 +477,14 @@ public class servletNuevoMedico extends HttpServlet {
 		Medico Medic = null;
 		Usuario User = null;
 		Persona Perso= null;
+		ArrayList<Horario> horas = carga_horarios_medico(request, response);
 		
-		PersonaNegocio perneg = new PersonaNegocioImpl();
-		UsuarioNegocio userneg = new UsuarioNegocioImpl();
 		MedicoNegocio medicneg = new MedicoNegocioImpl();
-		HorarioNegocio horasneg = new HorarioNegocioImpl();
 
 		Medic = medicneg.buscar_id(Integer.parseInt(request.getParameter("medicId").toString()));
+		
 		if(Medic == null) {return false;}
+		int id = Medic.getIdMedico();
 		
 		Perso = carga_datos_persona(request, response);
 		if(Perso == null) {return false;}
@@ -520,20 +492,26 @@ public class servletNuevoMedico extends HttpServlet {
 		
 		User = carga_datos_usuario(request, response);
 		if(User == null) {return false;}
-		User.setIdUsuario(Medic.getUsuario().getIdUsuario());
+		User.setIdUsuario(Medic.getUsuario().getIdUsuario());	
 		
-		Medic.setHorarios(carga_horarios_medico(request, response));
-		if(Medic.getHorarios()==null) {return false;}		
+		Medic = nuevo_medico_datos(Perso, User, horas);		
+		Medic.setIdMedico(id);
+		// ESTADO DE CUENTA
+		if(Integer.parseInt(request.getParameter("slcEstadoCuenta"))!=0) {
+			if(Integer.parseInt(request.getParameter("slcEstadoCuenta"))==1) {
+				Medic.setEstado(true);
+			}else {
+				Medic.setEstado(false);
+			}
+		}
 		
-		if(!perneg.Modificar(Perso)) {return false;}
-		if(!userneg.Modificar(User)) {return false;}
+		// ESPECIALIDAD DEL MEDICO
+		Medic.setEspecialidad(new Especialidad());
+		if(Integer.parseInt(request.getParameter("slcEsp"))!=0) {
+			Medic.getEspecialidad().setIdEspecialidad(Integer.parseInt(request.getParameter("slcEsp")));
+		}
 		
-		if(!horasneg.Modificar(Medic.getIdMedico(), Medic.getHorarios())) {return false;}
-		
-		if(!medicneg.Modificar(Medic)) {return false;}
-		else {
-		return true;}
-		
+		return medicneg.Modificar(Medic);
 	}
 	
 }

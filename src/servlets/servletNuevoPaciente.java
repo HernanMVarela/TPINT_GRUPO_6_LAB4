@@ -63,6 +63,7 @@ public class servletNuevoPaciente extends HttpServlet {
 					// NO SE PUEDEN CARGAR LOS DATOS
 				}
 			}else {
+				request.setAttribute("Mensaje", "SELECT");
 				// NO HAY ELEMENTO SELECCIONADO
 				aux = false;
 				redirect = "servletPacientes"; 
@@ -71,9 +72,17 @@ public class servletNuevoPaciente extends HttpServlet {
 		
 		if(request.getParameter("btnAceptar")!=null) {
 			if(request.getParameter("pacienteID")!=null) {
-				modificar_paciente(request, response);
+				if(modificar_paciente(request, response)) {
+					request.setAttribute("Mensaje", "MODIOK");
+				}else {
+					request.setAttribute("Mensaje", "ERROR");
+				}
 			}else {
-				agregar_paciente(request, response);
+				if(agregar_paciente(request, response)) {
+					request.setAttribute("Mensaje", "AGROK");
+				}else {
+					request.setAttribute("Mensaje", "ERROR");
+				}
 			}
 			aux = false;
 			redirect = "servletPacientes"; 
@@ -82,9 +91,9 @@ public class servletNuevoPaciente extends HttpServlet {
 		if(request.getParameter("btnEliminarUsuario")!=null) {
 			if(request.getParameter("radSelect")!=null){
 			    if(eliminar_paciente(request, response)) {
-			        // 
+			    	request.setAttribute("Mensaje", "ELIMOK");
 			    }else {
-			        // NO SE PUDO ELIMINAR
+			    	request.setAttribute("Mensaje", "ERROR");
 			    }
 			    aux = false;
 			    redirect = "servletPacientes";
@@ -175,14 +184,9 @@ public class servletNuevoPaciente extends HttpServlet {
 	}
 	
 	private boolean agregar_paciente(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		PersonaNegocio perneg = new PersonaNegocioImpl();
 		Persona perso = new Persona();
 		perso = carga_datos_persona(request, response);
 		
-		// VALIDACION PERSONA EXISTENTE
-		if(perneg.existePersona(perso.getDni())) {
-			return false;
-		}
 		PacienteNegocio pacneg = new PacienteNegocioImpl();
 		Paciente nuevo = new Paciente();
 		nuevo = nuevo_paciente(perso);
@@ -296,15 +300,10 @@ public class servletNuevoPaciente extends HttpServlet {
 	
 	private boolean eliminar_paciente(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		PacienteNegocio pacneg = new PacienteNegocioImpl();
-		Paciente pacien = new Paciente();
 		int idPaciente = Integer.valueOf(request.getParameter("radSelect"));
 		
-		pacien = pacneg.buscar_paciente(idPaciente);
-		if(pacien != null) {
-			return pacneg.BajaLogica(idPaciente);
-		}
-		
-		return false;
+		return pacneg.BajaLogica(idPaciente);
+
 	}
 
 }
