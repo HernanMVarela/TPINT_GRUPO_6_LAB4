@@ -37,7 +37,7 @@ public class TurnoDaoImpl implements TurnoDao{
 	public ArrayList<Turno> ListarTodo() {
 		
 		try {
-			Class.forName("com.mysql.jdbc.Driver");
+			Class.forName("com.mysql.cj.jdbc.Driver");
 			} 
 		catch (ClassNotFoundException e) {
 			e.printStackTrace();
@@ -98,7 +98,7 @@ public class TurnoDaoImpl implements TurnoDao{
 	public boolean Agregar(Turno turno) {
 		
 		try {
-			Class.forName("com.mysql.jdbc.Driver");
+			Class.forName("com.mysql.cj.jdbc.Driver");
 			} 
 		catch (ClassNotFoundException e) {
 			e.printStackTrace();
@@ -274,7 +274,7 @@ public class TurnoDaoImpl implements TurnoDao{
 	@Override
 	public int UltimoID() {
 		try {
-			Class.forName("com.mysql.jdbc.Driver");
+			Class.forName("com.mysql.cj.jdbc.Driver");
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		}
@@ -305,7 +305,7 @@ public class TurnoDaoImpl implements TurnoDao{
 	@Override
 	public int ContarTurnosTotales() {
 		try {
-			Class.forName("com.mysql.jdbc.Driver");
+			Class.forName("com.mysql.cj.jdbc.Driver");
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		}
@@ -330,7 +330,7 @@ public class TurnoDaoImpl implements TurnoDao{
 	@Override
 	public int ContarTurnosPorEstado(int idEstado) {
 		try {
-			Class.forName("com.mysql.jdbc.Driver");
+			Class.forName("com.mysql.cj.jdbc.Driver");
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		}

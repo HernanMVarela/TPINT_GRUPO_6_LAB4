@@ -49,7 +49,7 @@ public class MedicoDaoImpl implements MedicoDao{
 	public ArrayList<Medico> ListarTodo() {
 		
 		try {
-			Class.forName("com.mysql.jdbc.Driver");
+			Class.forName("com.mysql.cj.jdbc.Driver");
 			} 
 		catch (ClassNotFoundException e) {
 			e.printStackTrace();
@@ -116,7 +116,7 @@ public class MedicoDaoImpl implements MedicoDao{
 	public boolean Agregar(Medico medico) {
 		
 		try {
-			Class.forName("com.mysql.jdbc.Driver");
+			Class.forName("com.mysql.cj.jdbc.Driver");
 			} 
 		catch (ClassNotFoundException e) {
 			e.printStackTrace();
@@ -287,7 +287,7 @@ public class MedicoDaoImpl implements MedicoDao{
 	@Override
 	public int UltimoID() {
 		try {
-			Class.forName("com.mysql.jdbc.Driver");
+			Class.forName("com.mysql.cj.jdbc.Driver");
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		}
@@ -547,7 +547,7 @@ public class MedicoDaoImpl implements MedicoDao{
 	@Override
 	public int ContarMedicos() {
 		try {
-			Class.forName("com.mysql.jdbc.Driver");
+			Class.forName("com.mysql.cj.jdbc.Driver");
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		}
@@ -572,7 +572,7 @@ public class MedicoDaoImpl implements MedicoDao{
 	@Override
 	public int MejorMedico() {
 		try {
-			Class.forName("com.mysql.jdbc.Driver");
+			Class.forName("com.mysql.cj.jdbc.Driver");
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		}
@@ -597,7 +597,7 @@ public class MedicoDaoImpl implements MedicoDao{
 	@Override
 	public int TurnosMejorMedico() {
 		try {
-			Class.forName("com.mysql.jdbc.Driver");
+			Class.forName("com.mysql.cj.jdbc.Driver");
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		}

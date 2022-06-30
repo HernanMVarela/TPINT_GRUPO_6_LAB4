@@ -37,7 +37,7 @@ public class PacienteDaoImpl implements PacienteDao{
 	public ArrayList<Paciente> ListarTodo() {
 		
 		try {
-			Class.forName("com.mysql.jdbc.Driver");
+			Class.forName("com.mysql.cj.jdbc.Driver");
 			} 
 		catch (ClassNotFoundException e) {
 			e.printStackTrace();
@@ -76,7 +76,7 @@ public class PacienteDaoImpl implements PacienteDao{
 	public boolean Agregar(Paciente paciente) {
 		
 		try {
-			Class.forName("com.mysql.jdbc.Driver");
+			Class.forName("com.mysql.cj.jdbc.Driver");
 			} 
 		catch (ClassNotFoundException e) {
 			e.printStackTrace();
@@ -181,7 +181,7 @@ public class PacienteDaoImpl implements PacienteDao{
 	@Override
 	public int UltimoID() {
 		try {
-			Class.forName("com.mysql.jdbc.Driver");
+			Class.forName("com.mysql.cj.jdbc.Driver");
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		}
@@ -254,7 +254,7 @@ public class PacienteDaoImpl implements PacienteDao{
 	@Override
 	public int ContarPacientes() {
 		try {
-			Class.forName("com.mysql.jdbc.Driver");
+			Class.forName("com.mysql.cj.jdbc.Driver");
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		}

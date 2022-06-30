@@ -193,7 +193,7 @@ public class EspecialidadDaoImpl implements EspecialidadDao {
 	@Override
 	public int ContarEspecialidades() {
 		try {
-			Class.forName("com.mysql.jdbc.Driver");
+			Class.forName("com.mysql.cj.jdbc.Driver");
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		}
