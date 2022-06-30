@@ -45,7 +45,8 @@ public class servletNuevoTurno extends HttpServlet {
 		String redirect = "/NuevoTurno.jsp";
 		boolean flag = true;
 		request.setAttribute("Mensaje", null);
-		
+		request.setAttribute("preturno", null);
+		request.setAttribute("fullturno", null);
 		if(request.getParameter("btnFiltrarDatos")!=null) {
 			filtar_horarios(request, response);
 		}
@@ -176,7 +177,7 @@ public class servletNuevoTurno extends HttpServlet {
 		Paciente paci = new Paciente();
 		
 		if(!validacion_campos_iniciales(request, response)) {return false;}
-		
+		System.out.println("");
 		// SETEA MEDICO ELEGIDO
 		medico=cargar_datos_medico(request, response);
 		

@@ -95,6 +95,11 @@ if(request.getAttribute("fullturno")!=null){
 	turno=(Turno)request.getAttribute("fullturno");
 	%><input type="hidden" name="turnoId" value="<%= turno.getIdTurno() %>"><%
 }
+
+if(request.getAttribute("fullturno")==null && request.getAttribute("preturno")==null){
+	turno = null;
+}
+
 %>
 	<div class="row mb-2 justify-content-center p-2">
 	  	<label class="subtitle w-100">Nuevo turno</label>
