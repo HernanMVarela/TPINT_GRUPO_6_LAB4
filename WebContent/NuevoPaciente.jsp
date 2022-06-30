@@ -83,15 +83,15 @@
   	<div class="row justify-content-center">
   		<div class="col col-md-3 mh-2 justify-content-center p-2">
   			<label class="p-1">Nombre</label>
-	  		<input type="text" name="txfNombre" class="w-100" required <% if(paci!=null){%>value="<%=paci.getNombre()%>"<%;}%>>
+	  		<input type="text" name="txfNombre" class="w-100" required placeholder="Nombre" <% if(paci!=null){%>value="<%=paci.getNombre()%>"<%;}%>>
   		</div>
   		<div class="col col-md-3 mh-2 justify-content-center p-2">
   			<label class="p-1">Apellido</label>
-	  		<input type="text" name="txfApellido" class="w-100" required <% if(paci!=null){%>value="<%=paci.getApellido()%>"<%;}%>>
+	  		<input type="text" name="txfApellido" class="w-100" required placeholder="Apellido" <% if(paci!=null){%>value="<%=paci.getApellido()%>"<%;}%>>
   		</div>
   		<div class="col col-md-3 mh-2 justify-content-center p-2">
   			<label class="p-1">Documento</label>
-	  		<input type="number" name="txfDocumento" class="w-100" required <% if(paci!=null){%>readonly value="<%=paci.getDni()%>"<%;}%>>
+	  		<input type="number" name="txfDocumento" class="w-100" required placeholder="Documento" <% if(paci!=null){%>readonly value="<%=paci.getDni()%>"<%;}%>>
   		</div>
   	</div>
   	<div class="row justify-content-center">
@@ -192,17 +192,17 @@
   		</div>
   		<div class="col col-md-3 mh-2 justify-content-center p-2">
   			<label class="p-1">Dirección</label>
-	  		<input type="text" name="txfDireccion" class="w-100" required <% if(paci!=null){%>value="<%=paci.getDirecc().getCalleYNum() %>"<%;}%>>
+	  		<input type="text" name="txfDireccion" class="w-100" required placeholder="Dirección" <% if(paci!=null){%>value="<%=paci.getDirecc().getCalleYNum() %>"<%;}%>>
   		</div>
   	</div>
 	<div class="row justify-content-center border-bottom mb-3">
 		<div class="col col-md-3 mh-2 justify-content-center p-2">
   			<label class="p-1">Correo Electrónico</label>
-	  		<input type="email" name="txfCorreo" class="w-100" required <% if(paci!=null){%>value="<%=paci.getEmail() %>"<%;}%>>
+	  		<input type="email" name="txfCorreo" class="w-100" required placeholder="nombre@dominio.tipo" <% if(paci!=null){%>value="<%=paci.getEmail() %>"<%;}%>>
   		</div>
 		<div class="col col-md-3 mh-2 justify-content-center p-2">
   			<label class="p-1">Telefono</label>
-	  		<input type="text" name="txfTelefono" class="w-100" required <% if(paci!=null){%>value="<%=paci.getTelefono() %>"<%;}%>>
+	  		<input type="text" name="txfTelefono" class="w-100" required placeholder="123 1234 1234" <% if(paci!=null){%>value="<%=paci.getTelefono() %>"<%;}%>>
   		</div>
 	</div>
   	

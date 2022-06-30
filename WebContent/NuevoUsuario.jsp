@@ -91,14 +91,14 @@
 	  <div class="row justify-content-center">
 	  	<div class="col col-md-3 mh-2 justify-content-center p-2">
 	  		<label class="p-1">Nombre</label>
-		  	<input type="text" name="txfNombrePersona" class="w-100" required
+		  	<input type="text" name="txfNombrePersona" class="w-100" required placeholder="Nombre"
 	  		<% 
 	  			if(admin!=null){%>value="<%=admin.getNombre()%>"<%;}
 		  	%>>
 	  	</div>
 	  	<div class="col col-md-3 mh-2 justify-content-center p-2">
 	  		<label class="p-1">Apellido</label>
-		  	<input type="text" name="txfApellidoPersona" class="w-100" required
+		  	<input type="text" name="txfApellidoPersona" class="w-100" required placeholder="Apellido"
 	  		<% 
   			if(admin!=null){%>value="<%=admin.getApellido()%>"<%;}
 	  		%>
@@ -106,7 +106,7 @@
 	  	</div>
 	  	<div class="col col-md-3 mh-2 justify-content-center p-2">
 	  		<label class="p-1">Nombre de usuario</label>
-		  	<input type="text" name="txfUsername" class="w-100" required
+		  	<input type="text" name="txfUsername" class="w-100" required placeholder="Usuario"
 	  		<% 
   			if(admin!=null){%>value="<%=admin.getUsuario().getUser()%>"<%;}
 	  		%>
@@ -116,7 +116,7 @@
 	  <div class="row justify-content-center">
 	  	<div class="col col-md-3 mh-2 justify-content-center p-2">
 	  		<label class="p-1">Documento</label>
-		  	<input type="number" name="txfDocumentoPersona" class="w-100" required
+		  	<input type="number" name="txfDocumentoPersona" class="w-100" required placeholder="Documento"
 	  		<% 
   			if(admin!=null){%>value="<%=admin.getDni()%>" readonly<%;}
 	  		%>
@@ -146,7 +146,7 @@
 	  	</div>
 	  	<div class="col col-md-3 mh-2 justify-content-center p-2">
 	  		<label class="p-1">Contraseña</label>
-		  	<input type="password" name="txfPassword1" class="w-100" required
+		  	<input type="password" name="txfPassword1" class="w-100" required placeholder="Clave"
 	  		<% 
   			if(admin!=null){%>value="<%=admin.getUsuario().getPassword()%>"<%;}
 	  		%>
@@ -186,7 +186,7 @@
 	    </div>
 	     <div class="col col-md-3 mh-2 justify-content-center p-2">
 	  		<label class="p-1">Verifique su contraseña</label>
-		  	<input type="password" name="txfPassword2" class="w-100" required
+		  	<input type="password" name="txfPassword2" class="w-100" required placeholder="Verificación"
 	  		<% 
   			if(admin!=null){%>value="<%=admin.getUsuario().getPassword()%>"<%;}
 	  		%>
@@ -241,7 +241,7 @@
 	  	</div>
 	  	<div class="col col-md-2 mh-2 justify-content-center p-2">
 	 		<label class="p-1">Dirección</label>
-		  	<input type="text" name="txfDireccionPersona" class="w-100" required
+		  	<input type="text" name="txfDireccionPersona" class="w-100" required placeholder="Dirección"
 	  		<% 
   			if(admin!=null){%>value="<%=admin.getDirecc().getCalleYNum()%>"<%;}
 	  		%>>
@@ -272,7 +272,7 @@
 	  <div class="row justify-content-center">
 	  	<div class="col col-md-3 mh-2 justify-content-center p-2">
 	  		<label class="p-1">Email</label>
-		  	<input type="email" name="txfEmailPersona" class="w-100" required
+		  	<input type="email" name="txfEmailPersona" class="w-100" required placeholder="correo@dominio.tipo"
 	  		<% 
   			if(admin!=null){%>value="<%=admin.getEmail()%>"<%;}
 	  		%>
@@ -280,7 +280,7 @@
 	  	</div>
 	  	<div class="col col-md-3 mh-2 justify-content-center p-2">
 	  		<label class="p-1">Telefono</label>
-		  	<input type="text" name="txfTelefonoPersona" class="w-100" required
+		  	<input type="text" name="txfTelefonoPersona" class="w-100" required placeholder="Teléfono"
 	  		<% 
   			if(admin!=null){%>value="<%=admin.getTelefono()%>"<%;}
 	  		%>

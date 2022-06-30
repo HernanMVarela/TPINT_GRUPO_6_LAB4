@@ -89,16 +89,16 @@
   	<div class="row justify-content-center">
   		<div class="col col-md-3 mh-2 justify-content-center p-2">
   			<label class="p-1">Nombre</label>
-	  		<input type="text" name="txfNombre" class="w-100" required <% if(medic!=null){%>value="<%=medic.getNombre()%>"<%;}%>>
+	  		<input type="text" name="txfNombre" class="w-100" required placeholder="Nombre" <% if(medic!=null){%>value="<%=medic.getNombre()%>"<%;}%>>
   		</div>
   		<div class="col col-md-3 mh-2 justify-content-center p-2">
   			<label class="p-1">Apellido</label>
-	  		<input type="text" name="txfApellido" class="w-100" required
+	  		<input type="text" name="txfApellido" class="w-100" required placeholder="Apellido"
 	  		<% 	if(medic!=null){%>value="<%=medic.getApellido()%>"<%;} 	%>>
   		</div>
   		<div class="col col-md-3 mh-2 justify-content-center p-2">
   			<label class="p-1">Documento</label>
-	  		<input type="number" name="txfDocumento" class="w-100" required
+	  		<input type="number" name="txfDocumento" class="w-100" required placeholder="Documento"
 	  		<%if(medic!=null){%>value="<%=medic.getDni()%>" readonly<%;}%>>
   		</div>
   	</div>
@@ -201,7 +201,7 @@
   		</div>
   		<div class="col col-md-3 mh-2 justify-content-center p-2">
   			<label class="p-1">Dirección</label>
-	  		<input type="text" name="txfDireccion" class="w-100" required
+	  		<input type="text" name="txfDireccion" class="w-100" required placeholder="Dirección"
 	  		<% 
   			if(medic!=null){%>value="<%=medic.getDirecc().getCalleYNum()%>"<%;}
 	  		%>>
@@ -349,14 +349,14 @@
 	  		</div>
 	  		<div class="row justify-content-center mx-2">
 	  			<label class="p-1">Correo Electrónico</label>
-	  			<input type="email" name="txfCorreo" class="w-100" required
+	  			<input type="email" name="txfCorreo" class="w-100" required placeholder="correo@dominio.tipo"
 		  		<% 
 	  			if(medic!=null){%>value="<%=medic.getEmail()%>"<%;}
 		  		%>>
 	  		</div>
 	  		<div class="row justify-content-center mx-2">
 	  			<label class="p-1">Telefono</label>
-	  			<input type="text" name="txfTelefono" class="w-100" required
+	  			<input type="text" name="txfTelefono" class="w-100" required placeholder="123 1234 1234"
 		  		<% 
 	  			if(medic!=null){%>value="<%=medic.getTelefono()%>"<%;}
 		  		%>>
@@ -365,21 +365,21 @@
   		<div class="col col-md-3 mh-2 justify-content-center p-2"> 
 	  		<div class="row justify-content-center mx-2">
 	  			<label class="p-1">Nombre de usuario</label>
-	  			<input type="text" name="txfUsername" class="w-100" required
+	  			<input type="text" name="txfUsername" class="w-100" required placeholder="Usuario"
 		  		<% 
 	  			if(medic!=null){%>value="<%=medic.getUsuario().getUser() %>" readonly<%;}
 		  		%>>	
 	  		</div>
 	  		<div class="row justify-content-center mx-2">
 	  			<label class="p-1">Contraseña</label>
-	  			<input type="password" name="txfPassword1" class="w-100" required
+	  			<input type="password" name="txfPassword1" class="w-100" required placeholder="Clave"
 		  		<% 
 	  			if(medic!=null){%>value="<%=medic.getUsuario().getPassword() %>"<%;}
 		  		%>>	
 	  		</div>
 	  		<div class="row justify-content-center mx-2">
 	  			<label class="p-1">Confirme contraseña</label>
-	  			<input type="password" name="txfPassword2" class="w-100" required
+	  			<input type="password" name="txfPassword2" class="w-100" required placeholder="Verificación"
 		  		<% 
 	  			if(medic!=null){%>value="<%=medic.getUsuario().getPassword() %>"<%;}
 		  		%>>		
