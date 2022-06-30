@@ -13,6 +13,8 @@ import negocio.PacienteNegocio;
 
 public class PacienteNegocioImpl implements PacienteNegocio{
 
+	PacienteDao dao = new PacienteDaoImpl();
+	
 	@Override
 	public Paciente buscar_dni(int dni) {
 		PacienteDao pacdao = new PacienteDaoImpl();
@@ -96,5 +98,10 @@ public class PacienteNegocioImpl implements PacienteNegocio{
 	public int contarPacientes() {
 		PacienteDao padao = new PacienteDaoImpl();
 		return padao.ContarPacientes();
+	}
+
+	@Override
+	public boolean BajaLogica(int idPaciente) {
+		return dao.BajaLogica(idPaciente);
 	}
 }

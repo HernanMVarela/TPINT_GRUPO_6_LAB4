@@ -11,6 +11,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.xml.bind.helpers.ParseConversionEventImpl;
 
 import dao.LocalidadDao;
 import dao.PaisDao;
@@ -78,7 +79,7 @@ public class servletNuevoPaciente extends HttpServlet {
 			redirect = "servletPacientes"; 
 		}
 		
-		if(request.getParameter("btnEliminar")!=null) {
+		if(request.getParameter("btnEliminarUsuario")!=null) {
 			if(request.getParameter("radSelect")!=null){
 			    if(eliminar_paciente(request, response)) {
 			        // 
@@ -296,12 +297,14 @@ public class servletNuevoPaciente extends HttpServlet {
 	private boolean eliminar_paciente(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		PacienteNegocio pacneg = new PacienteNegocioImpl();
 		Paciente pacien = new Paciente();
+		int idPaciente = Integer.valueOf(request.getParameter("radSelect"));
 		
-		pacien = pacneg.buscar_paciente(Integer.parseInt(request.getParameter("radSelect")));
+		pacien = pacneg.buscar_paciente(idPaciente);
 		if(pacien != null) {
-			return pacneg.bajaPaciente(pacien);
+			return pacneg.BajaLogica(idPaciente);
 		}
 		
 		return false;
 	}
+
 }

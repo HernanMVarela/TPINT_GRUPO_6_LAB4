@@ -7,20 +7,14 @@ import entidad.Paciente;
 
 public interface PacienteDao {
 	
-	public ArrayList<Paciente> ListarTodo();
-	
+	public ArrayList<Paciente> ListarTodo();	
 	public boolean Agregar(Paciente paciente);
-
 	public boolean Modificar(Paciente paciente);
-
-	public boolean Eliminar(int idPaciente);
-
+	public boolean Eliminar(int idPaciente);	
+	public boolean BajaLogica(int idPaciente);
 	public int UltimoID();
-
 	public Paciente Buscar(int idPaciente);
-
-	public int ContarPacientes();
-	
+	public int ContarPacientes();	
 	public Paciente buscar_dni(int dni);
 	
 }

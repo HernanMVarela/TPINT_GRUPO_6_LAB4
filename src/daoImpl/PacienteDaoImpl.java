@@ -22,11 +22,12 @@ import entidad.Usuario;
 
 public class PacienteDaoImpl implements PacienteDao{
 
-	private String leerTodo = "SELECT * FROM bdtp_integrador.pacientes";
+	private String leerTodo = "SELECT * FROM bdtp_integrador.pacientes WHERE ESTADO = 1";
 	private String alinsertar = "INSERT INTO bdtp_integrador.pacientes (DNI,Estado) VALUES (?,?)";
 	private String modificar = "UPDATE bdtp_integrador.pacientes SET Estado = ? WHERE IDPaciente = ?";
 	private String buscar = "SELECT * FROM bdtp_integrador.pacientes WHERE IDPaciente = ?";
 	private String eliminar = "DELETE FROM bdtp_integrador.pacientes WHERE IDPaciente = ?";
+	private String bajaLogica = "UPDATE bdtp_integrador.pacientes SET Estado = 0 WHERE IDPaciente = ?";
 	private String proxid = "SELECT MAX(m.IDPaciente) FROM bdtp_integrador.pacientes m order by m.IDPaciente"; 
 	private String contarpac = "SELECT COUNT(DNI) FROM bdtp_integrador.pacientes WHERE ESTADO = 1";
 	private String buscar_dni = "SELECT * FROM bdtp_integrador.pacientes WHERE DNI = ?";
@@ -275,7 +276,6 @@ public class PacienteDaoImpl implements PacienteDao{
 		return last;
 	}
 	
-	
 	@Override
 	public Paciente buscar_dni(int dni) {
 		try {
@@ -313,7 +313,40 @@ public class PacienteDaoImpl implements PacienteDao{
 		
 		return null;
 	}
+
 	
-	
+	@Override
+	public boolean BajaLogica(int idPaciente) {
+		try {
+	        Class.forName("com.mysql.cj.jdbc.Driver");
+	        } 
+	    catch (ClassNotFoundException e) {
+	        e.printStackTrace();
+	        }
+	    
+	    boolean result = false;
+	    Conexion conexion = Conexion.getConexion();
+	    PreparedStatement statement;
+	    
+	    try {
+	        statement = conexion.getSQLConexion().prepareStatement(bajaLogica);
+	        
+	        statement.setInt(1, idPaciente);
+	        
+	        if(statement.executeUpdate() > 0) {
+	            conexion.getSQLConexion().commit();
+	            result = true;
+	        }
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        try {
+	            conexion.getSQLConexion().rollback();
+	        } catch (Exception e2) {
+	            e2.printStackTrace();
+	        }
+	    }
+	    
+	    return result;
+	}
 	
 }

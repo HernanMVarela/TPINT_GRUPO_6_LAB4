@@ -16,4 +16,5 @@ public interface PacienteNegocio {
 	public void VerificarDniInvalido(String dni) throws DniException;
 	public int contarPacientes();
 	public Paciente buscar_dni(int dni);
+	public boolean BajaLogica(int idPaciente);
 }
