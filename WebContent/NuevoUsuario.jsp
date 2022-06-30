@@ -36,6 +36,8 @@
 <%
 	if(request.getAttribute("admin")!=null){
 		admin = (Administrador)request.getAttribute("admin");
+	}else{
+		admin = null;
 	}
 %>
 
