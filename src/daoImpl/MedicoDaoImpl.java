@@ -35,7 +35,6 @@ public class MedicoDaoImpl implements MedicoDao{
 	private String leerTodo = "SELECT * FROM bdtp_integrador.medicos";
 	private String alinsertar = "INSERT INTO bdtp_integrador.medicos (DNI,IDEspecialidad,IDUsuario,Estado) VALUES (?,?,?,?)";
 	private String modificar = "UPDATE bdtp_integrador.medicos SET DNI = ?, IDEspecialidad = ?, IDUsuario = ?, Estado = ? WHERE IDMedico = ?";
-	//private String modif_user = "UPDATE bdtp_integrador.medicos SET IDUsuario = ?, Estado = ? WHERE DNI = ?";
 	private String buscar = "SELECT * FROM bdtp_integrador.medicos WHERE IDMedico = ?";
 	private String eliminar = "DELETE FROM bdtp_integrador.medicos WHERE IDMedico = ?";
 	private String proxid = "SELECT MAX(m.IDMedico) FROM bdtp_integrador.medicos m order by m.IDMedico";
@@ -129,7 +128,6 @@ public class MedicoDaoImpl implements MedicoDao{
 		boolean InsertState = false;
 		
 		try {
-			System.out.println(medico.getDni() + " " + medico.getEspecialidad().getIdEspecialidad() + " " + medico.getUsuario().getIdUsuario());
 			Stat = conex.prepareStatement(alinsertar);
 			Stat.setInt(1,medico.getDni());
 			Stat.setInt(2,medico.getEspecialidad().getIdEspecialidad());
@@ -338,7 +336,6 @@ public class MedicoDaoImpl implements MedicoDao{
 				usuario = daoUser.ObtenerObjeto(idUser);
                 
             	result = new Medico();
-            	System.out.println("Seleccionado buscar user: " + idUser);
                 result.setIdMedico(resultSet.getInt("IDMedico"));
                 result.setDni(resultSet.getInt("DNI"));
                 result.setEspecialidad(new Especialidad());
@@ -371,7 +368,6 @@ public class MedicoDaoImpl implements MedicoDao{
 		try {
 			statement = conexion.getSQLConexion().prepareStatement(bajaMedic);
 			statement.setInt(1, idMedic);
-			System.out.println("Seleccionado baja medico: " + idMedic);
 			if(statement.executeUpdate() > 0) {
 				conexion.getSQLConexion().commit();
 				result = true;
@@ -387,65 +383,6 @@ public class MedicoDaoImpl implements MedicoDao{
 		return result;
 	}
 	
-/*
-	@Override
-	public boolean Modif_user(Medico medico) {
-		try {
-			Class.forName("com.mysql.cj.jdbc.Driver");
-			} 
-		catch (ClassNotFoundException e) {
-			e.printStackTrace();
-			}
-		
-		boolean result = false;
-		Conexion conexion = Conexion.getConexion();
-		PreparedStatement statement;
-		Persona perso = new Persona();
-		Usuario user = new Usuario();
-		PersonaNegocio perneg = new PersonaNegocioImpl();
-		UsuarioNegocio userneg = new UsuarioNegocioImpl();	
-		
-		try {
-			
-			perso.setNombre(medico.getNombre());
-			perso.setApellido(medico.getApellido());
-			perso.setDni(medico.getDni());
-			perso.setEmail(medico.getEmail());
-			perso.setFecha_nacimiento(medico.getFecha_nacimiento());
-			perso.setNacionalidad(medico.getNacionalidad());
-			perso.setSexo(medico.getSexo());
-			perso.setTelefono(medico.getTelefono());
-			
-			user.setIdUsuario(medico.getUsuario().getIdUsuario());
-			user.setUser(medico.getUsuario().getUser());
-			user.setPassword(medico.getUsuario().getPassword());
-			user.setTipo(medico.getUsuario().getTipo());
-			
-			if(!perneg.Modificar(perso)) {return false;}
-			if(!userneg.Modificar(user)) {return false;}
-			
-			statement = conexion.getSQLConexion().prepareStatement(modif_user);
-			
-			statement.setInt(1,medico.getUsuario().getIdUsuario());
-			statement.setInt(2,medico.isEstado() ? 1 : 0);
-			statement.setInt(3,medico.getDni());
-			
-			if(statement.executeUpdate() > 0) {
-				conexion.getSQLConexion().commit();
-				result = true;
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-			try {
-				conexion.getSQLConexion().rollback();
-			} catch (Exception e2) {
-				e2.printStackTrace();
-			}
-		}
-		
-		return result;
-	}*/
-
 	@Override
 	public Medico BuscarDNI(int DNI) {
 		try {

@@ -168,8 +168,6 @@ public class AdministradorDaoImpl implements AdministradorDao {
 				UsuarioDao daoUser = new UsuarioDaoImpl();
 				usuario = new Usuario();
 				usuario = daoUser.ObtenerObjeto(resultSet.getInt("idUsuario"));
-                
-				System.out.println();
 				
             	result = new Administrador();
 
