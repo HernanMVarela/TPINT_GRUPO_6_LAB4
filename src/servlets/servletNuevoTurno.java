@@ -50,6 +50,8 @@ public class servletNuevoTurno extends HttpServlet {
 		if(request.getParameter("btnFiltrarDatos")!=null) {
 			filtar_horarios(request, response);
 		}
+
+//CORRECCION MENSAJE DE ERROR POR FALTA DE DATOS (fue observado el horario)
 		
 		if(request.getParameter("btnConfirmarTurno")!=null) {
 			if(validar_campos_finales(request, response)) {
@@ -60,6 +62,10 @@ public class servletNuevoTurno extends HttpServlet {
 					flag = false;
 				}
 			}
+				else {
+					request.setAttribute("Mensaje", "INCOMPLETO");
+					redirect = "servletTurnos";				
+				}
 		}
 		
 		if(request.getParameter("btnVerTurno")!=null) { 
@@ -244,8 +250,10 @@ public class servletNuevoTurno extends HttpServlet {
 				if(turno.getMedico().getIdMedico()==medico.getIdMedico() && turno.getIdTurno()!=turno_actual){
 					Iterator<Integer> it = horas.iterator();
 					while(it.hasNext()) {
-						if(it.next()+1==turno.getHora()) {
-							it.remove();
+//ERROR EN TURNO						if(it.next()+1==turno.getHora()) {
+// Se corrige el error que permitía TOMAR EL MISMO HORARIO EN DOS TURNOS DIFERENTES CON EL MISMO MEDICO
+						if(it.next()==turno.getHora()) {
+						it.remove();
 						}
 					}
 				}

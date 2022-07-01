@@ -54,6 +54,7 @@ $(document).ready( function () {
 	if(mensaje.equals("MODIOK")){%><script>alert("Turno modificado correctamente");</script><%}
 	if(mensaje.equals("LIBRE")){%><script>alert("Turno liberado correctamente");</script><%}
 	if(mensaje.equals("ERROR")){%><script>alert("No se pudo completar la operación");</script><%}
+	if(mensaje.equals("INCOMPLETO")){%><script>alert("Los datos ingresados no están completos");</script><%}
 }%>
 
 <div class="d-flex flex-row bd-highlight">
@@ -140,7 +141,7 @@ $(document).ready( function () {
 		<a href="servletNuevoTurno" class="btn btn-info w-75">Agregar nuevo turno</a>
 	</div>
 	<div class="col-md-3 d-flex justify-content-center">
-	 <input type="submit" class="btn btn-info w-75" name="btnModificarTurno" value="Modificar" <%if(user.getTipo().getIdTipo()==3){%>disabled<%}%>>
+	 <input type="submit" class="btn btn-info w-75" name="btnModificarTurno" value="Modificar">
 			</div>
 	<div class="col-md-3 d-flex justify-content-center">
 		<button type="button" class="btn btn-danger w-75" data-bs-toggle="modal" data-bs-target="#modalEliminarTurno" <%if(user.getTipo().getIdTipo()!=1){%> disabled<%}%>>Eliminar turno</button>  
