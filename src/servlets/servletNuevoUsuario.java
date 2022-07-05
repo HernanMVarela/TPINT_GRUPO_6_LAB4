@@ -10,6 +10,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.jsp.tagext.TryCatchFinally;
 
 import Excepciones.DniException;
 import entidad.Administrador;
@@ -159,7 +160,7 @@ public class servletNuevoUsuario extends HttpServlet {
 		PaisNegocio paisdao = new PaisNegocioImpl();
 		SexoNegocio sexdao = new SexoNegocioImpl();
 		
-		boolean flag=true;
+		boolean flag = true;
 		
 		// NOMBRE PERSONA
 				if(!request.getParameter("txfNombrePersona").isEmpty()) {
@@ -255,6 +256,9 @@ public class servletNuevoUsuario extends HttpServlet {
 		
 	}
 	
+	
+	//CARGA DATOS DE USUARIO
+	
 	private Usuario carga_datos_usuario(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		Usuario User = new Usuario();
 		TipoNegocio tipneg = new TipoNegocioImpl(); // REEMPLAZAR POR NEGOCIO
@@ -267,14 +271,20 @@ public class servletNuevoUsuario extends HttpServlet {
 		}
 		
 		// PASSWORD
-		if(!request.getParameter("txfPassword1").isEmpty() && !request.getParameter("txfPassword2").isEmpty()) {
-			if(request.getParameter("txfPassword1").toString().equals(request.getParameter("txfPassword2").toString())) {
-				User.setPassword(request.getParameter("txfPassword1").toString());
+		try {
+				if(!request.getParameter("txfPassword1").isEmpty() && !request.getParameter("txfPassword2").isEmpty()) {
+				if(request.getParameter("txfPassword1").toString().equals(request.getParameter("txfPassword2").toString())) {
+					User.setPassword(request.getParameter("txfPassword1").toString());
+				}else {
+					System.out.println("Error, las contraseñas no coinciden");
+					
+				}
 			}else {
 				flag = false;
 			}
-		}else {
-			flag = false;
+		}
+		catch (Exception e) {
+			System.out.println("Error, las contraseñas no coinciden");
 		}
 		
 		// TIPO DE USUARIO
@@ -315,7 +325,7 @@ public class servletNuevoUsuario extends HttpServlet {
 			return false;
 		}
 
-		// VALIDA QUE PERSONA Y USUARIO NO EXISTAN
+// REVISAR FLAG Y NULL		// VALIDA QUE PERSONA Y USUARIO NO EXISTAN
 		if(perneg.existePersona(Perso.getDni()) || userneg.existeUsuario(User.getUser())!=-1) {
 			if(perneg.existePersona(Perso.getDni())) {
 				request.setAttribute("existePersona", true);
