@@ -80,20 +80,21 @@ public class servletNuevoUsuario extends HttpServlet {
 					request.getSession().setAttribute("dniException", "DNI Inválido");
 					e.printStackTrace();
 				}
+				redirect = "servletPanelAdministrador";
+				aux = false;
 			}else {
 				try {
 					if(agregar_nuevo_usuario(request, response)) {
 						request.setAttribute("Mensaje", "AGROK");
-					}else {
-						request.setAttribute("Mensaje", "ERROR");
+						redirect = "servletPanelAdministrador";
+						aux = false;
 					}
 				} catch (DniException e) {
 					request.getSession().setAttribute("dniException", "DNI Inválido");
 					e.printStackTrace();
 				}
 			}
-			redirect = "servletPanelAdministrador";
-			aux = false;
+			
 		}
 		
 		if(request.getParameter("btnEliminarUsuario")!=null) {
@@ -262,39 +263,42 @@ public class servletNuevoUsuario extends HttpServlet {
 	private Usuario carga_datos_usuario(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		Usuario User = new Usuario();
 		TipoNegocio tipneg = new TipoNegocioImpl(); // REEMPLAZAR POR NEGOCIO
+				
+		// VALIDACION USUARIO VACIO?
 		
-		boolean flag=true;
 		if(!request.getParameter("txfUsername").isEmpty()) {
 			User.setUser(request.getParameter("txfUsername").toString());
 		}else {
-			flag = false;
+			request.setAttribute("Mensaje", "ERROR");
+			return null;
 		}
 		
-		// PASSWORD
+		// VALIDACION PASSWORD
 		try {
 				if(!request.getParameter("txfPassword1").isEmpty() && !request.getParameter("txfPassword2").isEmpty()) {
 				if(request.getParameter("txfPassword1").toString().equals(request.getParameter("txfPassword2").toString())) {
 					User.setPassword(request.getParameter("txfPassword1").toString());
 				}else {
-					System.out.println("Error, las contraseñas no coinciden");
-					
+					request.setAttribute("Mensaje", "PWDERROR");
+					return null;
 				}
 			}else {
-				flag = false;
+				request.setAttribute("Mensaje", "ERROR");
+				return null;
 			}
 		}
 		catch (Exception e) {
-			System.out.println("Error, las contraseñas no coinciden");
+			System.out.println("Error");
 		}
 		
 		// TIPO DE USUARIO
 		if(Integer.parseInt(request.getParameter("slcTipoUsuario"))!=0) {
 			User.setTipo(tipneg.ObtenerObjeto(Integer.parseInt(request.getParameter("slcTipoUsuario"))));
 		}else {
-			flag = false;
+			request.setAttribute("Mensaje", "ERROR");
+			return null;
 		}
 		
-		if(!flag) return null;
 		return User;
 	}
 	
@@ -313,11 +317,14 @@ public class servletNuevoUsuario extends HttpServlet {
 		
 		// CARGO DATOS DE PERSONA
 		Perso = carga_datos_persona(request, response);
-		if(Perso == null) flag = false;
+		if(Perso == null) {
+			request.setAttribute("Mensaje", "ERROR");
+			return false;
+		}
 		
 		// CARGO DATOS DEL USUARIO
 		User = carga_datos_usuario(request, response);
-		if(User == null) flag = false;
+		if(User == null) return false;
 		
 		// VALIDA QUE ADMIN NO EXISTA
 		if(adminneg.existeAdmin(Perso.getDni())) { // SI ADMIN EXISTE - REGRESA SIN AGREGAR NADA
@@ -325,7 +332,7 @@ public class servletNuevoUsuario extends HttpServlet {
 			return false;
 		}
 
-// REVISAR FLAG Y NULL		// VALIDA QUE PERSONA Y USUARIO NO EXISTAN
+		// VALIDA QUE PERSONA Y USUARIO NO EXISTAN
 		if(perneg.existePersona(Perso.getDni()) || userneg.existeUsuario(User.getUser())!=-1) {
 			if(perneg.existePersona(Perso.getDni())) {
 				request.setAttribute("existePersona", true);

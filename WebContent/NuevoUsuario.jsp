@@ -33,6 +33,7 @@
 <%!ArrayList<Tipo> listaTipos = null;%>
 <%!ArrayList<Pais> listapaises = null;%>
 <%!Administrador admin = null;%>
+<%!String mensaje = null; %>
 <%
 	if(request.getAttribute("admin")!=null){
 		admin = (Administrador)request.getAttribute("admin");
@@ -41,6 +42,15 @@
 	}
 %>
 
+<%if(request.getAttribute("Mensaje")!=null){ mensaje = (String)request.getAttribute("Mensaje");
+	if(mensaje.equals("SELECT")){%><script>alert("No hay elemento seleccionado");</script><%}
+	if(mensaje.equals("AGROK")){%><script>alert("Turno agregado correctamente");</script><%}
+	if(mensaje.equals("MODIOK")){%><script>alert("Turno modificado correctamente");</script><%}
+	if(mensaje.equals("LIBRE")){%><script>alert("Turno liberado correctamente");</script><%}
+	if(mensaje.equals("ERROR")){%><script>alert("No se pudo completar la operación");</script><%}
+	if(mensaje.equals("PWDERROR")){%><script>alert("Las contraseñas ingresadas no coinciden");</script><%}
+	if(mensaje.equals("INCOMPLETO")){%><script>alert("Los datos ingresados no están completos");</script><%}
+}%>
 
 <!-- MENU DE NAVEGACION Y LOGIN -->
 <%! Usuario user = null; %>
@@ -93,14 +103,14 @@
 	  <div class="row justify-content-center">
 	  	<div class="col col-md-3 mh-2 justify-content-center p-2">
 	  		<label class="p-1">Nombre</label>
-		  	<input type="text" name="txfNombrePersona" class="w-100" required placeholder="Nombre"
+		  	<input type="text" pattern="[A-Za-z]{1,30}" name="txfNombrePersona" class="w-100" required placeholder="Ingrese únicamente letras"
 	  		<% 
 	  			if(admin!=null){%>value="<%=admin.getNombre()%>"<%;}
 		  	%>>
 	  	</div>
 	  	<div class="col col-md-3 mh-2 justify-content-center p-2">
 	  		<label class="p-1">Apellido</label>
-		  	<input type="text" name="txfApellidoPersona" class="w-100" required placeholder="Apellido"
+		  	<input type="text" pattern="[A-Za-z]{1,30}" name="txfApellidoPersona" class="w-100" required placeholder="Ingrese únicamente letras"
 	  		<% 
   			if(admin!=null){%>value="<%=admin.getApellido()%>"<%;}
 	  		%>
