@@ -55,19 +55,19 @@ public class TurnoNegocioImpl implements TurnoNegocio{
 
 					switch (day) {
 					case "lun":
-						return 1;
-					case "mar":
 						return 2;
-					case "mié":
+					case "mar":
 						return 3;
-					case "jue":
+					case "mié":
 						return 4;
-					case "vie":
+					case "jue":
 						return 5;
-					case "sáb":
+					case "vie":
 						return 6;
-					case "dom":
+					case "sáb":
 						return 7;
+					case "dom":
+						return 1;
 					default:
 						return 0;
 					}

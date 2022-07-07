@@ -116,7 +116,6 @@ public class servletNuevoUsuario extends HttpServlet {
 			request.setAttribute("listaProvincias", create_provincia_list());
 			request.setAttribute("listaLocalidades", create_localidad_list());
 			request.setAttribute("listasexos", create_sexo_list());
-			request.setAttribute("listaTipos", create_tipo_list());
 			request.setAttribute("listaPaises", create_pais_list());
 		}
 		RequestDispatcher rd = request.getRequestDispatcher(redirect);   
@@ -142,12 +141,7 @@ public class servletNuevoUsuario extends HttpServlet {
 		SexoNegocio sexneg = new SexoNegocioImpl();
 		return sexneg.ListarTodo();
 	}
-	
-	private List<Tipo> create_tipo_list(){
-		TipoNegocio tipneg = new TipoNegocioImpl();
-		return tipneg.ListarTodo();
-	}
-	
+
 	private List<Pais> create_pais_list(){
 		PaisNegocio paisneg = new PaisNegocioImpl();
 		return paisneg.ListarTodo();

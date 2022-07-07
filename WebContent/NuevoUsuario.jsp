@@ -4,7 +4,6 @@
 <%@page import="entidad.Localidad"%>
 <%@page import="entidad.Pais"%>
 <%@page import="entidad.Sexo"%>
-<%@page import="entidad.Tipo"%>
 <%@page import="entidad.Administrador"%>
 <%@page import="servlets.servletNuevoUsuario"%>
 <%@page import="entidad.Usuario"%>
@@ -30,7 +29,6 @@
 <%!ArrayList<Provincia> listaProvincias = null;%>
 <%!ArrayList<Localidad> listaLocalidades = null;%>
 <%!ArrayList<Sexo> listasexos = null;%>
-<%!ArrayList<Tipo> listaTipos = null;%>
 <%!ArrayList<Pais> listapaises = null;%>
 <%!Administrador admin = null;%>
 <%!String mensaje = null; %>
@@ -261,23 +259,8 @@
 	  	<div class="col col-md-3 mh-2 justify-content-center p-2">
 	  		<label class="p-1">Tipo de usuario</label> 
 			<select name="slcTipoUsuario" class="w-100" required>
-				<option value="0" disabled>Seleccione opción</option>
-				<%
-				if(request.getAttribute("listaTipos")!=null){
-					listaTipos = (ArrayList<Tipo>)request.getAttribute("listaTipos");
-					if(!listaTipos.isEmpty()){
-						for(Tipo tip : listaTipos){
-							%>
-							<option value="<%=tip.getIdTipo()%>" 
-							<%
-				  			if(admin!=null && admin.getUsuario().getTipo().getIdTipo() == tip.getIdTipo()){%>selected<%;}
-							%>
-							><%=tip.getNombre() %></option>	
-							<%
-						}
-					}
-				}
-				%>
+				<option value="1" readonly selected>Administrador</option>
+				
 			</select>
 	  	</div>
 	  </div>
