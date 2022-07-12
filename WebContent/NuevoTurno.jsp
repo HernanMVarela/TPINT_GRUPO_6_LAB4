@@ -25,6 +25,9 @@
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
 
+
+
+
 <title>Nuevo Turno</title>
 </head>
 <body>
@@ -131,33 +134,6 @@ if(request.getAttribute("fullturno")==null && request.getAttribute("preturno")==
 			</div>
 			<div class="row justify-content-center align-items-center">
 				<div class="col col-md-6 d-flex justify-content-between p-2">
-					<label class="p-1">Especialidad  </label>
-					<select name=slcEsp class="w-75 <%if(!verEsp){%> btn-danger <%}else{%>btn-light<%}%>" required>
-						<option value="0" disabled selected>Seleccione opción</option>
-						<%
-						if(request.getAttribute("listaEsp")!=null){
-							listaEsp = (ArrayList<Especialidad>)request.getAttribute("listaEsp");
-							if(!listaEsp.isEmpty()){
-								for(Especialidad esp : listaEsp){
-									%>
-									<option value="<%=esp.getIdEspecialidad()%>" 
-									<%
-						  			if(turno!=null && turno.getEspecialidad().getIdEspecialidad() == esp.getIdEspecialidad()){%>selected<%;}
-									%>
-									><%=esp.getNombre() %></option>	
-									<%
-								}
-							}
-						}
-						%>
-					</select>	
-				</div>
-				<div class="col col-md-4 justify-content-center p-2">
-					
-				</div>
-			</div>
-			<div class="row justify-content-center align-items-center">
-				<div class="col col-md-6 d-flex justify-content-between p-2">
 					<label class="p-1">Medico  </label>
 					<select name="slcMedico" class="w-75 <%if(!verMed){%> btn-danger <%}else{%>btn-light<%}%>">
 	  				<option value="0" disabled selected>Seleccione opción</option>
@@ -167,7 +143,7 @@ if(request.getAttribute("fullturno")==null && request.getAttribute("preturno")==
 	  						for (Medico x: listaMedicos){
 	  							if(x.isEstado()){
 	  							%><option value="<%= x.getIdMedico() %>"<%
-	  								if(turno!=null){if(x.getIdMedico()==turno.getMedico().getIdMedico()){ %> selected <%}}%>><%= x.getNombre() + " " + x.getApellido() %></option><%
+	  								if(turno!=null){if(x.getIdMedico()==turno.getMedico().getIdMedico()){ %> selected <%}}%>><%= x.getEspecialidad().getNombre() + " | " + x.getNombre() + " " + x.getApellido() %></option><%
 	  							}
 	  						} 
 	  					}
@@ -180,6 +156,7 @@ if(request.getAttribute("fullturno")==null && request.getAttribute("preturno")==
 					
 				</div>
 			</div>
+			
 			<div class="row justify-content-center align-items-center">
 				<div class="col col-md-6 d-flex justify-content-between  p-2">
 					<label class="p-1">Seleccione una fecha</label>

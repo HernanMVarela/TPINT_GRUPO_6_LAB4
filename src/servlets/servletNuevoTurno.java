@@ -115,7 +115,6 @@ public class servletNuevoTurno extends HttpServlet {
 		if(flag) {
 			request.setAttribute("listaPacientes", listarPacientes());
 			request.setAttribute("listaMedicos", listarMedicos());
-			request.setAttribute("listaEsp", listarEspecialidades());
 			request.setAttribute("listaEstadoTurno", listarEstadoTurno());
 		}
 		RequestDispatcher rd = request.getRequestDispatcher(redirect);   
@@ -150,13 +149,6 @@ public class servletNuevoTurno extends HttpServlet {
 		return listamedicos;
 	}
 	
-	private List<Especialidad> listarEspecialidades() {
-		List<Especialidad> listaEsp = new ArrayList<Especialidad>();
-		EspecialidadNegocio espneg = new EspecialidadNegocioImpl();
-
-		listaEsp = espneg.ListarTodo();
-		return listaEsp;
-	}
 	
 	private Medico cargar_datos_medico(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException { 
 		Medico medic = new Medico();
@@ -172,12 +164,6 @@ public class servletNuevoTurno extends HttpServlet {
 		return paci;
 	}
 	
-	private Especialidad cargar_datos_especialidad(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException { 
-		Especialidad espe = new Especialidad();
-		EspecialidadNegocio espneg = new EspecialidadNegocioImpl();
-		espe = espneg.ObtenerObjeto(Integer.parseInt(request.getParameter("slcEsp")));
-		return espe;
-	}
 	
 	private boolean filtar_horarios(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
@@ -203,7 +189,7 @@ public class servletNuevoTurno extends HttpServlet {
 		Turno turno = new Turno();
 		turno.setMedico(medico);
 		turno.setPaciente(paci);
-		turno.setEspecialidad(cargar_datos_especialidad(request, response));
+		turno.setEspecialidad(medico.getEspecialidad());
 		SimpleDateFormat df = new SimpleDateFormat( "yyyy-MM-dd" );
 		java.util.Date date = null;
 		try {
@@ -282,13 +268,6 @@ public class servletNuevoTurno extends HttpServlet {
 			request.setAttribute("elegirfecha", true);
 		}
 		
-		// VALIDA ESPECIALIDAD SELECCIONADA
-		if(request.getParameter("slcEsp")==null) {
-			request.setAttribute("elegirespecialidad", false);
-			flag= false;
-		}else {
-			request.setAttribute("elegirespecialidad", true);
-		}
 		
 		// VALIDA PACIENTE SELECCIONADO
 		if(request.getParameter("slcPaciente")==null) {
@@ -338,7 +317,7 @@ public class servletNuevoTurno extends HttpServlet {
 		
 		nuevo.setMedico(cargar_datos_medico(request, response));
 		nuevo.setPaciente(cargar_datos_paciente(request, response));
-		nuevo.setEspecialidad(cargar_datos_especialidad(request, response));
+		nuevo.setEspecialidad(nuevo.getMedico().getEspecialidad());
 		
 		SimpleDateFormat df = new SimpleDateFormat( "yyyy-MM-dd" );
 		java.util.Date date = null;
@@ -347,7 +326,6 @@ public class servletNuevoTurno extends HttpServlet {
 			java.sql.Date fecha = new java.sql.Date(date.getTime());
 			nuevo.setDia(fecha);
 		} catch (ParseException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
