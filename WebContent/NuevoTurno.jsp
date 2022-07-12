@@ -226,23 +226,19 @@ if(request.getAttribute("fullturno")==null && request.getAttribute("preturno")==
 			</div>
 			<div class="row justify-content-center w-100">
 				<div class="col col-md-8 d-flex justify-content-between  p-2">
-					<label class="p-1">Estado</label>
-						<select name="slcEstadoTurno" class="w-50 btn-light">
-						<option value="0" disabled selected>Seleccione opción</option>
-						<%
-						if(request.getAttribute("listaEstadoTurno")!=null){
-							listaEstadoTurno = (ArrayList<Estado>)request.getAttribute("listaEstadoTurno");
-							if(!listaEstadoTurno.isEmpty()){
-								for(Estado est : listaEstadoTurno){
-									%>
-									<option value="<%=est.getIdEstado()%>"
-									<%if(request.getAttribute("fullturno")!=null && turno.getEstadoTurno().getIdEstado()==est.getIdEstado()){%>selected<%}%>><%=est.getNombre() %></option>	
-									<%
-								}
-							}
-						}
-						%>
-					</select>	
+					<label class="p-1">Estado</label>						
+						<select name="slcEstadoTurno" class="w-50 btn-light"  
+						<%if(request.getAttribute("fullturno")==null){%> onchange="this.value = '2'" <%}%>
+						<%if(request.getAttribute("fullturno")!=null && turno.getEstadoTurno().getIdEstado()==1 ){%> onchange="this.value = '1'" <%}%>>
+						
+						<option value="0" disabled> Seleccione opción</option>
+						<option value="1" <%if(request.getAttribute("fullturno")!=null && turno.getEstadoTurno().getIdEstado()==1 ){%>selected<%} else {%>disabled<%}%>> LIBRE </option>
+						<option value="2" <%if(request.getAttribute("fullturno")==null){%>selected<%} else if(user.getTipo().getIdTipo()==3){%>disabled<%} %>> OCUPADO </option>
+						<option value="3"> AUSENTE </option>
+						<option value="4" <%if(request.getAttribute("fullturno")!=null && user.getTipo().getIdTipo()==3){%>selected<%}%> > PRESENTE </option>
+						
+						</select>	
+						
 				</div>
 			</div>
 		</div>

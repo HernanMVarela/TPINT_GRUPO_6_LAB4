@@ -13,7 +13,6 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import entidad.Especialidad;
 import entidad.Estado;
 import entidad.Horario;
@@ -35,7 +34,7 @@ import negocioImpl.TurnoNegocioImpl;
 @WebServlet("/servletNuevoTurno")
 public class servletNuevoTurno extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-
+	
     public servletNuevoTurno() {
         super();
     }
@@ -44,9 +43,12 @@ public class servletNuevoTurno extends HttpServlet {
 		
 		String redirect = "/NuevoTurno.jsp";
 		boolean flag = true;
+		
 		request.setAttribute("Mensaje", null);
 		request.setAttribute("preturno", null);
 		request.setAttribute("fullturno", null);
+
+	
 		if(request.getParameter("btnFiltrarDatos")!=null) {
 			filtar_horarios(request, response);
 		}

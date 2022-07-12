@@ -95,7 +95,7 @@ $(document).ready( function () {
   						for (Turno x: listaTurnos){
   							%>
   							<%	if(user.getTipo().getIdTipo()==3){
-  								if(user.getIdUsuario()== x.getMedico().getUsuario().getIdUsuario())	 {
+  								if(user.getIdUsuario()== x.getMedico().getUsuario().getIdUsuario() && x.getEstadoTurno().getIdEstado()!=1 )	 {
   									%>
   								<tr <% if(!x.isEstado()){%> class="table-danger" <%} %>>
   								<td> <%= x.getIdTurno() %> </td>
