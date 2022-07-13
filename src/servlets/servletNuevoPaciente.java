@@ -229,8 +229,8 @@ public class servletNuevoPaciente extends HttpServlet {
 			
 			// DIRECCION PERSONA
 				// LOCALIDAD
-			if(Integer.parseInt(request.getParameter("slcLocPersona"))!=0) {
-				Perso.getDirecc().setLoc(locneg.ObtenerObjeto(Integer.parseInt(request.getParameter("slcLocPersona"))));
+			if(Integer.parseInt(request.getParameter("slcLocalidad"))!=0) {
+				Perso.getDirecc().setLoc(locneg.ObtenerObjeto(Integer.parseInt(request.getParameter("slcLocalidad"))));
 			}else {
 				flag = false;
 			}
