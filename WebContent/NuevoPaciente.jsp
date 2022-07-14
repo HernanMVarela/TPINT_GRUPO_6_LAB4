@@ -83,11 +83,11 @@
   	<div class="row justify-content-center">
   		<div class="col col-md-3 mh-2 justify-content-center p-2">
   			<label class="p-1">Nombre</label>
-	  		<input type="text" name="txfNombre" class="w-100" required placeholder="Nombre" <% if(paci!=null){%>value="<%=paci.getNombre()%>"<%;}%>>
+	  		<input type="text" name="txfNombre" pattern="[A-Za-z]{1,30}"  class="w-100" required placeholder="Nombre" <% if(paci!=null){%>value="<%=paci.getNombre()%>"<%;}%>>
   		</div>
   		<div class="col col-md-3 mh-2 justify-content-center p-2">
   			<label class="p-1">Apellido</label>
-	  		<input type="text" name="txfApellido" class="w-100" required placeholder="Apellido" <% if(paci!=null){%>value="<%=paci.getApellido()%>"<%;}%>>
+	  		<input type="text" name="txfApellido" pattern="[A-Za-z]{1,30}"  class="w-100" required placeholder="Apellido" <% if(paci!=null){%>value="<%=paci.getApellido()%>"<%;}%>>
   		</div>
   		<div class="col col-md-3 mh-2 justify-content-center p-2">
   			<label class="p-1">Documento</label>
