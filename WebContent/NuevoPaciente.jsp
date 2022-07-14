@@ -149,8 +149,7 @@
   			<label class="p-1">Provincia</label> 
   			<select name="slcProvPersona" id="provincia1" onchange="cargar_localidades()" class="w-100" required>
 				<option value="0" disabled>Seleccione opción</option>
-				<%
-				
+				<%				
 				if(request.getAttribute("listaProvincias")!=null){
 					listaProvincias = (ArrayList<Provincia>)request.getAttribute("listaProvincias");
 					if(!listaProvincias.isEmpty()){
@@ -194,7 +193,10 @@
   		</div>
   		<div class="col col-md-3 mh-2 justify-content-center p-2">
   			<label class="p-1">Dirección</label>
-	  		<input type="text" name="txfDireccion" class="w-100" required placeholder="Dirección" <% if(paci!=null){%>value="<%=paci.getDirecc().getCalleYNum() %>"<%;}%>>
+	  		<input type="text" name="txfDireccion" class="w-100" required placeholder="Dirección" 
+	  		<% 
+	  		if(paci!=null){%>value="<%=paci.getDirecc().getCalleYNum() %>"<%;}
+	  		%>>
   		</div>
   	</div>
 	<div class="row justify-content-center border-bottom mb-3">

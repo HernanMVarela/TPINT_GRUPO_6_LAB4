@@ -22,14 +22,22 @@ public class HorarioNegocioImpl implements HorarioNegocio{
 
 	@Override
 	public boolean Modificar(int idMedico, ArrayList<Horario> horas) {
-		if(!dao.Eliminar(idMedico)) {return false;}
-	
+		// Se valida lista de horarios para modificar horarios en cero
+				
+		if(!dao.Eliminar(idMedico)) {
+			
+			if(!Listar(idMedico).isEmpty()) { dao.Eliminar(idMedico); } 
+//			else {return false;
+			}
+			
 		for (Horario horario : horas) {
-
-			if(!dao.Agregar(idMedico, horario)) {return false;}
-		}
+	
+		if(!dao.Agregar(idMedico, horario)) {return false;}
 		
+		
+		}		
 		return true;
-	}
+		}
+	
 
 }

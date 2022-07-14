@@ -29,10 +29,10 @@
 
 <title>Nuevo Médico</title>
 </head>
-<body>
+<body onLoad="myOnLoad()">
 
 <%!ArrayList<Provincia> listaProvincias = null;%>
-<%!ArrayList<Localidad> listaLocalidades = null;%>
+<%!ArrayList<Localidad> listaLocalidad2 = null;%>
 <%!ArrayList<Sexo> listasexos = null;%>
 <%!ArrayList<Tipo> listaTipos = null;%>
 <%!ArrayList<Pais> listapaises = null;%>
@@ -156,7 +156,7 @@
   	<div class="row justify-content-center border-bottom mb-3">
   		<div class="col col-md-3 mh-2 justify-content-center p-2">
   			<label class="p-1">Provincia</label> 
-  			<select name="slcProvPersona" id="slcProvPersona" class="w-100" required>
+  			<select name="slcProvPersona" id="provincia1" onchange="cargar_localidades()" class="w-100" required>
 				<option value="0" disabled>Seleccione opción</option>
 				<%
 				if(request.getAttribute("listaProvincias")!=null){
@@ -179,15 +179,16 @@
   		</div>
   		<div class="col col-md-3 mh-2 justify-content-center p-2">
   			<label class="p-1">Localidad</label> 
-  			<select name="slcLocPersona" id="slcLocPersona" class="w-100" required>
+  			<select required id="localidadReal" name="slcLocalidad" class="w-100"></select>
+  			<select name="slcLocPersona" id="localidad2" hidden required>
 				<option value="0" disabled>Seleccione opción</option>
 				<%
 				if(request.getAttribute("listaLocalidades")!=null){
-					listaLocalidades = (ArrayList<Localidad>)request.getAttribute("listaLocalidades");
-					if(!listaLocalidades.isEmpty()){
-						for(Localidad loc : listaLocalidades){
+					listaLocalidad2 = (ArrayList<Localidad>)request.getAttribute("listaLocalidades");
+					if(!listaLocalidad2.isEmpty()){
+						for(Localidad loc : listaLocalidad2){
 							%>
-							<option value="<%=loc.getIdLocalidad()%>" 
+							<option value="<%=loc.getProvincia().getIdProv() %>" data-uid="<%=loc.getIdLocalidad()%>"
 							<%
 				  			if(medic!=null && medic.getDirecc().getLoc().getIdLocalidad() == loc.getIdLocalidad()){%>selected<%;}
 							%>
@@ -441,7 +442,66 @@
 		<a href="servletHome" class="btn btn-outline-danger w-25 my-2">No hay usuario logueado - Volver a Home.</a>
 	</div>
 <%}%>	
+
+<script>
 	
+	var today = new Date();
+	var dd = today.getDate();
+	var mm = today.getMonth() + 1; //January is 0!
+	var yyyy = today.getFullYear();
+	if (dd < 10) {
+	   dd = '0' + dd;
+	}
+	if (mm < 10) {
+	   mm = '0' + mm;
+	} 
+	    
+	today = yyyy + '-' + mm + '-' + dd;
+	document.getElementById("datefield").setAttribute("max", today);
+	</script>
+	 
+	 
+	 <script>
+function myOnLoad() {
+		var earrings = document.getElementById('localidad2');
+		earrings.style.visibility = 'hidden';
+		cargar_localidades();
 	
+	}
+</script>
+<script>
+function cargar_localidades() {
+	document.getElementById("localidadReal").options.length = 0;
+	
+	var x = document.getElementById("localidad2");
+	var array = new Array();
+	var a = new Array();
+	var b = new Array();
+	for (i = 0; i < x.length; i++) { 
+		
+		array.push(x.options[i].text);
+		a.push(x.options[i].value);
+		b.push(x.options[i].getAttribute('data-uid'));
+		
+}
+	
+	 addOptions("slcLocalidad", array, a,b);
+	}
+</script>
+<script>
+function addOptions(domElement, array, a,b) {
+	 var select = document.getElementsByName(domElement)[0];
+	 var inde = document.getElementById('provincia1').value;
+	 for (value in array) {
+		if(a[value] === inde){
+	  var option = document.createElement("option");
+	  option.text = array[value];
+	  option.value = b[value];
+	  select.add(option);
+		}
+	 }
+	}
+</script>
+
 </body>
 </html>
